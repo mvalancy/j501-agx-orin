@@ -20,6 +20,8 @@ flowchart LR
     F -.-> G[Drive trays, optional]
 ```
 
+**Download:** [Rev 0.6 print package](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.6): all STL files, assembly instructions and renders in one zip.
+
 **Status:** every part and clearance is checked in CAD only. Nothing has been printed or test-fitted yet, so print the test parts first.
 
 **You need:** a [Seeed reServer Industrial J501 carrier](https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html), a Jetson AGX Orin module, and a cooler. The optional [GMSL extension board](https://www.seeedstudio.com/reServer-Industrial-J501-GMSL-extension-board-p-5949.html) is supported. The reference cooler is Seeed's [heatsink with fan for the J501](https://www.seeedstudio.com/Aluminum-heatsink-with-Fan-for-Jetson-AGX-Orin-p-5970.html). Port details are on the [Seeed wiki](https://wiki.seeedstudio.com/j501_carrier_board_interfaces_usage/); everything else is at [seeedstudio.com](https://www.seeedstudio.com/).
