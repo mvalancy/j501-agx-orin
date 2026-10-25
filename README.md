@@ -2,98 +2,130 @@
 
 <p align="center">
   A 3D-printable housing for the <a href="https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html">Seeed reServer Industrial J501 carrier board</a>
-  with an NVIDIA Jetson AGX Orin module, designed in CadQuery.<br>
-  <b>Rev 0.6 · fit-check prototype</b> · prints on a Bambu Lab P1S (256 mm bed) · MIT licensed
+  with an NVIDIA Jetson AGX Orin module.<br>
+  <b>Rev 0.6 · fit-check prototype</b> · fits a 256 mm printer bed · MIT licensed
 </p>
 
 <p align="center">
-  <img src="preview/assembled.png" alt="Rev 0.6 enclosure, assembled: flush shell, framed I/O plates, hex roof, RP-SMA antenna bulkheads" width="820">
+  <img src="preview/assembled.png" alt="Rev 0.6 enclosure, assembled" width="820">
 </p>
 
-## How it fits together
-
 ```mermaid
-flowchart TB
-    cover["<b>P2 Cover</b><br/>finger-safe hex roof · 4× M3 from the top"]
-    cooler["<b>Heatsink + fan</b>"]
-    agx["<b>Jetson AGX Orin module</b>"]
-    carrier["<b>Seeed reServer J501 carrier</b><br/>176 × 163 mm"]
-    base["<b>P1 Base</b> + slide-in I/O plates (P3/P4, P5, P10)<br/>P1M for wall / robot mounting"]
-    trays["<b>Optional storage trays</b><br/>P15 3.5in HDD · P16 2× 2.5in SSD · SATA cables drop through the floor"]
-
-    cover --- cooler --- agx --- carrier --- base --- trays
-    base -.->|"4× M3×35 tie-down screws"| cooler
+flowchart LR
+    A[Print parts] --> B[Test-fit board on P9]
+    B --> C[Heat-set inserts]
+    C --> D[Board and cooler in]
+    D --> E[Antennas and plates]
+    E --> F[Lid on]
+    F -.-> G[Drive trays, optional]
 ```
 
-## At a glance
+**Status:** every part and clearance is checked in CAD only. Nothing has been printed or test-fitted yet, so print the test parts first.
 
-- **Board:** [Seeed reServer Industrial J501 carrier](https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html) (SKU 102991854), with the optional [GMSL extension board](https://www.seeedstudio.com/reServer-Industrial-J501-GMSL-extension-board-p-5949.html) (SKU 102991855). Port details are on the [Seeed wiki](https://wiki.seeedstudio.com/j501_carrier_board_interfaces_usage/); more at [seeedstudio.com](https://www.seeedstudio.com/).
-- **Cooler:** your cooler is not identified yet. Seeed's [aluminium heatsink with fan for the J501](https://www.seeedstudio.com/Aluminum-heatsink-with-Fan-for-Jetson-AGX-Orin-p-5970.html) (100099421, 110 × 100 × 50 mm) is used as the reference envelope.
-- **Size:** 206 × 181 × 112 mm, flush R8 shell. Every part fits the P1S bed.
-- **Features:** cooler tie-down from below, finger-safe hex roof, labelled port windows, 4 RP-SMA antenna bulkheads (2 Wi-Fi, 2 cellular), pin access to REC and RST, stackable 3.5 in / 2.5 in drive trays.
-- **Print files:** STL, 3MF and STEP for all 17 parts in [`exports/`](exports/).
-- **Status:** every part and clearance is checked in CAD. Nothing has been printed or test-fitted yet.
+**You need:** a [Seeed reServer Industrial J501 carrier](https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html), a Jetson AGX Orin module, and a cooler. The optional [GMSL extension board](https://www.seeedstudio.com/reServer-Industrial-J501-GMSL-extension-board-p-5949.html) is supported. The reference cooler is Seeed's [heatsink with fan for the J501](https://www.seeedstudio.com/Aluminum-heatsink-with-Fan-for-Jetson-AGX-Orin-p-5970.html). Port details are on the [Seeed wiki](https://wiki.seeedstudio.com/j501_carrier_board_interfaces_usage/); everything else is at [seeedstudio.com](https://www.seeedstudio.com/).
 
-> Not affiliated with or endorsed by Seeed Studio or NVIDIA. Product names belong to their owners.
+**Contents:** [Printed parts](#printed-parts) · [Hardware to buy](#hardware-to-buy) · [Assembly](#assembly) · [Design notes](#design-notes) · [Reproduce](#reproduce)
 
-**Contents:** [Parts](#parts) · [Assembly](#assembly) · [Storage](#storage-expansion-and-the-underside-slots) · [Port windows](#port-windows) · [Checks](#checks-exports) · [Reproduce](#reproduce)
+## Bill of materials
 
-**Review material:** `python tools/serve_preview.py` serves the local review site (URL in `preview/server-url.txt`). The engineering tables are in [docs/engineering-review.html](docs/engineering-review.html); the dimensioned paper review is [docs/check-sheet.pdf](docs/check-sheet.pdf).
+Every printed part has a [3MF](exports/) (opens in Bambu Studio), STL and STEP file in [`exports/`](exports/). The full BOM with dimensions is [docs/BOM.csv](docs/BOM.csv).
 
-## Parts
+### Printed parts
 
-- **Which base:** P1 for desktop use and for every storage stack; P1M only for wall/robot mounting without storage. With storage on a wall or robot, use P1 + trays + P17.
-- **Desktop:** P1 `base`, P2 `cover`, P3 `front_gmsl` or P4 `front_no_gmsl`, P5 `rear_io`, P10 `side_hatch`. Optional rubber bumpers (≤ D12 × 1) fit four floor pockets.
-- **Storage (optional):** P15 `storage_35` and/or P16 `storage_25` trays, plus P17 `storage_mount_plate` for wall/robot use, or P18 `chimney_cap` when no storage is fitted.
-- **Wall/robot:** substitute P1M `base_mount`. External M6 screws, D16 washers and anchors are site-specific.
-- **Calibration:**
-  - P11: M3 pilot coupon.
-  - P12/P13: plate channel and key.
-  - **P14: countersink coupon.** Check that the flat head sits at or below the floor.
-  - P9: cradle fit jig. It has the same supports, pad-sized landings (Ø6.9 board / Ø7.14 cooler) and underside relief as P1 on a 3 mm frame, so the bare carrier sits on it exactly as it will in the base.
+**Enclosure** (pick one base and one front plate):
 
-Print orientations:
+| Part | File | Qty | When | Print face down |
+|---|---|---|---|---|
+| P1 Base | [base.3mf](exports/base.3mf) | 1 | Desktop, or any setup with drive trays | Floor |
+| P1M Base with mounting tabs | [base_mount.3mf](exports/base_mount.3mf) | 1 | Wall or robot mount without drive trays | Floor |
+| P2 Cover | [cover.3mf](exports/cover.3mf) | 1 | Always | Roof |
+| P3 Front plate, GMSL | [front_gmsl.3mf](exports/front_gmsl.3mf) | 1 | GMSL board fitted | Outside face |
+| P4 Front plate | [front_no_gmsl.3mf](exports/front_no_gmsl.3mf) | 1 | No GMSL board | Outside face |
+| P5 Rear plate | [rear_io.3mf](exports/rear_io.3mf) | 1 | Always | Outside face |
+| P10 Side hatch | [side_hatch.3mf](exports/side_hatch.3mf) | 1 | Always | Outside face |
+| P18 Floor cap | [chimney_cap.3mf](exports/chimney_cap.3mf) | 1 | No drive trays | Flange |
 
-- P1/P1M: floor down.
-- P2: roof down.
-- P3/P4/P5/P10: exterior face down.
+**Drive storage** (optional; stack 1 tray, 1 of each, or 2 of each, in any order):
 
-Print sizes, all within the P1S's 256 mm cube:
+| Part | File | Qty | When |
+|---|---|---|---|
+| P15 3.5 in tray | [storage_35.3mf](exports/storage_35.3mf) | 0–2 | One 3.5 in drive each |
+| P16 2.5 in tray | [storage_25.3mf](exports/storage_25.3mf) | 0–2 | Two 2.5 in drives each, up to 15 mm thick |
+| P17 Mounting plate | [storage_mount_plate.3mf](exports/storage_mount_plate.3mf) | 1 | Wall or robot mount with drive trays |
+| P19 SSD clip | [ssd_clip.3mf](exports/ssd_clip.3mf) | 4 per drive | 7 mm SSDs with no bottom screw holes |
 
-- P1M: 206 × 233 × 76.5 mm.
-- P2: 206 × 181 × 40 mm.
+**Test prints** (print these first, in your filament):
 
-The filament is unspecified, so fits, heat resistance, creep and insert retention are not qualified.
+| Part | File | Checks |
+|---|---|---|
+| P9 Fit template | [mount_fit_template.3mf](exports/mount_fit_template.3mf) | The bare board sits flat on all its supports, and the cooler holes line up |
+| P11 Insert coupon | [m3_insert_coupon.3mf](exports/m3_insert_coupon.3mf) | Which pilot hole (3.7–4.1 mm) holds an M3 insert |
+| P12 / P13 Rail coupon and key | [rail_coupon.3mf](exports/rail_coupon.3mf), [rail_key.3mf](exports/rail_key.3mf) | Plates slide in their channels without rattling |
+| P14 Countersink coupon | [countersink_coupon.3mf](exports/countersink_coupon.3mf) | The M3 × 35 flat head seats on its cone |
+
+Filament is not specified yet, so fits, heat resistance and insert retention are untested.
+
+### Hardware to buy
+
+**Enclosure:**
+
+| Item | Qty | Used for |
+|---|---|---|
+| M3 × 10 heat-set insert | 8 | Board supports (4) and lid columns (4) |
+| M3 × 10 button head, ISO 7380 | 4 | Board to base |
+| M3 × 35 flat head, DIN 7991 / ISO 10642 | 4 | Cooler tie-down, up through the floor |
+| M3 × 16 socket head, ISO 4762 | 4 | Lid, from the top (2.5 mm hex key, 40 mm reach) |
+| RP-SMA female bulkhead pigtail, to U.FL or MHF4 | 0–4 | Antennas: 2 Wi-Fi, 2 cellular |
+| Rubber bumper, up to Ø12 × 1 mm | 4 | Desktop feet, optional |
+| M6 screws and Ø16 washers | 4 | P1M wall or robot mount; length depends on the surface |
+| SIM eject pin or paper clip, Ø1.2 mm or less | 1 | Pressing the reset and recovery buttons |
+
+**Drive storage:**
+
+| Item | Qty | Used for |
+|---|---|---|
+| M3 × 10 heat-set insert | 4 | Base column feet |
+| M3 male-female hex standoff, 5.5 mm across flats, 6 mm male | 4 per tray | M3 × 30 for P15, M3 × 20 for P16 |
+| 6-32 UNC × 3/16 in pan head | 4–6 per 3.5 in drive | Drive to tray |
+| M3 × 4 button head | 4 per 2.5 in drive | Drive to tray |
+| M3 × 5 button head, M3 × 6 button head, M3 nut | 4 of each per clipped SSD | P19 clips |
+| M3 × 8 socket head | 4 | P17 to the bottom tray |
+| SATA data cable, straight plug, slim or foldable, 300–450 mm | 1 per drive | Board to drive |
+| JST PH 2.0 4-pin to SATA power lead | 1 per 2.5 in drive | Board 5 V to the drive. Check the pinout first |
+| 12 V supply for a 3.5 in drive: Ø8 mm panel DC jack and 12 V-to-SATA adapter | 1 per 3.5 in drive | The board only supplies 5 V to drives |
 
 ## Assembly
 
-1. Print P11, P12/P13 and P14 in the intended filament and profile. The nominal M3 pilot is 3.9 mm.
-2. Set the bare carrier face up on P9. Every landing should sit flat on its pad with nothing else touching. Then check the 92 × 79 holes against the actual cooler.
-3. Heat-set eight M3 × 10 inserts: four into the board supports and four into the tops of the lid columns. Do this before installing electronics.
-4. Place the PCB on its four supports and fasten with M3 × 10 button heads (8.4 mm engagement).
-   - **With storage:** before lowering the board, fit the underside cards (Mini PCIe / M.2 B / M.2 E). Then plug the SATA data and PH power leads straight up into J21–J24 and thread them down through the floor opening as the board goes in.
-   - **Without storage:** press P18 into the floor opening from below.
-5. **Cooler tie-down.**
-   - Install the module and cooler as originally designed.
-   - Replace each of the four cooler screws with a flat-head screw driven up from beneath the floor.
-   - Each screw passes the column, the carrier and the module, then threads into the **female standoff between the AGX module and the heatsink**. That thread starts at the top of the AGX thermal plate (Z 40.76).
-   - **Screw: M3 × 35 flat head (DIN 7991 / ISO 10642), 4 places.** M3 matches the module holes (Ø3.5 PCB, Ø3.7 thermal plate).
-   - The length is set by the assembly: bottom of the housing to the AGX top, plus 8 threads (4 mm). Flush with the floor that would be 44.3 mm, which is an uncommon size. So the countersink seat is raised to Z 9.76 inside each column, up a Ø7 pocket from the floor, and a standard 35 mm screw gives exactly 4.0 mm of engagement.
-   - The thermal pad (0.5 mm nominal, `cooler.tim_thickness`) lifts the heatsink, not the standoff thread, so it does not change the length.
-   - Tighten gently; these are printed columns.
-6. For GMSL, use its supplied supports and screws. The 16 mm stack is implied by the Samtec suffixes; verify it.
-7. Fit the four RP-SMA bulkhead pigtails from inside the base walls: body against the spot face, lock washer and nut outside. Route the leads around the PCB edge to the radios.
-8. Slide the front and rear plates and the J17 hatch down their channels.
-9. Lower the lid. The tongue-and-rebate joint locates it. Fit four M3 × 16 socket heads from the top (2.5 mm hex, about 40 mm reach). The ledges over the plates and the lid's skin over the hatch keep all three from lifting.
-10. **Storage stack.**
-    - Heat-set four M3 × 10 inserts into the base column feet, from below.
-    - For each tray from the top down: drive-screw the drives in from below (6-32 × 3/16 in for 3.5 in, M3 × 4 button head for 2.5 in).
-    - Route the leads down the chimney and along the gutter to the drive connectors.
-    - Offer the tray up and fit four M3 M-F standoffs through its ledges into the part above.
-    - Finish with rubber bumpers in the bottom tray's pockets, or P17 and four M3 × 8 screws for wall/robot use.
-11. Service: the reset and recovery switches are reached with a pin through the rear plate. Remove the four lid screws, lift the lid, then lift the plate or hatch. The nano-SIM (J18) is reached by removing the front plate.
+1. **Print the test parts first** (P9, P11–P14) in the filament you will use. Pick the insert pilot that holds best, and check the M3 × 35 head seats on P14.
+2. **Test-fit the board.** Set the bare carrier face up on P9. Every support should touch its pad and nothing else. Check the cooler holes against your cooler.
+3. **Fit the heat-set inserts** before any electronics go in: four into the board supports and four into the tops of the lid columns.
+4. **Install the board.**
+   - With drive trays: first fit any Mini PCIe or M.2 cards under the board. Then plug the SATA data and power leads straight up into the board's underside connectors (J21–J24) and feed them down through the floor opening as you lower the board.
+   - Without drive trays: press P18 into the floor opening from below.
+   - Fasten the board with four M3 × 10 button heads.
+5. **Fit the module and cooler**, then tie the cooler down. Replace each of the cooler's four screws with an M3 × 35 flat head driven up from under the floor. It passes through the column, the board and the module, and threads 4 mm (8 threads) into the standoffs between the module and the heatsink. Tighten gently; the columns are printed.
+6. **GMSL board** (if fitted): use its supplied supports and screws.
+7. **Antennas:** push each RP-SMA pigtail through its wall hole from the inside, then fit the lock washer and nut outside. Route the leads around the board edge to the radios.
+8. **Slide in** the front plate, rear plate and side hatch from above.
+9. **Fit the lid** and four M3 × 16 screws from the top.
 
-## Storage expansion and the underside slots
+**Drive trays** (turn the closed enclosure over onto its lid and build the stack up from its floor):
+
+1. Fit four M3 × 10 inserts into the base column feet from below.
+2. Screw the drives into each tray from underneath.
+3. Run the leads down the chimney and along the left-hand gutter to the drives. Use the board's front SATA connector for a 3.5 in drive.
+4. Fix each tray to the part above with four standoffs through its ledges.
+5. Finish with rubber feet on the bottom tray, or P17 and four M3 × 8 screws for a wall or robot mount.
+
+**Service:** press the reset (RST) and recovery (REC) buttons with a pin through the labelled holes in the rear plate. For anything else, remove the four lid screws and lift the lid; the plates and hatch then lift out. The nano-SIM is behind the front plate.
+
+## Design notes
+
+**Size:** 206 × 181 × 112 mm. With two of each tray the stack is 220 mm tall. The largest print, P1M, is 206 × 233 × 76.5 mm.
+
+**Review material:** `python tools/serve_preview.py` serves the local review site. The engineering tables are in [docs/engineering-review.html](docs/engineering-review.html); the dimensioned paper review is [docs/check-sheet.pdf](docs/check-sheet.pdf).
+
+### Storage expansion and the underside slots
 
 **Underside slots.** The Mini PCIe (J13) and M.2 Key B (J11) slots sit side by side under the front-left of the carrier, and their cards run toward the rear, one above the other. The M.2 Key E (J14) Wi-Fi card runs toward the SATA corner. Card envelopes, including U.FL plugs, are in `cad/parameters.json` under `underside_envelopes`:
 - The stacked pair needs at most 10 mm below the PCB; 16 mm is available.
@@ -133,7 +165,7 @@ Stack any mix, in any order:
 
 `exports/storage-checks.json` covers seven stack combinations. Each passes with no plastic or hardware overlap and an open chimney. It also records the envelope gaps and drive-screw engagement.
 
-## Port windows
+### Port windows
 
 The windows are defined in `cad/parameters.json` under `ports`, in the PCB X/Z datum. Each entry records its source solid and sizing basis, and the full list is in [docs/cutout-register.csv](docs/cutout-register.csv).
 
@@ -147,7 +179,7 @@ How the windows are sized:
 
 All of this still needs checking against your actual cables.
 
-## Geometry provenance
+### Geometry provenance
 
 [docs/connector-inventory.csv](docs/connector-inventory.csv) is a schematic-derived mechanical inventory, not an official BOM.
 
@@ -160,7 +192,7 @@ Two source models are not mechanically authoritative:
 
 The GMSL XY position, port positions and top-component placement remain provisional. The provisional GMSL PCB top is only 1.58 mm below the cooler seat where they overlap by 4.5 mm; measure this before printing P3. Sources are listed in [references/sources.json](references/sources.json).
 
-## Coordinates
+### Coordinates
 
 All units are millimeters. In the carrier frame, X starts at the left PCB edge, Y at the front edge and Z at the PCB underside.
 
@@ -168,7 +200,7 @@ All units are millimeters. In the carrier frame, X starts at the left PCB edge, 
 - The enclosure outline spans X0–206, Y5.5–186.5, Z0–112, with the split at Z72.
 - Key heights: PCB underside Z20 (4 mm floor + 16 mm supports); cooler seat Z40.758; reference cooler top Z90.758; roof underside Z106.
 
-## Checks (`exports/`)
+### Checks (`exports/`)
 
 | Report | Result |
 |---|---|
