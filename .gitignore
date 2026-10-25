@@ -31,3 +31,5 @@ exports/*.log
 preview/*.log
 preview/server-url.txt
 archive/*/exports/*.log
+exports/release-notes.md
+exports/release-prerelease

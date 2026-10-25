@@ -58,3 +58,22 @@ with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as z:
     for k in RENDERS:
         z.write(R / 'preview' / f'{k}.png', f'{name}/renders/{k}.png')
 print(f'Wrote {out.relative_to(R)}: {len(parts)} STL, {len(RENDERS)} renders, {out.stat().st_size / 1e6:.1f} MB')
+
+# Release notes for the GitHub release. It stays a pre-release until a printed unit has been fit-checked.
+tested = json.loads((R / 'exports/review-validation.json').read_text()).get('physical_fit_verified') is True
+status = ('**Status: fit-checked.** A printed unit has been assembled on the real board.' if tested else
+          '**Status: fit-check prototype.** Every part and clearance is checked in CAD only. Nothing has been printed or '
+          'test-fitted yet, so print the test parts (P9, P11–P14) first.')
+(R / 'exports/release-notes.md').write_text(f'''Print package for the J501 AGX Orin enclosure, Rev {rev}.
+
+**Download `{name}.zip`.** It contains:
+- `stl/`: all {len(parts)} printable parts, in millimetres
+- `INSTRUCTIONS.md`: which parts to print, hardware to buy, and assembly steps
+- `BOM.csv`: full bill of materials with dimensions
+- `renders/`: {len(RENDERS)} views of the assembly, drive trays, tie-down and service access
+
+{status}
+
+You need a [Seeed reServer Industrial J501 carrier](https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html), a Jetson AGX Orin module and a cooler. 3MF (Bambu Studio) and STEP files are in the repository's `exports/` folder.
+''')
+(R / 'exports/release-prerelease').write_text('false' if tested else 'true')

@@ -242,6 +242,14 @@ listed under `steps:` in that file in order with `.venv/bin/python`.
 
 `cad/parameters.json` is the parameter authority.
 
+### Making a release
+
+1. Change the design, set `revision` in `cad/parameters.json` (for example `0.7-...`), and run `cad-agent all`.
+2. Commit everything, including `exports/`, and push. CI checks the committed print files match that build and pass every check.
+3. Tag and push: `git tag rev0.7 && git push origin rev0.7`. CI builds the print zip (STLs, instructions, renders) and publishes the release.
+
+Releases stay marked pre-release until `physical_fit_verified` is true in `exports/review-validation.json`. Every push also leaves the print zip as a downloadable CI artifact for 30 days.
+
 ## License
 
 MIT (see `LICENSE`) for the enclosure design, source and generated files in this repository. Vendor files fetched

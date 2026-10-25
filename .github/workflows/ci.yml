@@ -1,0 +1,64 @@
+# CI for the print files. The CAD build needs vendor models (one behind a login), so it runs locally
+# (cad-agent all); CI checks that the committed exports match that run, then packages them.
+#   push / pull request: tools/ci_check.py, then build the print zip as a downloadable artifact
+#   tag revX.Y:          the same, then publish a GitHub release with the print zip
+# Actions are pinned to commit SHAs and Python packages to hashes, so an upstream change cannot alter a run.
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['rev*']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install pinned dependencies
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install --quiet --require-hashes --only-binary :all: -r requirements-ci.txt
+      - name: Check exports, design checks, STLs and README links
+        env:
+          TAG: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || '' }}
+        run: .venv/bin/python tools/ci_check.py ${TAG:+--tag "$TAG"}
+      - name: Build the print package
+        run: .venv/bin/python tools/package_release.py
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: print-package
+          path: |
+            exports/*-print.zip
+            exports/release-notes.md
+            exports/release-prerelease
+          retention-days: 30
+
+  release:
+    needs: check
+    if: startsWith(github.ref, 'refs/tags/rev')
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build the print package
+        run: python3 tools/package_release.py
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          pre=$(cat exports/release-prerelease)
+          title="Rev ${TAG#rev} print package"
+          [ "$pre" = true ] && title="$title (fit-check prototype)"
+          gh release create "$TAG" exports/*-print.zip --verify-tag --title "$title" \
+            --notes-file exports/release-notes.md $([ "$pre" = true ] && echo --prerelease)
