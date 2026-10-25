@@ -1,65 +1,44 @@
-# J501 AGX enclosure — Rev 0.6 fit-check prototype
+<h1 align="center">J501 AGX Orin Enclosure</h1>
 
-Run `python tools/serve_preview.py` for the local review; it writes the URL to `preview/server-url.txt`. The engineering tables are in [docs/engineering-review.html](docs/engineering-review.html), and the dimensioned paper review is [docs/check-sheet.pdf](docs/check-sheet.pdf).
+<p align="center">
+  A 3D-printable housing for the <a href="https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html">Seeed reServer Industrial J501 carrier board</a>
+  with an NVIDIA Jetson AGX Orin module, designed in CadQuery.<br>
+  <b>Rev 0.6 · fit-check prototype</b> · prints on a Bambu Lab P1S (256 mm bed) · MIT licensed
+</p>
 
-This design targets the **original Seeed reServer Industrial J501 carrier, SKU102991854, 176 × 163 mm**, with the optional GMSL board SKU102991855. The user's cooler is not identified; Seeed 100099421 (110 × 100 × 50 mm) is a reference envelope only.
+<p align="center">
+  <img src="preview/assembled.png" alt="Rev 0.6 enclosure, assembled: flush shell, framed I/O plates, hex roof, RP-SMA antenna bulkheads" width="820">
+</p>
 
-Rev 0.5 is a redesign of the Rev 0.4 shell. The reference data, the PCB registration and the check pipeline are carried over unchanged. Rev 0.4 sources, previews and reports are archived in `archive/rev04/`.
+## How it fits together
 
-## What changed from Rev 0.4, and why
+```mermaid
+flowchart TB
+    cover["<b>P2 Cover</b><br/>finger-safe hex roof · 4× M3 from the top"]
+    cooler["<b>Heatsink + fan</b>"]
+    agx["<b>Jetson AGX Orin module</b>"]
+    carrier["<b>Seeed reServer J501 carrier</b><br/>176 × 163 mm"]
+    base["<b>P1 Base</b> + slide-in I/O plates (P3/P4, P5, P10)<br/>P1M for wall / robot mounting"]
+    trays["<b>Optional storage trays</b><br/>P15 3.5in HDD · P16 2× 2.5in SSD · SATA cables drop through the floor"]
 
-| Rev 0.4 problem | Rev 0.5 fix |
-|---|---|
-| Plugs could not fully mate. The 6 mm panels put receptacle faces 7–7.6 mm behind the exterior, so overmolds had to enter the windows. The USB-C slot was 5.7 mm tall, against a typical 6.5–8 mm overmold. | The plates are 3 mm thick, with inner faces unchanged (0.37 mm front / 0.25 mm rear to the nearest part). Receptacles now sit 3.3–5 mm behind the exterior. Windows for USB-A, USB-C and HDMI are sized to overmold envelopes. |
-| The cooler (most of the mass) hung only from the PCB. | **Cooler tie-down.** Four printed columns (D14, D7.14 pad-sized landing) sit under the 92 × 79 cooler holes. M3 × 35 flat-head screws enter from **below the floor**, seat on a 90° countersink raised inside each column, pass the carrier and module, and thread 8 threads (4 mm) into the female standoffs between the AGX module and the heatsink. Low floor ribs tie the columns to the board posts. |
-| The roof was 67% open, but its 25 × 29 mm cells let a finger reach the fan. | 216 hexagonal cells, 10 mm across flats, 6 mm deep. A 12 mm test finger cannot pass. Each cell has a 0.6 × 1.0 mm inlet chamfer on the fan side (11.2 mm across flats at the underside) so the cooler's exhaust enters a tapered mouth instead of a sharp edge. Cooler-to-roof gap grows from 11.2 to 15.2 mm. |
-| The cap overhung the base by 6.4 mm, and hatch rails protruded 11 mm. The footprint was 218.8 × 205.8 mm. | Flush R8 shell, **206 × 181 × 112 mm**, with a V reveal at the split. The J17 hatch is a flush door in the wall plane. |
-| Two diagonal M6 side screws held the cover. | Four M3 × 16 screws go in from the top, into inserts in the wall columns. They stay reachable when the base is bolted to a wall or robot. |
-| Base tabs spanned 253 mm in Y, leaving a 1.5 mm margin on the P1S. | Tabs are 8 mm thick, with gussets and slots on a 154 × 211 pattern. The base-plus-tabs print is 206 × 233 mm, leaving an 11.5 mm margin. |
-| Large grouped windows had no legends. | One rounded window per connector group, with a 0.6 × 45° lead-in. Debossed legends: AUDIO, GMSL, 1G, 10G, DC IN, I/O, HDMI, USB, USB-C. |
-| No access to the reset and force-recovery buttons. | Two Ø1.6 pin holes in the rear plate with inner guide sleeves, over the right-angle switches between the USB-C ports and the right-hand corner. REC is nearest the USB/IO headers, RST nearest the far board edge, each labelled. |
-| No antenna provision. | Four RP-SMA bulkhead holes in the fixed base side walls: WIFI 1/2 left, CELL 1/2 right, with 2.5 mm spot-faced walls. |
-| Vents only on the left side; pointed slots. | Stadium slots on one 9 mm rhythm across the lid, base, hatch and plates. The plate vents (Z46–66) line up with the cooler fin exits. |
+    cover --- cooler --- agx --- carrier --- base --- trays
+    base -.->|"4× M3×35 tie-down screws"| cooler
+```
 
-## Storage expansion and the underside slots
+## At a glance
 
-**Underside slots.** The Mini PCIe (J13) and M.2 Key B (J11) slots sit side by side under the front-left of the carrier, and their cards run toward the rear, one above the other. The M.2 Key E (J14) Wi-Fi card runs toward the SATA corner. Card envelopes, including U.FL plugs, are in `cad/parameters.json` under `underside_envelopes`:
-- The stacked pair needs at most 10 mm below the PCB; 16 mm is available.
-- The stacked pair's envelopes are 6–7 mm above the floor and needed no relief.
-- The M.2 E envelope touched a support (74 mm³), which is now relieved with a 0.5 mm margin.
+- **Board:** [Seeed reServer Industrial J501 carrier](https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html) (SKU 102991854), with the optional [GMSL extension board](https://www.seeedstudio.com/reServer-Industrial-J501-GMSL-extension-board-p-5949.html) (SKU 102991855). Port details are on the [Seeed wiki](https://wiki.seeedstudio.com/j501_carrier_board_interfaces_usage/); more at [seeedstudio.com](https://www.seeedstudio.com/).
+- **Cooler:** your cooler is not identified yet. Seeed's [aluminium heatsink with fan for the J501](https://www.seeedstudio.com/Aluminum-heatsink-with-Fan-for-Jetson-AGX-Orin-p-5970.html) (100099421, 110 × 100 × 50 mm) is used as the reference envelope.
+- **Size:** 206 × 181 × 112 mm, flush R8 shell. Every part fits the P1S bed.
+- **Features:** cooler tie-down from below, finger-safe hex roof, labelled port windows, 4 RP-SMA antenna bulkheads (2 Wi-Fi, 2 cellular), pin access to REC and RST, stackable 3.5 in / 2.5 in drive trays.
+- **Print files:** STL, 3MF and STEP for all 17 parts in [`exports/`](exports/).
+- **Status:** every part and clearance is checked in CAD. Nothing has been printed or test-fitted yet.
 
-**SATA is on the underside.** The two SATA III receptacles (J21 port 0, J24 port 1) and their JST PH 2.0 4-pin power headers (J22, J23) are *vertical connectors on the underside* (datasheet photo, STEP solids 5061–5064). Cables plug in straight up from below. The base floor has an opening directly beneath them, so the cables drop into the storage trays. P18 plugs the opening when no storage is fitted.
+> Not affiliated with or endorsed by Seeed Studio or NVIDIA. Product names belong to their owners.
 
-**Power.** The board's SATA power headers carry switched **5 V only**, 2 A per port (schematic sheet 27):
-- 2.5 in drives can run from the board.
-- 3.5 in drives need 12 V. The 3.5 in tray has an 8 mm **12V IN** hole and tie anchors for a 12 V-to-SATA power adapter.
-- Board input is 12–36 V, so DC-IN can only be shared with the drives if your supply is 12 V.
+**Contents:** [Parts](#parts) · [Assembly](#assembly) · [Storage](#storage-expansion-and-the-underside-slots) · [Port windows](#port-windows) · [Checks](#checks-exports) · [Reproduce](#reproduce) · [Design history](#design-history)
 
-**Trays.** P15 holds one 3.5 in drive (SFF-8301, all three 6-32 hole pairs). P16 holds two 2.5 in drives up to 15 mm (SFF-8201 M3 holes); 7 mm drives without bottom holes need side mounting.
-
-Stack any mix, in any order:
-- M3 heat-set inserts go in the four base column feet.
-- Each tray is clamped by four M3 male-female hex standoffs: M3 × 30 for P15, M3 × 20 for P16.
-- Each standoff's male end clamps the tray's 2 mm ledge to the part above, and its female end receives the next tray.
-- Drive connectors face a cable gutter on the left side that runs the full depth of the tray. A chimney lines up through every tray floor.
-- P17 replaces P1M for wall or robot mounting under a stack.
-- Two of each tray adds 108 mm, for 220 mm overall.
-- The board has two SATA ports; more drives need an M.2 Key M SATA adapter or USB.
-
-**Drive mounting.**
-- 3.5 in drives use bottom 6-32 screws.
-- 2.5 in drives up to 15 mm use bottom M3 screws.
-- Skinny 7 mm SSDs that only have side holes use four P19 clips each. Each clip takes an M3 × 5 through its wall into the drive side and an M3 × 6 from under the tray into a captive nut, using the same tray holes.
-- Drive connector ends sit at X 48 (3.5 in) and X 62 (2.5 in) to leave room for the cable bend.
-
-**Cable routing.**
-- Leads plug straight up into J21–J24, drop through the base floor opening and each tray's chimney, then turn in the left gutter and run straight into the drive plug.
-- Assumed minimum bend radii: 12 mm SATA data, 6 mm PH power, 8 mm 12 V. No SATA standard publishes one.
-- Wire a 3.5 in drive from the front SATA connector and a 2.5 in drive from the rear one. From the rear connector, the turn into a 3.5 in drive's data plug only allows about a 9 mm bend.
-- Every route is modelled and checked for bend radius and plastic clearance.
-- A 2D route diagram is at `preview/cable-route-diagram.png`.
-
-`exports/storage-checks.json` covers seven stack combinations. Each passes with no plastic or hardware overlap and an open chimney. It also records the envelope gaps and drive-screw engagement.
+**Review material:** `python tools/serve_preview.py` serves the local review site (URL in `preview/server-url.txt`). The engineering tables are in [docs/engineering-review.html](docs/engineering-review.html); the dimensioned paper review is [docs/check-sheet.pdf](docs/check-sheet.pdf).
 
 ## Parts
 
@@ -114,6 +93,46 @@ The filament is unspecified, so fits, heat resistance, creep and insert retentio
     - Finish with rubber bumpers in the bottom tray's pockets, or P17 and four M3 × 8 screws for wall/robot use.
 11. Service: the reset and recovery switches are reached with a pin through the rear plate. Remove the four lid screws, lift the lid, then lift the plate or hatch. The nano-SIM (J18) is reached by removing the front plate.
 
+## Storage expansion and the underside slots
+
+**Underside slots.** The Mini PCIe (J13) and M.2 Key B (J11) slots sit side by side under the front-left of the carrier, and their cards run toward the rear, one above the other. The M.2 Key E (J14) Wi-Fi card runs toward the SATA corner. Card envelopes, including U.FL plugs, are in `cad/parameters.json` under `underside_envelopes`:
+- The stacked pair needs at most 10 mm below the PCB; 16 mm is available.
+- The stacked pair's envelopes are 6–7 mm above the floor and needed no relief.
+- The M.2 E envelope touched a support (74 mm³), which is now relieved with a 0.5 mm margin.
+
+**SATA is on the underside.** The two SATA III receptacles (J21 port 0, J24 port 1) and their JST PH 2.0 4-pin power headers (J22, J23) are *vertical connectors on the underside* (datasheet photo, STEP solids 5061–5064). Cables plug in straight up from below. The base floor has an opening directly beneath them, so the cables drop into the storage trays. P18 plugs the opening when no storage is fitted.
+
+**Power.** The board's SATA power headers carry switched **5 V only**, 2 A per port (schematic sheet 27):
+- 2.5 in drives can run from the board.
+- 3.5 in drives need 12 V. The 3.5 in tray has an 8 mm **12V IN** hole and tie anchors for a 12 V-to-SATA power adapter.
+- Board input is 12–36 V, so DC-IN can only be shared with the drives if your supply is 12 V.
+
+**Trays.** P15 holds one 3.5 in drive (SFF-8301, all three 6-32 hole pairs). P16 holds two 2.5 in drives up to 15 mm (SFF-8201 M3 holes); 7 mm drives without bottom holes need side mounting.
+
+Stack any mix, in any order:
+- M3 heat-set inserts go in the four base column feet.
+- Each tray is clamped by four M3 male-female hex standoffs: M3 × 30 for P15, M3 × 20 for P16.
+- Each standoff's male end clamps the tray's 2 mm ledge to the part above, and its female end receives the next tray.
+- Drive connectors face a cable gutter on the left side that runs the full depth of the tray. A chimney lines up through every tray floor.
+- P17 replaces P1M for wall or robot mounting under a stack.
+- Two of each tray adds 108 mm, for 220 mm overall.
+- The board has two SATA ports; more drives need an M.2 Key M SATA adapter or USB.
+
+**Drive mounting.**
+- 3.5 in drives use bottom 6-32 screws.
+- 2.5 in drives up to 15 mm use bottom M3 screws.
+- Skinny 7 mm SSDs that only have side holes use four P19 clips each. Each clip takes an M3 × 5 through its wall into the drive side and an M3 × 6 from under the tray into a captive nut, using the same tray holes.
+- Drive connector ends sit at X 48 (3.5 in) and X 62 (2.5 in) to leave room for the cable bend.
+
+**Cable routing.**
+- Leads plug straight up into J21–J24, drop through the base floor opening and each tray's chimney, then turn in the left gutter and run straight into the drive plug.
+- Assumed minimum bend radii: 12 mm SATA data, 6 mm PH power, 8 mm 12 V. No SATA standard publishes one.
+- Wire a 3.5 in drive from the front SATA connector and a 2.5 in drive from the rear one. From the rear connector, the turn into a 3.5 in drive's data plug only allows about a 9 mm bend.
+- Every route is modelled and checked for bend radius and plastic clearance.
+- A 2D route diagram is at `preview/cable-route-diagram.png`.
+
+`exports/storage-checks.json` covers seven stack combinations. Each passes with no plastic or hardware overlap and an open chimney. It also records the envelope gaps and drive-screw engagement.
+
 ## Port windows
 
 The windows are defined in `cad/parameters.json` under `ports`, in the PCB X/Z datum. Each entry records its source solid and sizing basis, and the full list is in [docs/cutout-register.csv](docs/cutout-register.csv).
@@ -126,7 +145,7 @@ How the windows are sized:
   - Front: 10G, LED4 and DC IN.
   - Rear: HDMI and USB-A.
 
-All of this still needs checking against the user's actual cables.
+All of this still needs checking against your actual cables.
 
 ## Geometry provenance
 
@@ -153,7 +172,7 @@ All units are millimeters. In the carrier frame, X starts at the left PCB edge, 
 
 | Report | Result |
 |---|---|
-| `geometry-checks.json` | 12 printable parts, each one valid solid, watertight STL |
+| `geometry-checks.json` | 17 printable parts, each one valid solid, watertight STL |
 | `assembly-checks.json`, `mount-checks.json` | 0 mm³ plastic overlap across all part pairs, both front variants and P1M |
 | `carrier-clearances.json` | 0 carrier-solid collisions. 0 collisions between plastic and the modeled screws, module, cooler or GMSL. 8 intended insert interferences |
 | `shell-clearances.json` | open-shell intrusion check |
@@ -188,6 +207,26 @@ listed under `steps:` in that file in order with `.venv/bin/python`.
 `docs/cad-agent-report.html` is the standalone report.
 
 `cad/parameters.json` is the parameter authority.
+
+## Design history
+
+Rev 0.5 redesigned the Rev 0.4 shell. The reference data, PCB registration and check pipeline carried over unchanged; Rev 0.4 sources, previews and reports are in `archive/rev04/`.
+
+### What changed from Rev 0.4, and why
+
+
+| Rev 0.4 problem | Rev 0.5 fix |
+|---|---|
+| Plugs could not fully mate. The 6 mm panels put receptacle faces 7–7.6 mm behind the exterior, so overmolds had to enter the windows. The USB-C slot was 5.7 mm tall, against a typical 6.5–8 mm overmold. | The plates are 3 mm thick, with inner faces unchanged (0.37 mm front / 0.25 mm rear to the nearest part). Receptacles now sit 3.3–5 mm behind the exterior. Windows for USB-A, USB-C and HDMI are sized to overmold envelopes. |
+| The cooler (most of the mass) hung only from the PCB. | **Cooler tie-down.** Four printed columns (D14, D7.14 pad-sized landing) sit under the 92 × 79 cooler holes. M3 × 35 flat-head screws enter from **below the floor**, seat on a 90° countersink raised inside each column, pass the carrier and module, and thread 8 threads (4 mm) into the female standoffs between the AGX module and the heatsink. Low floor ribs tie the columns to the board posts. |
+| The roof was 67% open, but its 25 × 29 mm cells let a finger reach the fan. | 216 hexagonal cells, 10 mm across flats, 6 mm deep. A 12 mm test finger cannot pass. Each cell has a 0.6 × 1.0 mm inlet chamfer on the fan side (11.2 mm across flats at the underside) so the cooler's exhaust enters a tapered mouth instead of a sharp edge. Cooler-to-roof gap grows from 11.2 to 15.2 mm. |
+| The cap overhung the base by 6.4 mm, and hatch rails protruded 11 mm. The footprint was 218.8 × 205.8 mm. | Flush R8 shell, **206 × 181 × 112 mm**, with a V reveal at the split. The J17 hatch is a flush door in the wall plane. |
+| Two diagonal M6 side screws held the cover. | Four M3 × 16 screws go in from the top, into inserts in the wall columns. They stay reachable when the base is bolted to a wall or robot. |
+| Base tabs spanned 253 mm in Y, leaving a 1.5 mm margin on the P1S. | Tabs are 8 mm thick, with gussets and slots on a 154 × 211 pattern. The base-plus-tabs print is 206 × 233 mm, leaving an 11.5 mm margin. |
+| Large grouped windows had no legends. | One rounded window per connector group, with a 0.6 × 45° lead-in. Debossed legends: AUDIO, GMSL, 1G, 10G, DC IN, I/O, HDMI, USB, USB-C. |
+| No access to the reset and force-recovery buttons. | Two Ø1.6 pin holes in the rear plate with inner guide sleeves, over the right-angle switches between the USB-C ports and the right-hand corner. REC is nearest the USB/IO headers, RST nearest the far board edge, each labelled. |
+| No antenna provision. | Four RP-SMA bulkhead holes in the fixed base side walls: WIFI 1/2 left, CELL 1/2 right, with 2.5 mm spot-faced walls. |
+| Vents only on the left side; pointed slots. | Stadium slots on one 9 mm rhythm across the lid, base, hatch and plates. The plate vents (Z46–66) line up with the cooler fin exits. |
 
 ## License
 
