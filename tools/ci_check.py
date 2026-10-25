@@ -27,17 +27,16 @@ def main():
     package = re.search(r'^\s*package:\s*\n\s*name:\s*(\S+)', (R / 'cad-agent.yaml').read_text(), re.M)[1]
     manifest = json.loads((R / f'exports/{package}-manifest.json').read_text())
     parts = list(json.loads((R / 'exports/geometry-checks.json').read_text()))
-    tracked = [k for k in manifest if k == 'cad/parameters.json' or re.fullmatch(r'exports/[\w.-]+\.(stl|3mf|step)', k)]
+    # Only the printable parts: the manifest also lists assemblies with vendor geometry, which are not in the repo.
+    tracked = ['cad/parameters.json'] + [f'exports/{p}.{ext}' for p in parts for ext in ('stl', '3mf', 'step')]
     for k in tracked:
         p = R / k
-        if not p.exists():
-            fails.append(f'{k}: listed in the manifest but missing')
+        if k not in manifest:
+            fails.append(f'{k}: not in the manifest')
+        elif not p.exists():
+            fails.append(f'{k}: missing')
         elif hashlib.sha256(p.read_bytes()).hexdigest() != manifest[k]:
             fails.append(f'{k}: differs from the last pipeline run; rebuild with cad-agent all')
-    for p in parts:
-        for ext in ('stl', '3mf', 'step'):
-            if f'exports/{p}.{ext}' not in manifest:
-                fails.append(f'exports/{p}.{ext}: not in the manifest')
     print(f'manifest: {len(tracked)} files checked')
 
     val = json.loads((R / 'exports/review-validation.json').read_text())
