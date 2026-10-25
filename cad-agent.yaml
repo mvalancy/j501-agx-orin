@@ -20,6 +20,7 @@ cad:
     - {name: check-sheet,       run: tools/check_sheet.py}
     - {name: detailed-assembly, run: tools/detailed_assembly.py, log: detailed-assembly.log}
     - {name: render,            run: tools/render.py,           log: render.log}
+    - {name: assembly-steps,    run: tools/render_steps.py,     needs: [build]}
     - {name: validate,          run: tools/validate_review.py}
   part_ids: {base: P1, base_mount: P1M, cover: P2, front_gmsl: P3, front_no_gmsl: P4, rear_io: P5,
              mount_fit_template: P9, side_hatch: P10, m3_insert_coupon: P11, rail_coupon: P12,
@@ -38,6 +39,6 @@ cad:
                  open_shell_pass, mount_checks_pass, storage_checks_pass, assembly_paths_pass, nominal_P1S_bounds_pass]
   package:
     name: j501-agx-rev06-fit-check
-    include: [README.md, requirements.txt, cad/parameters.json, "docs/*", "exports/*.stl", "exports/*.3mf",
+    include: [README.md, ASSEMBLY.md, "docs/assembly/*", requirements.txt, cad/parameters.json, "docs/*", "exports/*.stl", "exports/*.3mf",
               "exports/*.step", "exports/*.json", references/sources.json]
-  html_pages: [preview/index.html, README.md, docs/engineering-review.html]
+  html_pages: [preview/index.html, README.md, ASSEMBLY.md, docs/engineering-review.html]

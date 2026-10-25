@@ -26,7 +26,7 @@ flowchart LR
 
 **You need:** a [Seeed reServer Industrial J501 carrier](https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html), a Jetson AGX Orin module, and a cooler. The optional [GMSL extension board](https://www.seeedstudio.com/reServer-Industrial-J501-GMSL-extension-board-p-5949.html) is supported. The reference cooler is Seeed's [heatsink with fan for the J501](https://www.seeedstudio.com/Aluminum-heatsink-with-Fan-for-Jetson-AGX-Orin-p-5970.html). Port details are on the [Seeed wiki](https://wiki.seeedstudio.com/j501_carrier_board_interfaces_usage/); everything else is at [seeedstudio.com](https://www.seeedstudio.com/).
 
-**Contents:** [Printed parts](#printed-parts) · [Hardware to buy](#hardware-to-buy) · [Assembly](#assembly) · [Design notes](#design-notes) · [Reproduce](#reproduce)
+**Contents:** [Printed parts](#printed-parts) · [Hardware to buy](#hardware-to-buy) · [Assembly guide](ASSEMBLY.md) · [Design notes](#design-notes) · [Reproduce](#reproduce)
 
 ## Bill of materials
 
@@ -91,35 +91,24 @@ Filament is not specified yet, so fits, heat resistance and insert retention are
 | 6-32 UNC × 3/16 in pan head | 4–6 per 3.5 in drive | Drive to tray |
 | M3 × 4 button head | 4 per 2.5 in drive | Drive to tray |
 | M3 × 5 button head, M3 × 6 button head, M3 nut | 4 of each per clipped SSD | P19 clips |
-| M3 × 8 socket head | 4 | P17 to the bottom tray |
+| M3 × 6 button head | 4 | Close the bottom tray (without P17) |
+| M3 × 12 socket head | 4 | P17 to the bottom tray (instead of the M3 × 6) |
 | SATA data cable, straight plug, slim or foldable, 300–450 mm | 1 per drive | Board to drive |
 | JST PH 2.0 4-pin to SATA power lead | 1 per 2.5 in drive | Board 5 V to the drive. Check the pinout first |
 | 12 V supply for a 3.5 in drive: Ø8 mm panel DC jack and 12 V-to-SATA adapter | 1 per 3.5 in drive | The board only supplies 5 V to drives |
 
 ## Assembly
 
-1. **Print the test parts first** (P9, P11–P14) in the filament you will use. Pick the insert pilot that holds best, and check the M3 × 35 head seats on P14.
-2. **Test-fit the board.** Set the bare carrier face up on P9. Every support should touch its pad and nothing else. Check the cooler holes against your cooler.
-3. **Fit the heat-set inserts** before any electronics go in: four into the board supports and four into the tops of the lid columns.
-4. **Install the board.**
-   - With drive trays: first fit any Mini PCIe or M.2 cards under the board. Then plug the SATA data and power leads straight up into the board's underside connectors (J21–J24) and feed them down through the floor opening as you lower the board.
-   - Without drive trays: press P18 into the floor opening from below.
-   - Fasten the board with four M3 × 10 button heads.
-5. **Fit the module and cooler**, then tie the cooler down. Replace each of the cooler's four screws with an M3 × 35 flat head driven up from under the floor. It passes through the column, the board and the module, and threads 4 mm (8 threads) into the standoffs between the module and the heatsink. Tighten gently; the columns are printed.
-6. **GMSL board** (if fitted): use its supplied supports and screws.
-7. **Antennas:** push each RP-SMA pigtail through its wall hole from the inside, then fit the lock washer and nut outside. Route the leads around the board edge to the radios.
-8. **Slide in** the front plate, rear plate and side hatch from above.
-9. **Fit the lid** and four M3 × 16 screws from the top.
+**Illustrated step-by-step guide: [ASSEMBLY.md](ASSEMBLY.md).** Each step has a picture with the new parts in orange.
 
-**Drive trays** (turn the closed enclosure over onto its lid and build the stack up from its floor):
+[![Step 3: heat-set inserts](docs/assembly/03-inserts.png)](ASSEMBLY.md#3-heat-set-the-inserts)
 
-1. Fit four M3 × 10 inserts into the base column feet from below.
-2. Screw the drives into each tray from underneath.
-3. Run the leads down the chimney and along the left-hand gutter to the drives. Use the board's front SATA connector for a 3.5 in drive.
-4. Fix each tray to the part above with four standoffs through its ledges.
-5. Finish with rubber feet on the bottom tray, or P17 and four M3 × 8 screws for a wall or robot mount.
-
-**Service:** press the reset (RST) and recovery (REC) buttons with a pin through the labelled holes in the rear plate. For anything else, remove the four lid screws and lift the lid; the plates and hatch then lift out. The nano-SIM is behind the front plate.
+1. Print the test parts (P9, P11–P14) and test-fit the bare board on P9.
+2. Heat-set 8 × M3 inserts: 4 board supports, 4 lid columns.
+3. Fit the board (4 × M3 × 10). Without drive trays, plug the floor opening with P18.
+4. Fit the module and cooler, then tie the cooler down with 4 × M3 × 35 flat heads from below.
+5. Fit the antennas, slide in the plates and hatch, and fit the lid (4 × M3 × 16).
+6. Drive trays (optional): inserts in the base feet, drives into the trays, cables down the chimney, then hang each tray on standoffs.
 
 ## Design notes
 

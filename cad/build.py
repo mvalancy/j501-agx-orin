@@ -506,7 +506,7 @@ def placed_clip(x,y,rot,z):
 
 @lru_cache(maxsize=None)
 def storage_mount_plate():
-    # Wall/robot mounting under a storage stack: same tabs and slot pattern as P1M; M3 x 10 screws pass the plate and
+    # Wall/robot mounting under a storage stack: same tabs and slot pattern as P1M; M3 x 12 screws pass the plate and
     # the lowest tray's ledge into that tray's standoffs.
     t=e['mount_ear_thickness'];rim=18.0
     plate=outer_block(0,t,e['base_bottom_chamfer'],e['split_chamfer'])

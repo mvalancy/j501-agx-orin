@@ -727,7 +727,7 @@
     "foot_counterbore": 2.0,
     "interface_note": "Standoffs hang from the part above: the male end passes up through that part's bottom ledge into its standoff (or the base insert); the hex bears on the ledge in a 2 mm counterbore and the female end rests on this tray's ledge. Every standoff is turned while fully exposed; build the stack upside down on the lid.",
     "closing_screw": "M3 x 6 ISO 7380 button head",
-    "plate_screw": "M3 x 10 ISO 4762 socket head",
+    "plate_screw": "M3 x 12 ISO 4762 socket head",
     "ssd_clip": {
       "length": 10.0,
       "wall": 3.0,

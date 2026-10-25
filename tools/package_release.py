@@ -2,7 +2,7 @@
 
     python tools/package_release.py      # writes exports/j501-agx-<rev>-print.zip
 
-The instructions are the README's bill of materials and assembly sections, with file links pointing into the zip.
+The instructions are the README's bill of materials plus ASSEMBLY.md and its step pictures, with links pointing into the zip.
 """
 from pathlib import Path
 import json, re, zipfile
@@ -18,13 +18,19 @@ RENDERS = {'assembled': 'Assembled', 'exploded': 'Exploded view', 'open': 'Lid o
            'drive-bays': 'Drive bays', 'cable-routing': 'SATA cable routing'}
 
 readme = (R / 'README.md').read_text()
-body = readme[readme.index('## Bill of materials'):readme.index('## Design notes')]
+body = readme[readme.index('## Bill of materials'):readme.index('## Assembly')]
+steps = sorted((R / 'docs/assembly').glob('*.png'))
+assembly = (R / 'ASSEMBLY.md').read_text().replace('](README.md#bill-of-materials)', '](#bill-of-materials)')
+assembly = assembly.replace('](docs/assembly/', '](assembly/').replace('](preview/', '](renders/')
+assembly = re.sub(r'^(#+) ', r'#\1 ', assembly, flags=re.M)  # nest every heading under the package title
 body = re.sub(r'\[([\w.]+)\.3mf\]\(exports/\1\.3mf\)', lambda m: f'[{m[1]}.stl](stl/{m[1]}.stl)', body)
 body = body.replace('Every printed part has a [3MF](exports/) (opens in Bambu Studio), STL and STEP file in [`exports/`](exports/). '
                     'The full BOM with dimensions is [docs/BOM.csv](docs/BOM.csv).',
                     'Every printed part is in `stl/`, in millimetres. The full BOM with dimensions is `BOM.csv`. '
                     '3MF and STEP files are in the GitHub repository.')
-assert '](exports/' not in body and '](docs/' not in body, 'unconverted repo link in the instructions'
+for k in re.findall(r'\]\(renders/([\w-]+)\.png\)', assembly):
+    RENDERS.setdefault(k, k.replace('-', ' ').capitalize())
+assert '](exports/' not in body + assembly and '](docs/' not in body + assembly and '](preview/' not in assembly, 'unconverted repo link'
 gallery = '\n\n'.join(f'**{t}**\n\n![{t}](renders/{k}.png)' for k, t in RENDERS.items())
 doc = f'''# J501 AGX Orin Enclosure, Rev {rev}: print package
 
@@ -40,6 +46,8 @@ a Jetson AGX Orin module and a cooler. More at https://www.seeedstudio.com/
 ![Assembled](renders/assembled.png)
 
 {body.rstrip()}
+
+{assembly.rstrip()}
 
 ## Renders
 
@@ -57,7 +65,9 @@ with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as z:
         z.write(R / 'exports' / f'{p}.stl', f'{name}/stl/{p}.stl')
     for k in RENDERS:
         z.write(R / 'preview' / f'{k}.png', f'{name}/renders/{k}.png')
-print(f'Wrote {out.relative_to(R)}: {len(parts)} STL, {len(RENDERS)} renders, {out.stat().st_size / 1e6:.1f} MB')
+    for s in steps:
+        z.write(s, f'{name}/assembly/{s.name}')
+print(f'Wrote {out.relative_to(R)}: {len(parts)} STL, {len(steps)} step pictures, {len(RENDERS)} renders, {out.stat().st_size / 1e6:.1f} MB')
 
 # Release notes for the GitHub release. It stays a pre-release until a printed unit has been fit-checked.
 tested = json.loads((R / 'exports/review-validation.json').read_text()).get('physical_fit_verified') is True
@@ -68,8 +78,9 @@ status = ('**Status: fit-checked.** A printed unit has been assembled on the rea
 
 **Download `{name}.zip`.** It contains:
 - `stl/`: all {len(parts)} printable parts, in millimetres
-- `INSTRUCTIONS.md`: which parts to print, hardware to buy, and assembly steps
+- `INSTRUCTIONS.md`: which parts to print, hardware to buy, and illustrated assembly steps
 - `BOM.csv`: full bill of materials with dimensions
+- `assembly/`: a picture for every assembly step
 - `renders/`: {len(RENDERS)} views of the assembly, drive trays, tie-down and service access
 
 {status}

@@ -435,6 +435,11 @@
           "message": "all local links resolve"
         },
         {
+          "name": "ASSEMBLY.md",
+          "status": "pass",
+          "message": "all local links resolve"
+        },
+        {
           "name": "docs/engineering-review.html",
           "status": "pass",
           "message": "all local links resolve"
@@ -445,10 +450,10 @@
   "header_meta": {
     "project": "j501-agx",
     "revision": "rev 0.6-storage-modules",
-    "generated": "2026-10-25 03:40 UTC"
+    "generated": "2026-10-25 16:36 UTC"
   },
   "footer_meta": {
-    "checks": "43 pass / 0 fail / 0 skip",
+    "checks": "44 pass / 0 fail / 0 skip",
     "physical_fit": "physical fit NOT verified (CAD only)",
     "slicer": "slicer not run"
   },

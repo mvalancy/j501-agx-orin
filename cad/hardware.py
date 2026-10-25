@@ -184,7 +184,7 @@ def storage_hardware(kinds,plate=False,ssd7=False):
     for x,y in S['standoff_centers']:
         if plate:
             t=b.e['mount_ear_thickness']
-            items.append(('H14 plate M3 x 10 socket head',orient(screw(3,10,5.5,3,2.5),'zm').translate((x,y,zb-t+4)),COL['steel']))
+            items.append(('H14 plate M3 x 12 socket head',orient(screw(3,12,5.5,3,2.5),'zm').translate((x,y,zb-t+4)),COL['steel']))
         else:
             items.append(('H15 closing M3 x 6 button head',orient(screw(3,6,5.7,1.65,2.0),'zm').translate((x,y,zb+cb)),COL['steel']))
     return items
