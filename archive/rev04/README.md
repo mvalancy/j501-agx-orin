@@ -1,3 +1,5 @@
+[J501 AGX Orin](../../README.md) / [archive](../) / **rev04**
+
 # Rev 0.4: open ribbed lid
 
 An open ribbed lid, a rounded shell and larger mounting tabs held with M6 inserts. Superseded by Rev 0.6, which has a flush shell, a hex
@@ -18,3 +20,10 @@ roof, cooler tie-down columns and drive trays. The current parts are in [`export
 | `assembly_paths.py`, `check_*.py`, `design_metrics.py`, `render.py`, `write_docs.py` | The Rev 0.4 versions of the [`tools/`](../../tools/) scripts |
 | [`exports/`](exports/) | Rev 0.4 check results, the insert coupon and the Rev 0.3 and 0.4 review zips |
 | [`preview/`](preview/) | All the Rev 0.4 renders |
+
+## Folders
+
+| Folder | What is in it |
+|---|---|
+| [`exports/`](exports/) | Rev 0.4 check results and review packages |
+| [`preview/`](preview/) | Rev 0.4 renders |

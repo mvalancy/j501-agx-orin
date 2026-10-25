@@ -1,3 +1,5 @@
+[J501 AGX Orin](../README.md) / **references**
+
 # References
 
 Vendor models, datasheets and schematics the design is measured from, plus the measurements taken from them.
@@ -49,3 +51,9 @@ one with its original URL and sha256. To download them and rebuild the caches th
 | S14 | `seeed-oshw-tree.json` | [api.github.com](https://api.github.com/repos/Seeed-Studio/OSHW-Jetson-Series/git/trees/main?recursive=1) |
 | S15 | `interfaces.html` | [wiki.seeedstudio.com](https://wiki.seeedstudio.com/j501_carrier_board_interfaces_usage/) |
 | S16 | `foxconn-QJ3119C-WFB1-4F.pdf` | [static.chipdip.ru](https://static.chipdip.ru/lib/340/DOC042340960.pdf) |
+
+## Folders
+
+| Folder | What is in it |
+|---|---|
+| [`hardware/`](hardware/) | Carrier connector meshes |

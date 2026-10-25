@@ -28,7 +28,7 @@ flowchart LR
 
 **You need:** a [Seeed reServer Industrial J501 carrier](https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html), a Jetson AGX Orin module, and a cooler. The optional [GMSL extension board](https://www.seeedstudio.com/reServer-Industrial-J501-GMSL-extension-board-p-5949.html) is supported. The reference cooler is Seeed's [heatsink with fan for the J501](https://www.seeedstudio.com/Aluminum-heatsink-with-Fan-for-Jetson-AGX-Orin-p-5970.html). Port details are on the [Seeed wiki](https://wiki.seeedstudio.com/j501_carrier_board_interfaces_usage/); everything else is at [seeedstudio.com](https://www.seeedstudio.com/).
 
-**Contents:** [Printed parts](#printed-parts) · [Hardware to buy](#hardware-to-buy) · [Assembly guide](ASSEMBLY.md) · [Design notes](#design-notes) · [Reproduce](#reproduce)
+**Contents:** [Printed parts](#printed-parts) · [Hardware to buy](#hardware-to-buy) · [Assembly guide](ASSEMBLY.md) · [Design notes](#design-notes) · [Reproduce](#reproduce) · [Project folders](#project-folders)
 
 ## Bill of materials
 
@@ -240,6 +240,25 @@ listed under `steps:` in that file in order with `.venv/bin/python`.
 3. Tag and push: `git tag rev0.7 && git push origin rev0.7`. CI builds the print zip (STLs, instructions, renders) and publishes the release.
 
 Releases stay marked pre-release until `physical_fit_verified` is true in `exports/review-validation.json`. Every push also leaves the print zip as a downloadable CI artifact for 30 days.
+
+## Project folders
+
+Every folder has a README with pictures, linked back up to this page.
+
+<!-- FOLDERS: written by tools/write_readmes.py -->
+
+| Folder | What is in it |
+|---|---|
+| [`exports/`](exports/) | Print files: every part with a picture, size, 3D view and downloads |
+| [`docs/`](docs/) | BOM, check sheets, measurement and review tables |
+| [`preview/`](preview/) | Every render of the design |
+| [`cad/`](cad/) | CadQuery source and the parameter file |
+| [`tools/`](tools/) | Check, render, documentation and release scripts |
+| [`references/`](references/) | Vendor sources and the measurements taken from them |
+| [`archive/`](archive/) | Earlier revisions |
+| [`.github/workflows/`](.github/workflows/) | CI: checks the print files and publishes releases |
+
+<!-- /FOLDERS -->
 
 ## License
 

@@ -6,16 +6,18 @@ exports/README.md is the print index: every part with its picture, size and 3MF 
     python tools/write_readmes.py
 """
 from pathlib import Path
-import json, re
+import json, os, re
 
 R = Path(__file__).resolve().parents[1]
 REV = json.loads((R / 'cad/parameters.json').read_text())['revision'].split('-')[0]
 RELEASE = f'https://github.com/mvalancy/j501-agx-orin/releases/tag/rev{REV}'
 
 
+PAGES = {}  # folder -> README text; written by link_pages() once every page is known
+
+
 def w(rel, text):
-    (R / rel).write_text(text.lstrip('\n'))
-    print('wrote', rel)
+    PAGES[str(Path(rel).parent)] = text.lstrip('\n')
 
 
 def grid(items, cols=3):
@@ -504,8 +506,72 @@ The CAD build needs vendor models (one behind a login), so CI cannot rebuild the
 3. Every STL is one watertight body that fits a 256 mm bed.
 4. Every local link and image in the README files and ASSEMBLY.md resolves.
 
-It also reruns [`tools/write_readmes.py`](../../tools/write_readmes.py) and fails if any folder README changed.
+It also reruns [`tools/write_readmes.py`](../../tools/write_readmes.py) and fails if any README changed.
 It then builds the print zip with [`tools/package_release.py`](../../tools/package_release.py) and keeps it as a download for 30 days.
 On a `rev*` tag it also publishes a [GitHub release](https://github.com/mvalancy/j501-agx-orin/releases). See
 [Making a release](../../README.md#making-a-release).
 ''')
+
+# ---------------------------------------------------------------- hierarchy
+# Every README gets a breadcrumb up to the main README and a table of the folders below it; the main README gets the
+# top level between the FOLDERS markers. A folder's parent is its nearest ancestor with a README.
+NAMES = {'.': 'J501 AGX Orin', '.github/workflows': '.github/workflows'}
+DESC = {
+    'exports': 'Print files: every part with a picture, size, 3D view and downloads',
+    'docs': 'BOM, check sheets, measurement and review tables',
+    'docs/assembly': 'Step pictures for ASSEMBLY.md',
+    'preview': 'Every render of the design',
+    'cad': 'CadQuery source and the parameter file',
+    'tools': 'Check, render, documentation and release scripts',
+    'references': 'Vendor sources and the measurements taken from them',
+    'references/hardware': 'Carrier connector meshes',
+    'archive': 'Earlier revisions',
+    'archive/rev02': 'Rev 0.2, first fit-check build',
+    'archive/rev02/exports': 'Rev 0.2 print files',
+    'archive/rev02/preview': 'Rev 0.2 renders',
+    'archive/rev03': 'Rev 0.3, print review',
+    'archive/rev04': 'Rev 0.4, open ribbed lid',
+    'archive/rev04/exports': 'Rev 0.4 check results and review packages',
+    'archive/rev04/preview': 'Rev 0.4 renders',
+    '.github/workflows': 'CI: checks the print files and publishes releases',
+}
+ORDER = ['exports', 'docs', 'preview', 'cad', 'tools', 'references', 'archive', '.github/workflows']
+assert set(DESC) == set(PAGES), f'folders without a description, or descriptions without a page: {set(DESC) ^ set(PAGES)}'
+
+
+def parent(d):
+    for a in Path(d).parents:
+        if str(a) in PAGES or str(a) == '.':
+            return str(a)
+
+
+def rel(src, dst):
+    return os.path.relpath(dst, src)
+
+
+def children(d):
+    kids = [k for k in PAGES if parent(k) == d]
+    return sorted(kids, key=lambda k: (ORDER.index(k) if k in ORDER else len(ORDER), k))
+
+
+def folder_table(d):
+    rows = ''.join(f'| [`{Path(k).relative_to(d) if d != "." else k}/`]({rel(d, k)}/) | {DESC[k]} |\n' for k in children(d))
+    return f'| Folder | What is in it |\n|---|---|\n{rows}'
+
+
+for d, text in PAGES.items():
+    chain = [d]
+    while chain[-1] != '.':
+        chain.append(parent(chain[-1]))
+    crumbs = [f'[{NAMES.get(a, Path(a).name)}]({rel(d, a)}/{"README.md" if a == "." else ""})' for a in reversed(chain[1:])]
+    head = ' / '.join(crumbs + [f'**{NAMES.get(d, Path(d).name)}**']) + '\n\n'
+    tail = f'\n## Folders\n\n{folder_table(d)}' if children(d) else ''
+    (R / d / 'README.md').write_text(head + text + tail)
+    print('wrote', f'{d}/README.md')
+
+readme = (R / 'README.md').read_text()
+start, end = '<!-- FOLDERS: written by tools/write_readmes.py -->\n', '<!-- /FOLDERS -->\n'
+assert start in readme and end in readme, 'README.md needs the FOLDERS markers'
+i, j = readme.index(start) + len(start), readme.index(end)
+(R / 'README.md').write_text(readme[:i] + '\n' + folder_table('.') + '\n' + readme[j:])
+print('wrote README.md (project folders)')

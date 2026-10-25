@@ -1,3 +1,5 @@
+[J501 AGX Orin](../../README.md) / [archive](../) / **rev02**
+
 # Rev 0.2: first fit-check build
 
 The first fit-check version. Mounting ears (P6) and desktop feet (P7) were separate printed parts, and the board sat on metal M3 spacers.
@@ -17,3 +19,10 @@ Superseded; the current parts are in [`exports/`](../../exports/).
 | [`build.py`](build.py), [`hardware.py`](hardware.py), [`render.py`](render.py) | Rev 0.2 source |
 | [`exports/`](exports/) | The ear and foot print files |
 | [`preview/`](preview/) | Renders of the parts that changed |
+
+## Folders
+
+| Folder | What is in it |
+|---|---|
+| [`exports/`](exports/) | Rev 0.2 print files |
+| [`preview/`](preview/) | Rev 0.2 renders |

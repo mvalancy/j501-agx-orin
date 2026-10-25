@@ -1,3 +1,5 @@
+[J501 AGX Orin](../../README.md) / **.github/workflows**
+
 # CI
 
 [`ci.yml`](ci.yml) runs on every push and pull request, and on `rev*` tags.
@@ -10,7 +12,7 @@ The CAD build needs vendor models (one behind a login), so CI cannot rebuild the
 3. Every STL is one watertight body that fits a 256 mm bed.
 4. Every local link and image in the README files and ASSEMBLY.md resolves.
 
-It also reruns [`tools/write_readmes.py`](../../tools/write_readmes.py) and fails if any folder README changed.
+It also reruns [`tools/write_readmes.py`](../../tools/write_readmes.py) and fails if any README changed.
 It then builds the print zip with [`tools/package_release.py`](../../tools/package_release.py) and keeps it as a download for 30 days.
 On a `rev*` tag it also publishes a [GitHub release](https://github.com/mvalancy/j501-agx-orin/releases). See
 [Making a release](../../README.md#making-a-release).

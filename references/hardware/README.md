@@ -1,3 +1,5 @@
+[J501 AGX Orin](../../README.md) / [references](../) / **hardware**
+
 # Connector meshes
 
 Meshes of the carrier board's connectors, cut out of the vendor board model by [`tools/export_hardware.py`](../../tools/export_hardware.py).

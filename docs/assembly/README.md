@@ -1,3 +1,5 @@
+[J501 AGX Orin](../../README.md) / [docs](../) / **assembly**
+
 # Assembly step pictures
 
 The pictures for [ASSEMBLY.md](../../ASSEMBLY.md), drawn by [`tools/render_steps.py`](../../tools/render_steps.py). In each one the parts
