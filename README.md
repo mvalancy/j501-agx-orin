@@ -175,7 +175,7 @@ python -m venv .venv
 .venv/bin/python tools/fetch_references.py   # NVIDIA module model needs a developer login; the script prints where
 ```
 
-The project runs on the `cad-agent` toolkit, configured by `cad-agent.yaml`. Without the toolkit, run the scripts
+The project runs on the [`cad-agent`](https://github.com/Valpatel/cad-agent) toolkit, configured by `cad-agent.yaml`. Without the toolkit, run the scripts
 listed under `steps:` in that file in order with `.venv/bin/python`.
 
 ```bash
@@ -188,3 +188,8 @@ listed under `steps:` in that file in order with `.venv/bin/python`.
 `docs/cad-agent-report.html` is the standalone report.
 
 `cad/parameters.json` is the parameter authority.
+
+## License
+
+MIT (see `LICENSE`) for the enclosure design, source and generated files in this repository. Vendor files fetched
+by `tools/fetch_references.py` stay under their owners' terms and are not covered.
