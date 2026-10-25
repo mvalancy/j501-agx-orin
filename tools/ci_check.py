@@ -7,13 +7,13 @@ committed exports are the ones the local pipeline built and checked:
    (the package manifest named in cad-agent.yaml, exports/<package>-manifest.json). A mismatch means a part or parameter changed without a rebuild.
 2. The last pipeline run passed every design check (exports/review-validation.json).
 3. Every STL loads as a single watertight mesh that fits the printer bed.
-4. Every local link in README.md and ASSEMBLY.md resolves.
+4. Every local link in ASSEMBLY.md and every README.md resolves.
 5. With --tag, the tag matches the revision in cad/parameters.json.
 
     python tools/ci_check.py [--tag rev0.6]
 """
 from pathlib import Path
-import argparse, hashlib, json, re, sys
+import argparse, hashlib, json, re, subprocess, sys
 
 R = Path(__file__).resolve().parents[1]
 BED = 256.0
@@ -58,12 +58,13 @@ def main():
             fails.append(f'{p}.stl: {ext.round(1).tolist()} exceeds the {BED:.0f} mm bed')
     print(f'stl: {len(parts)} parts loaded')
 
-    for page in ('README.md', 'ASSEMBLY.md'):
+    pages = ['ASSEMBLY.md'] + [p for p in subprocess.run(['git', 'ls-files', '*README.md'], cwd=R, capture_output=True, text=True, check=True).stdout.split()]
+    for page in pages:
         for link in re.findall(r'\]\(([^)\s]+)\)|(?:src|href)="([^"]+)"', (R / page).read_text()):
-            link = (link[0] or link[1]).split('#')[0]
-            if link and not re.match(r'[a-z]+:', link) and not (R / link).exists():
+            link = re.split('[#?]', link[0] or link[1])[0]
+            if link and not re.match(r'[a-z]+:', link) and not ((R / page).parent / link).exists():
                 fails.append(f'{page}: broken link {link}')
-    print('readme and assembly links: checked')
+    print(f'readme and assembly links: {len(pages)} pages checked')
 
     if a.tag:
         rev = 'rev' + json.loads((R / 'cad/parameters.json').read_text())['revision'].split('-')[0]

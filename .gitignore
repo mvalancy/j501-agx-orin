@@ -7,6 +7,8 @@ __pycache__/
 references/**
 !references/
 !references/sources.json
+!references/README.md
+!references/hardware/README.md
 !references/extra-source-urls.json
 !references/seeed-oshw-tree.json
 !references/measurements.log

@@ -21,6 +21,7 @@ cad:
     - {name: detailed-assembly, run: tools/detailed_assembly.py, log: detailed-assembly.log}
     - {name: render,            run: tools/render.py,           log: render.log}
     - {name: assembly-steps,    run: tools/render_steps.py,     needs: [build]}
+    - {name: readmes,           run: tools/write_readmes.py,    needs: [print-review]}
     - {name: validate,          run: tools/validate_review.py}
   part_ids: {base: P1, base_mount: P1M, cover: P2, front_gmsl: P3, front_no_gmsl: P4, rear_io: P5,
              mount_fit_template: P9, side_hatch: P10, m3_insert_coupon: P11, rail_coupon: P12,

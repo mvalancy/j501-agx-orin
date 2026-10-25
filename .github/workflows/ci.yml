@@ -1,6 +1,6 @@
 # CI for the print files. The CAD build needs vendor models (one behind a login), so it runs locally
 # (cad-agent all); CI checks that the committed exports match that run, then packages them.
-#   push / pull request: tools/ci_check.py, then build the print zip as a downloadable artifact
+#   push / pull request: tools/ci_check.py, check the folder READMEs match tools/write_readmes.py, then build the print zip as a downloadable artifact
 #   tag revX.Y:          the same, then publish a GitHub release with the print zip
 # Actions are pinned to commit SHAs and Python packages to hashes, so an upstream change cannot alter a run.
 name: CI
@@ -29,6 +29,8 @@ jobs:
         env:
           TAG: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || '' }}
         run: .venv/bin/python tools/ci_check.py ${TAG:+--tag "$TAG"}
+      - name: Check the folder READMEs are current
+        run: .venv/bin/python tools/write_readmes.py && git diff --exit-code -- '*README.md'
       - name: Build the print package
         run: .venv/bin/python tools/package_release.py
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
