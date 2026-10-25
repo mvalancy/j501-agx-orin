@@ -36,7 +36,7 @@ flowchart TB
 
 > Not affiliated with or endorsed by Seeed Studio or NVIDIA. Product names belong to their owners.
 
-**Contents:** [Parts](#parts) · [Assembly](#assembly) · [Storage](#storage-expansion-and-the-underside-slots) · [Port windows](#port-windows) · [Checks](#checks-exports) · [Reproduce](#reproduce) · [Design history](#design-history)
+**Contents:** [Parts](#parts) · [Assembly](#assembly) · [Storage](#storage-expansion-and-the-underside-slots) · [Port windows](#port-windows) · [Checks](#checks-exports) · [Reproduce](#reproduce)
 
 **Review material:** `python tools/serve_preview.py` serves the local review site (URL in `preview/server-url.txt`). The engineering tables are in [docs/engineering-review.html](docs/engineering-review.html); the dimensioned paper review is [docs/check-sheet.pdf](docs/check-sheet.pdf).
 
@@ -149,7 +149,7 @@ All of this still needs checking against your actual cables.
 
 ## Geometry provenance
 
-This section is carried over from Rev 0.4 and still applies. [docs/connector-inventory.csv](docs/connector-inventory.csv) is a schematic-derived mechanical inventory, not an official BOM.
+[docs/connector-inventory.csv](docs/connector-inventory.csv) is a schematic-derived mechanical inventory, not an official BOM.
 
 The carrier STEP contains 5176 solids and 158 open shells. Eight mount proxies and four zero-thickness pseudo-solids are handled as recorded in the reports.
 
@@ -207,26 +207,6 @@ listed under `steps:` in that file in order with `.venv/bin/python`.
 `docs/cad-agent-report.html` is the standalone report.
 
 `cad/parameters.json` is the parameter authority.
-
-## Design history
-
-Rev 0.5 redesigned the Rev 0.4 shell. The reference data, PCB registration and check pipeline carried over unchanged; Rev 0.4 sources, previews and reports are in `archive/rev04/`.
-
-### What changed from Rev 0.4, and why
-
-
-| Rev 0.4 problem | Rev 0.5 fix |
-|---|---|
-| Plugs could not fully mate. The 6 mm panels put receptacle faces 7–7.6 mm behind the exterior, so overmolds had to enter the windows. The USB-C slot was 5.7 mm tall, against a typical 6.5–8 mm overmold. | The plates are 3 mm thick, with inner faces unchanged (0.37 mm front / 0.25 mm rear to the nearest part). Receptacles now sit 3.3–5 mm behind the exterior. Windows for USB-A, USB-C and HDMI are sized to overmold envelopes. |
-| The cooler (most of the mass) hung only from the PCB. | **Cooler tie-down.** Four printed columns (D14, D7.14 pad-sized landing) sit under the 92 × 79 cooler holes. M3 × 35 flat-head screws enter from **below the floor**, seat on a 90° countersink raised inside each column, pass the carrier and module, and thread 8 threads (4 mm) into the female standoffs between the AGX module and the heatsink. Low floor ribs tie the columns to the board posts. |
-| The roof was 67% open, but its 25 × 29 mm cells let a finger reach the fan. | 216 hexagonal cells, 10 mm across flats, 6 mm deep. A 12 mm test finger cannot pass. Each cell has a 0.6 × 1.0 mm inlet chamfer on the fan side (11.2 mm across flats at the underside) so the cooler's exhaust enters a tapered mouth instead of a sharp edge. Cooler-to-roof gap grows from 11.2 to 15.2 mm. |
-| The cap overhung the base by 6.4 mm, and hatch rails protruded 11 mm. The footprint was 218.8 × 205.8 mm. | Flush R8 shell, **206 × 181 × 112 mm**, with a V reveal at the split. The J17 hatch is a flush door in the wall plane. |
-| Two diagonal M6 side screws held the cover. | Four M3 × 16 screws go in from the top, into inserts in the wall columns. They stay reachable when the base is bolted to a wall or robot. |
-| Base tabs spanned 253 mm in Y, leaving a 1.5 mm margin on the P1S. | Tabs are 8 mm thick, with gussets and slots on a 154 × 211 pattern. The base-plus-tabs print is 206 × 233 mm, leaving an 11.5 mm margin. |
-| Large grouped windows had no legends. | One rounded window per connector group, with a 0.6 × 45° lead-in. Debossed legends: AUDIO, GMSL, 1G, 10G, DC IN, I/O, HDMI, USB, USB-C. |
-| No access to the reset and force-recovery buttons. | Two Ø1.6 pin holes in the rear plate with inner guide sleeves, over the right-angle switches between the USB-C ports and the right-hand corner. REC is nearest the USB/IO headers, RST nearest the far board edge, each labelled. |
-| No antenna provision. | Four RP-SMA bulkhead holes in the fixed base side walls: WIFI 1/2 left, CELL 1/2 right, with 2.5 mm spot-faced walls. |
-| Vents only on the left side; pointed slots. | Stadium slots on one 9 mm rhythm across the lid, base, hatch and plates. The plate vents (Z46–66) line up with the cooler fin exits. |
 
 ## License
 
