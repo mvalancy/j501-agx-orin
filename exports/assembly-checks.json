@@ -1,0 +1,109 @@
+{
+  "revision": "0.6-storage-modules",
+  "plastic_intersections": [
+    {
+      "parts": [
+        "base_mount",
+        "cover"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base_mount",
+        "front_gmsl"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base_mount",
+        "front_no_gmsl"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base_mount",
+        "rear_io"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base_mount",
+        "side_hatch"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "cover",
+        "front_gmsl"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "cover",
+        "front_no_gmsl"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "cover",
+        "rear_io"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "cover",
+        "side_hatch"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "front_gmsl",
+        "rear_io"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "front_gmsl",
+        "side_hatch"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "front_no_gmsl",
+        "rear_io"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "front_no_gmsl",
+        "side_hatch"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "rear_io",
+        "side_hatch"
+      ],
+      "intersection_mm3": 0.0
+    }
+  ],
+  "underside_clearance_mm": 9.5,
+  "assumed_cooler_top_z": 91.258,
+  "assumed_cooler_to_roof_mm": 14.742,
+  "physical_fit_verified": false,
+  "gmsl_position_verified": false,
+  "cooler_identity_verified": false
+}

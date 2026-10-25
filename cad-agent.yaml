@@ -1,0 +1,43 @@
+# cad-agent project definition (toolkit: Valpatel/cad-agent, docs/toolkit.md). Run from this directory:
+#   .venv/bin/cad-agent all      # build, 3MF, check + report, package
+#   .venv/bin/cad-agent serve    # local preview + Bambu Studio links
+cad:
+  name: j501-agx
+  title: reServer J501 / Jetson AGX Orin enclosure
+  revision_from: cad/parameters.json:revision
+  printer: {name: Bambu Lab P1S, bed_mm: [256, 256, 256]}
+  steps:
+    - {name: build,             run: cad/build.py,              log: build.log}
+    - {name: clearances,        run: tools/check_clearances.py, log: carrier-clearances.log, needs: [build]}
+    - {name: shells,            run: tools/check_shells.py,     log: shell-clearances.log, needs: [build]}
+    - {name: assembly-paths,    run: tools/assembly_paths.py,   log: assembly-paths.log, needs: [build]}
+    - {name: print-review,      run: tools/print_review.py,     needs: [build]}
+    - {name: design-metrics,    run: tools/design_metrics.py,   log: design-metrics.log, needs: [build]}
+    - {name: mounts,            run: tools/check_mounts.py,     needs: [build]}
+    - {name: storage,           run: tools/check_storage.py,    needs: [build]}
+    - {name: cable-diagram,     run: tools/cable_diagram.py,    needs: [build]}
+    - {name: docs,              run: tools/write_docs.py}
+    - {name: check-sheet,       run: tools/check_sheet.py}
+    - {name: detailed-assembly, run: tools/detailed_assembly.py, log: detailed-assembly.log}
+    - {name: render,            run: tools/render.py,           log: render.log}
+    - {name: validate,          run: tools/validate_review.py}
+  part_ids: {base: P1, base_mount: P1M, cover: P2, front_gmsl: P3, front_no_gmsl: P4, rear_io: P5,
+             mount_fit_template: P9, side_hatch: P10, m3_insert_coupon: P11, rail_coupon: P12,
+             rail_key: P13, countersink_coupon: P14, storage_35: P15, storage_25: P16,
+             storage_mount_plate: P17, chimney_cap: P18, ssd_clip: P19}
+  checks:
+    - {id: carrier, title: Carrier and hardware clearances, file: exports/carrier-clearances.json, evidence: [preview/open.png]}
+    - {id: shells,  title: Open-shell clearances,           file: exports/shell-clearances.json}
+    - {id: paths,   title: Plate insertion paths,           file: exports/assembly-paths.json, evidence: [preview/exploded.png]}
+    - {id: mounts,  title: Mounting tabs and driver access, file: exports/mount-checks.json, evidence: [preview/mount-clearance.png]}
+    - {id: storage, title: "Storage trays, cable routes and underside slots", file: exports/storage-checks.json, evidence: [preview/cable-routing.png]}
+    - id: review
+      title: Review validation
+      file: exports/review-validation.json
+      pass_key: [all_parts_single_valid_watertight, plastic_intersections_zero, carrier_and_hardware_pass,
+                 open_shell_pass, mount_checks_pass, storage_checks_pass, assembly_paths_pass, nominal_P1S_bounds_pass]
+  package:
+    name: j501-agx-rev06-fit-check
+    include: [README.md, requirements.txt, cad/parameters.json, "docs/*", "exports/*.stl", "exports/*.3mf",
+              "exports/*.step", "exports/*.json", references/sources.json]
+  html_pages: [preview/index.html, README.md, docs/engineering-review.html]

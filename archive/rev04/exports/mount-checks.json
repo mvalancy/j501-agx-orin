@@ -1,0 +1,128 @@
+{
+  "revision": "0.4-open-lid-rounded-case",
+  "mounted_variant_intersections": [
+    {
+      "parts": [
+        "base_mount",
+        "cover"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base_mount",
+        "front_gmsl"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base_mount",
+        "front_no_gmsl"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base_mount",
+        "rear_io"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base_mount",
+        "side_hatch"
+      ],
+      "intersection_mm3": 0.0
+    }
+  ],
+  "washer_16mm_envelope_full_flat_pad_support_at_slot_endpoints": [
+    {
+      "center": [
+        17.3,
+        -20
+      ],
+      "unsupported_volume_before_intentional_slot_mm3": 0.0
+    },
+    {
+      "center": [
+        20,
+        -20
+      ],
+      "unsupported_volume_before_intentional_slot_mm3": 0.0
+    },
+    {
+      "center": [
+        22.7,
+        -20
+      ],
+      "unsupported_volume_before_intentional_slot_mm3": 0.0
+    },
+    {
+      "center": [
+        17.3,
+        213.0
+      ],
+      "unsupported_volume_before_intentional_slot_mm3": 0.0
+    },
+    {
+      "center": [
+        20,
+        213.0
+      ],
+      "unsupported_volume_before_intentional_slot_mm3": 0.0
+    },
+    {
+      "center": [
+        22.7,
+        213.0
+      ],
+      "unsupported_volume_before_intentional_slot_mm3": 0.0
+    },
+    {
+      "center": [
+        183.3,
+        -20
+      ],
+      "unsupported_volume_before_intentional_slot_mm3": 0.0
+    },
+    {
+      "center": [
+        186,
+        -20
+      ],
+      "unsupported_volume_before_intentional_slot_mm3": 0.0
+    },
+    {
+      "center": [
+        188.7,
+        -20
+      ],
+      "unsupported_volume_before_intentional_slot_mm3": 0.0
+    },
+    {
+      "center": [
+        183.3,
+        213.0
+      ],
+      "unsupported_volume_before_intentional_slot_mm3": 0.0
+    },
+    {
+      "center": [
+        186,
+        213.0
+      ],
+      "unsupported_volume_before_intentional_slot_mm3": 0.0
+    },
+    {
+      "center": [
+        188.7,
+        213.0
+      ],
+      "unsupported_volume_before_intentional_slot_mm3": 0.0
+    }
+  ],
+  "scope": "Flat pad support tested before cutting the intentional mounting slot; does not imply the washer has material under its hole. No load rating. Tool access checks are in design-metrics.json.",
+  "pass": true
+}

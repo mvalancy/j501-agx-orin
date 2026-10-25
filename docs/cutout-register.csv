@@ -1,0 +1,15 @@
+opening,status,bounds,coordinate_frame,purpose
+front.audio,current,"[31.65, 0.08, 48.65, 8.08] r3.99","PCB datum X/Z; add enclosure [15,20]","Legend ""AUDIO"". CON1/CON2 shells 151/152 centres (35.65,4.08),(44.65,4.08); one obround 8 mm tall, Ø6 plug barrel + clearance"
+front.gmsl,current (GMSL plate only),"[51.2, 1.0, 84.8, 18.4] r2.0","PCB datum X/Z; add enclosure [15,20]","Legend ""GMSL"". Two candidate FM4 mini-FAKRA mouths; XY provisional (unchanged from Rev 0.4)"
+front.lan_1g,current,"[89.18, -2.57, 106.53, 15.93] r1.5","PCB datum X/Z; add enclosure [15,20]","Legend ""1G"". J5 solid 4650 face bbox + 0.5"
+front.lan_10g,current,"[109.07, -2.43, 126.97, 15.83] r1.5","PCB datum X/Z; add enclosure [15,20]","Legend ""10G"". J12 solid 4439 face bbox + 0.5"
+front.led,current,"[127.09, 1.18, 132.72, 11.68] r1.0","PCB datum X/Z; add enclosure [15,20]",LED4 solid 4866 + 0.5; bridged to neighbours (gap < min web)
+front.dc_in,current,"[133.79, -2.82, 155.11, 10.48] r1.5","PCB datum X/Z; add enclosure [15,20]","Legend ""DC IN"". J2 solid 2897 face incl. plug screw flanges + 0.5"
+rear.io_terminal,current,"[26.11, -0.52, 66.41, 17.4] r1.5","PCB datum X/Z; add enclosure [15,20]","Legend ""I/O"". J25 solid 4922 face bbox + 0.5"
+rear.hdmi,current,"[68.44, -0.95, 79.94, 20.55] r2.0","PCB datum X/Z; add enclosure [15,20]","Legend ""HDMI"". J8 vertical HDMI centre (74.19,9.8); 11.5 x 21.5 rotated overmold envelope"
+rear.usb_a,current,"[80.55, 1.3, 97.05, 18.9] r2.0","PCB datum X/Z; add enclosure [15,20]","Legend ""USB"". J7 stacked USB-A centres z 5.55/14.65; two 16.5 x 8.5 overmolds"
+rear.usb_a_vertical,current,"[100.25, 0.25, 108.75, 16.75] r2.0","PCB datum X/Z; add enclosure [15,20]",J26 corrected 13.85 mm envelope; 8.5 x 16.5 rotated overmold
+rear.usb_c,current,"[110.76, -5.58, 136.75, 2.89] r3.5","PCB datum X/Z; add enclosure [15,20]","Legend ""USB-C"". J9 (117.26,-1.58) and J10 (130.25,-1.11) mouths; two 13 x 8 overmold envelopes side by side"
+front_sim,no opening,none,front underside,Nano-SIM J18: remove the front plate for card service.
+side_hatch,current,Y76..118; Z12..72 wall notch,enclosure datum,"J17 access door, flush with the wall."
+vents,current,see measurement register,enclosure datum,"Lid, base, hatch and plate vents on one 9 mm rhythm."

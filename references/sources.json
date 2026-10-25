@@ -1,0 +1,114 @@
+[
+  {
+    "file": "RESERVER_AGX_ORIN_CARRIER_BOARD.stp",
+    "url": "https://files.seeedstudio.com/wiki/reComputer-Jetson/J501/RESERVER_AGX_ORIN_CARRIER_BOARD.stp",
+    "retrieved": "2026-10-23",
+    "sha256": "a131fdc60ed76df660e5d491c45af852d28f16e2f0d7f11de0152da4c5f45793",
+    "id": "S01"
+  },
+  {
+    "file": "reServer_Industrial_J501_Carrier_Board_Datasheet.pdf",
+    "url": "https://files.seeedstudio.com/wiki/reComputer-Jetson/J501/reServer_Industrial_J501_Carrier_Board_Datasheet.pdf",
+    "retrieved": "2026-10-23",
+    "sha256": "4c371e9218dd444de306742222e8ab1844ac2de69555e22964d6d4e604c81bec",
+    "id": "S02"
+  },
+  {
+    "file": "323011387Jetson_AGX_Orin_Heatsink_100x87x34mm-datasheet.pdf",
+    "url": "https://files.seeedstudio.com/wiki/reComputer-Jetson/J501/323011387Jetson_AGX_Orin_Heatsink_100x87x34mm-datasheet.pdf",
+    "retrieved": "2026-10-23",
+    "sha256": "528c23e3f9a47c674e66a8359afa9a47ee74142ef147a79b269382708de77ad9",
+    "id": "S03"
+  },
+  {
+    "file": "GMSL2_Adapter_Board_For_J501_v1_SCH.pdf",
+    "url": "https://files.seeedstudio.com/wiki/reComputer-Jetson/J501/GMSL2_Adapter_Board_For_J501_v1_SCH.pdf",
+    "retrieved": "2026-10-23",
+    "sha256": "1c877b7df7ae2f5910f6ee907877365b27d8e286c3ba4a76afaeb70f6ee2432f",
+    "id": "S04"
+  },
+  {
+    "file": "100099421.pdf",
+    "url": "https://files.seeedstudio.com/Bazaar/product_pdf/100099421.pdf",
+    "retrieved": "2026-10-23",
+    "sha256": "c78f48c02f8ebe0552ce0f834e78b78236bda113512101d0a058cdfc8c9b961a",
+    "id": "S05"
+  },
+  {
+    "file": "reComputer_Mini_J501_Fan.pdf",
+    "url": "https://files.seeedstudio.com/products/NVIDIA-Jetson/reComputer_Mini_J501_Fan.pdf",
+    "retrieved": "2026-10-23",
+    "sha256": "cb9673eb7c0f99255f6cbc87a7699b9b96498f4a094e9f4b733692add15467b1",
+    "id": "S06"
+  },
+  {
+    "file": "202003906_reServer_Industrial_J501_Carrier_Board_v1.0_SCH_PDF_20240529.pdf",
+    "url": "https://files.seeedstudio.com/wiki/reComputer-Jetson/J501/202003906_reServer_Industrial_J501_Carrier_Board_v1.0_SCH_PDF_20240529.pdf",
+    "retrieved": "2026-10-23",
+    "sha256": "fabc24e0aed726c6144a9a4642673b0082a443755cb81cc7122a8d211b7ae63a",
+    "id": "S07"
+  },
+  {
+    "file": "samtec-qsh-qth.pdf",
+    "url": "https://suddendocs.samtec.com/catalog_english/qsh.pdf",
+    "retrieved": "2026-10-23",
+    "sha256": "955dc69239833e6447fbec9ecf71df12174a70b640f5ed118e403da854ca0dfd",
+    "id": "S08"
+  },
+  {
+    "file": "Jetson_AGX_Orin_Module_3D_STEP_Model.zip",
+    "url": "https://developer.nvidia.com/downloads/jetson-agx-orin-module-3d-step-modelzip",
+    "retrieved": "2026-10-23",
+    "sha256": "c2e469b0a5b3dacc49fbc80ac719e2f20b7b329ff5f55e5a89f0d3d3463b864b",
+    "id": "S09"
+  },
+  {
+    "file": "FM4-NZRP-PCB-1.stp",
+    "url": "https://s3-us-west-2.amazonaws.com/catsy.582/FM4-NZRP-PCB-1.stp",
+    "retrieved": "2026-10-23",
+    "sha256": "4b54761975415d41d8dabf2ad07f3db8a96173ca4ccb1215b0e358429fbafffc",
+    "id": "S10"
+  },
+  {
+    "file": "FM4-NXRP-PCB-1.pdf",
+    "url": "https://s3-us-west-2.amazonaws.com/catsy.582/FM4-NXRP-PCB-1.pdf",
+    "retrieved": "2026-10-23",
+    "sha256": "91a9da7d50431a80ae5fed9cd478504e3e7d1557776823d75f9e2ceaab89f306",
+    "id": "S11"
+  },
+  {
+    "file": "gmsl_connectoin.png",
+    "url": "https://files.seeedstudio.com/wiki/reComputer-Jetson/J501/gmsl_connectoin.png",
+    "retrieved": "2026-10-23",
+    "sha256": "f4c8c523888411378fbaa6e8bfc696cc25c6ec7b40d912ab391bf6eaf4757ee3",
+    "id": "S12"
+  },
+  {
+    "file": "gmsl.png",
+    "url": "https://files.seeedstudio.com/wiki/reComputer-Jetson/J501/gmsl.png",
+    "retrieved": "2026-10-23",
+    "sha256": "ac8d8e828020ff45bf4827c50729f53780490741a7cb7db6b3a9c9aca5463839",
+    "id": "S13"
+  },
+  {
+    "file": "seeed-oshw-tree.json",
+    "url": "https://api.github.com/repos/Seeed-Studio/OSHW-Jetson-Series/git/trees/main?recursive=1",
+    "retrieved": "2026-10-23",
+    "sha256": "8c3fd29de06655e8f7396bac992c31af2029c20bd382c2866dc50e83ec8f7e49",
+    "id": "S14"
+  },
+  {
+    "file": "interfaces.html",
+    "url": "https://wiki.seeedstudio.com/j501_carrier_board_interfaces_usage/",
+    "retrieved": "2026-10-23",
+    "sha256": "4515754d991563f3d863f2771aaadbb7d4af1a3c4ac1a37098738f39f124048c",
+    "id": "S15"
+  },
+  {
+    "file": "foxconn-QJ3119C-WFB1-4F.pdf",
+    "url": "https://static.chipdip.ru/lib/340/DOC042340960.pdf",
+    "retrieved": "2026-10-23",
+    "sha256": "1dd5da0504c6cebfc951d325f9dd8b9e4b5e3155f3995c8914994f840874b36b",
+    "id": "S16"
+  }
+]

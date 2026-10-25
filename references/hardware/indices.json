@@ -1,0 +1,15 @@
+{
+  "front_power": 2897,
+  "ethernet_10g": 4439,
+  "ethernet_1g": 4650,
+  "rear_terminal": 4922,
+  "rear_tall_connector": 4863,
+  "rear_usb_lower": 5170,
+  "rear_usb_upper": 5171,
+  "rear_connector_flat": 5154,
+  "rear_bottom_port_a": 4819,
+  "rear_bottom_port_b": 5137,
+  "front_bottom_port": 4848,
+  "side_header": 4867,
+  "module_socket": 2149
+}

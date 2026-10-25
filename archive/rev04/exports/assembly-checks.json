@@ -1,0 +1,80 @@
+{
+  "plastic_intersections": [
+    {
+      "parts": [
+        "base",
+        "cover"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base",
+        "front_gmsl"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base",
+        "rear_io"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base",
+        "side_hatch"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "cover",
+        "front_gmsl"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "cover",
+        "rear_io"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "cover",
+        "side_hatch"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "front_gmsl",
+        "rear_io"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "front_gmsl",
+        "side_hatch"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "rear_io",
+        "side_hatch"
+      ],
+      "intersection_mm3": 0.0
+    }
+  ],
+  "underside_clearance_mm": 5.5,
+  "assumed_cooler_top_z": 90.758,
+  "assumed_cooler_to_roof_mm": 11.242000000000004,
+  "physical_fit_verified": false,
+  "gmsl_position_verified": false,
+  "cooler_identity_verified": false
+}

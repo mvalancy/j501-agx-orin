@@ -1,0 +1,8 @@
+{
+  "local_links_missing": [],
+  "geometry_and_reference_interference_pass": true,
+  "nominal_P1S_bounds_pass": true,
+  "print_parts_checked": 12,
+  "physical_fit_verified": false,
+  "slicer_run": false
+}

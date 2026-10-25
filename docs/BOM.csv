@@ -1,0 +1,35 @@
+id,part,quantity,supply,dimensions_or_specification,notes
+P1,base,"1 (desktop, and always with storage trays)",Printed,206x181x72 (+4.5 tongue); R8 corners; cooler columns,Print floor down
+P1M,base_mount,"1 wall/robot without storage, instead of P1",Printed,206x233x76.5 print envelope; four 8 mm tabs,Print floor down; 11.5 mm Y margin on P1S
+P2,cover,1,Printed,206x181x40; hex roof; four counterbores,Print roof down
+P3,front_gmsl,1 if GMSL fitted,Printed,185.5x67.8x3,Print exterior face down
+P4,front_no_gmsl,1 if no GMSL,Printed,185.5x67.8x3,Print exterior face down
+P5,rear_io,1,Printed,185.5x67.8x3,Print exterior face down
+P10,side_hatch,1,Printed,41.6x59.6x4 + V tongues,Print exterior face down
+P9,mount_fit_template,1 (tool),Printed,"Cradle jig, 12 mm tall: same supports, pad-sized landings and underside relief as P1, on a 3 mm frame",Set the bare carrier on it face up; every landing must sit flat on its pad with no component touching. Then check the cooler pattern
+P11,m3_insert_coupon,1 (test),Printed,3.7-4.1 pilots,Pick the pilot that retains the insert
+P12/P13,rail_coupon / rail_key,1 each (test),Printed,3.5 channel / 3.0 key,Must slide without rattle
+P14,countersink_coupon,1 (test),Printed,Floor + column with the raised D7.0 / D7.4 seats,The M3 x 35 head must seat on the cone at Z9.76
+H1,M3 x 10 heat-set insert,8 (4 board + 4 lid),User kit,4.2 body / 3.75 starter,Install before electronics
+H3,M3 x 16 ISO 4762 socket head,4,Purchase,Lid screws,"2.5 mm hex, 40 mm reach"
+H5,M3 x 10 ISO 7380 button head,4,Purchase,Board screws,8.4 mm engagement
+H7,"M3 x 35 flat head, DIN 7991 / ISO 10642, A2",4,Purchase,Up through the floor pocket into the female standoffs between the AGX module and the heatsink,Raised countersink seat at Z9.76 gives exactly 4 mm (8 threads) of engagement; thermal pad does not change it
+H10,RP-SMA female bulkhead pigtail (1/4-36 thread) to U.FL/MHF4 as the radio needs,4 (2 Wi-Fi + 2 cellular),Purchase,D6.6 hole; 2.5 mm local wall; 8 mm nut + lock washer outside,Insert from inside; thread must cover 2.5 mm wall + washer + nut + about 4 mm for the antenna
+P15,storage_35 (3.5 in tray),0-2,Printed,206x181x32; one SFF-8301 drive; 12V IN D8 hole,Print floor down; stack in any order
+P16,storage_25 (2.5 in tray),0-2,Printed,206x181x22; two SFF-8201 drives up to 15 mm,Print floor down
+P17,storage_mount_plate,1 for wall/robot with storage,Printed,206x233x8 frame with P1M tabs,Replaces P1M when trays are fitted
+P18,chimney_cap,1 without storage,Printed,Plugs the base SATA drop opening,Flange flush in the 0.8 mm recess
+H11,M3 x 10 heat-set insert (stacking),4 with storage,User kit,Into the base column feet from below,Same insert as H1
+H12,"M3 male-female hex standoff, 5.5 AF, 6 mm male",4 per tray,Purchase,M3 x 30 for storage_35; M3 x 20 for storage_25,Clamps each tray ledge; female end flush with the tray bottom
+H13a,6-32 UNC x 3/16 in pan head,4-6 per 3.5 in drive,Purchase,SFF-8301 bottom holes (A7 pair + A6 or A13),2.86 mm penetration (spec 2.39-3.56)
+H13b,M3 x 4 ISO 7380 button head,4 per 2.5 in drive,Purchase,SFF-8201 bottom holes,1.7 mm penetration (spec max 2.5). 7 mm drives may lack bottom holes
+H14,M3 x 8 ISO 4762 socket head,4 with P17,Purchase,Plate into the lowest standoffs,4 mm into the female thread
+P19,ssd_clip,4 per 7 mm SSD without bottom holes,Printed,"10 x 11 x 10.5 L-clip, captive M3 nut, slotted foot",Same part on either side (rotate 180 degrees)
+H16,M3 x 6 ISO 7380 button head + M3 hex nut,4 + 4 per clip-mounted SSD,Purchase,Floor screw into the captive nut in each P19 clip,Uses the tray 2.5 in bottom holes
+H17,M3 x 5 ISO 7380 button head,4 per clip-mounted SSD,Purchase,Through the clip wall into the drive side hole,2.0 mm penetration = SFF-8201 max for 7 mm drives
+C1,"SATA data cable, straight plug at the board end, slim round or foldable",1 per drive (2 ports),Purchase,300-450 mm (2-tray stack); bend radius >= 12 mm assumed,"Front SATA connector to the 3.5 in drive, rear to a 2.5 in drive; never crease"
+C2,JST PH 2.0 4-pin to SATA 15-pin power lead,1 per 2.5 in drive,Purchase or make,Board SATA_5V only,Confirm the PH pinout on the board before wiring
+C3,12 V supply for 3.5 in drives: 8 mm panel DC jack + 12 V-to-SATA power adapter (with 5 V regulator),1 per 3.5 in drive,Purchase,Mounts in the storage_35 12V IN hole,Do not feed raw 12-36 V DC-IN to drives unless the supply is 12 V
+-,"Pin tool: SIM eject tool or paper clip, D<=1.2",1,Any,Reaches the reset / recovery switches through the rear plate,No printed part
+-,Rubber bumper D<=12 x 1 recess,4 optional,Purchase,Desktop feet,Pockets at the four corners
+-,M6 mounting screws + D16 washers,4 for P1M,Site-specific,Through 6.6 slots,Length and anchors depend on the surface

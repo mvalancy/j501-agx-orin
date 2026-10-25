@@ -1,0 +1,56 @@
+{
+  "method": "Exact BREP common volume after bounding-box broad phase; excludes mount proxies 5155..5162. Touching land-to-PCB faces allowed. Source connector internals preserved.",
+  "excluded_zero_thickness_source_solids": [
+    4981,
+    4982,
+    4983,
+    4984
+  ],
+  "scope": "Carrier solids plus modeled hardware, module, reference cooler and provisional GMSL envelopes. Open shells checked separately. Cables not modeled.",
+  "pairs_tested": 4902,
+  "collisions": [],
+  "hardware_collisions": [],
+  "intended_insert_interference": [
+    {
+      "item": "H1 lid M3 insert",
+      "part": "base_mount",
+      "intersection_mm3": 17.0267
+    },
+    {
+      "item": "H1 lid M3 insert",
+      "part": "base_mount",
+      "intersection_mm3": 17.0267
+    },
+    {
+      "item": "H1 lid M3 insert",
+      "part": "base_mount",
+      "intersection_mm3": 17.0267
+    },
+    {
+      "item": "H1 lid M3 insert",
+      "part": "base_mount",
+      "intersection_mm3": 17.0267
+    },
+    {
+      "item": "H4 M3 board insert",
+      "part": "base_mount",
+      "intersection_mm3": 17.0076
+    },
+    {
+      "item": "H4 M3 board insert",
+      "part": "base_mount",
+      "intersection_mm3": 17.0076
+    },
+    {
+      "item": "H4 M3 board insert",
+      "part": "base_mount",
+      "intersection_mm3": 17.0076
+    },
+    {
+      "item": "H4 M3 board insert",
+      "part": "base_mount",
+      "intersection_mm3": 17.0076
+    }
+  ],
+  "pass": true
+}

@@ -1,0 +1,184 @@
+{
+  "revision": "0.6-storage-modules",
+  "mounted_variant_intersections": [
+    {
+      "parts": [
+        "base_mount",
+        "cover"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base_mount",
+        "front_gmsl"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base_mount",
+        "front_no_gmsl"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base_mount",
+        "rear_io"
+      ],
+      "intersection_mm3": 0.0
+    },
+    {
+      "parts": [
+        "base_mount",
+        "side_hatch"
+      ],
+      "intersection_mm3": 0.0
+    }
+  ],
+  "washer_16mm_full_support_at_slot_ends": [
+    {
+      "center": [
+        23.3,
+        -9.5
+      ],
+      "unsupported_area_mm2": 0.0
+    },
+    {
+      "center": [
+        26.0,
+        -9.5
+      ],
+      "unsupported_area_mm2": 0.0
+    },
+    {
+      "center": [
+        28.7,
+        -9.5
+      ],
+      "unsupported_area_mm2": 0.0
+    },
+    {
+      "center": [
+        23.3,
+        201.5
+      ],
+      "unsupported_area_mm2": 0.0
+    },
+    {
+      "center": [
+        26.0,
+        201.5
+      ],
+      "unsupported_area_mm2": 0.0
+    },
+    {
+      "center": [
+        28.7,
+        201.5
+      ],
+      "unsupported_area_mm2": 0.0
+    },
+    {
+      "center": [
+        177.3,
+        -9.5
+      ],
+      "unsupported_area_mm2": 0.0
+    },
+    {
+      "center": [
+        180.0,
+        -9.5
+      ],
+      "unsupported_area_mm2": 0.0
+    },
+    {
+      "center": [
+        182.7,
+        -9.5
+      ],
+      "unsupported_area_mm2": 0.0
+    },
+    {
+      "center": [
+        177.3,
+        201.5
+      ],
+      "unsupported_area_mm2": 0.0
+    },
+    {
+      "center": [
+        180.0,
+        201.5
+      ],
+      "unsupported_area_mm2": 0.0
+    },
+    {
+      "center": [
+        182.7,
+        201.5
+      ],
+      "unsupported_area_mm2": 0.0
+    }
+  ],
+  "driver_access": [
+    {
+      "center": [
+        26.0,
+        -9.5
+      ],
+      "tool_diameter": 20.0,
+      "tool_bottom_z": 8.5,
+      "plastic_intersection_mm3": 0.0
+    },
+    {
+      "center": [
+        26.0,
+        201.5
+      ],
+      "tool_diameter": 20.0,
+      "tool_bottom_z": 8.5,
+      "plastic_intersection_mm3": 0.0
+    },
+    {
+      "center": [
+        180.0,
+        -9.5
+      ],
+      "tool_diameter": 20.0,
+      "tool_bottom_z": 8.5,
+      "plastic_intersection_mm3": 0.0
+    },
+    {
+      "center": [
+        180.0,
+        201.5
+      ],
+      "tool_diameter": 20.0,
+      "tool_bottom_z": 8.5,
+      "plastic_intersection_mm3": 0.0
+    }
+  ],
+  "slot_centers": [
+    [
+      26.0,
+      -9.5
+    ],
+    [
+      26.0,
+      201.5
+    ],
+    [
+      180.0,
+      -9.5
+    ],
+    [
+      180.0,
+      201.5
+    ]
+  ],
+  "scope": "Flat tab support tested before cutting the slot; does not imply material under the washer hole. No load rating.",
+  "pass": true
+}

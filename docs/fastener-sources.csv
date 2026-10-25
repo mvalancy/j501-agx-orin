@@ -1,0 +1,5 @@
+id,reference_supplier_part,purchase_geometry,visual_model_difference,source_url,checked_date,availability
+H3,ISO 4762 M3 x 16 socket head cap screw A2,M3 x 16; head 5.5 x 3; hex 2.5,Threads and head edge detail simplified,ISO 4762 generic,2026-10-24,Commodity part; supplier not selected
+H5,Accu SSB-M3-10-A2,M3 x 10 ISO7380-1 button; pitch0.5; head5.7x1.65; hex2,Thread and button dome simplified,https://www.accu.co.uk/socket-button-screws/8103-SSB-M3-10-A2,2026-10-23,Reference geometry only; page exposes conflicting availability fields
+H7,DIN 7991 / ISO 10642 M3 x 35 flat (countersunk) socket screw A2,"M3; head 6.72 max x 1.86; 90 degrees; head face at Z9.76 on a raised seat; 4 mm (8 threads) into the heatsink standoff whose thread starts at the AGX top Z40.76",Thread and socket simplified,DIN 7991 / ISO 10642 generic,2026-10-24,M3 inferred from the module holes (D3.5 / D3.7); check standoff thread depth >= 4.5 mm
+H1/H4,User heat-set insert kit (M3 x 10),See user dimensions in parameters.json,No exact knurl or internal helical thread model,User supplied dimensions 2026-10-23,2026-10-23,User already owns

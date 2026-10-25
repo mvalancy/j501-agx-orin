@@ -1,0 +1,13 @@
+{
+  "method": "Exact BREP common volume after bounding-box broad phase; excludes mount proxies 5155..5162. Touching land-to-PCB faces allowed. Source connector internals preserved.",
+  "excluded_zero_thickness_source_solids": [
+    4981,
+    4982,
+    4983,
+    4984
+  ],
+  "scope": "Carrier solids only; open shells checked separately. Does not validate unconfirmed cooler/GMSL/cables.",
+  "pairs_tested": 57,
+  "collisions": [],
+  "pass": true
+}

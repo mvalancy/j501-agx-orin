@@ -1,0 +1,27 @@
+{
+  "scope": "Rigid front/rear plate vertical translation, using complete carrier Y extent as sufficient nonintersection proof. No installed cables. Actual hardware and tolerances not measured. Rear button sleeves checked separately by a vertical sweep.",
+  "panel_thickness": 3.0,
+  "front_panel_back_y": 11.25,
+  "carrier_min_y": 11.620000000000005,
+  "front_clearance": 0.37,
+  "rear_panel_front_y": 180.75,
+  "carrier_max_y": 180.5,
+  "rear_clearance": 0.25,
+  "candidate_gmsl_front_y": 12.0,
+  "candidate_gmsl_front_clearance": 0.75,
+  "no_thin_snap_arm": true,
+  "panel_retention": "Corner-post channels and the floor sill groove constrain horizontal motion; lid ledges block upward withdrawal. Remove the lid before lifting plates or the J17 hatch.",
+  "pass": true,
+  "rear_button_sleeve_sweep": {
+    "box_pcb_datum": [
+      140.71,
+      163.35,
+      3.38,
+      154.73999999999998,
+      165.75
+    ],
+    "carrier_bboxes_hit": [],
+    "pcb_edge_gap": 0.35,
+    "pass": true
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "revision": "0.4-open-lid-rounded-case",
+  "roof": {
+    "outer_projected_area_mm2": 45015.305,
+    "open_area_mm2": 30326.884,
+    "open_percent": 67.37,
+    "closed_percent": 32.63,
+    "rev03_open_percent": 25.58,
+    "open_area_ratio_to_rev03": 2.633,
+    "cell_count": 42,
+    "rib_width_mm": 2.4,
+    "rib_depth_mm": 10,
+    "rib_min_z": 102,
+    "nominal_cooler_clearance_mm": 11.242,
+    "new_rectangular_rib_I_mm4": 200.0,
+    "rev03_rectangular_rib_I_mm4": [
+      108.0,
+      144.0
+    ],
+    "limits": "I is a section property, not a whole-lid stiffness/load/FEA result. Span, grid joints, material and layer adhesion matter. Open-area ratio is not an airflow prediction."
+  },
+  "mounts": {
+    "layout": "front and rear, integral",
+    "tab_width": 40,
+    "tab_projection": 30,
+    "tab_thickness": 16,
+    "mount_centers": [
+      [
+        20,
+        -20
+      ],
+      [
+        20,
+        213.0
+      ],
+      [
+        186,
+        -20
+      ],
+      [
+        186,
+        213.0
+      ]
+    ],
+    "slot_size": [
+      12,
+      6.6
+    ],
+    "slot_long_axis": "X",
+    "washer_envelope_diameter": 16,
+    "driver_envelope_diameter": 20,
+    "driver_to_cover_plane_clearance_mm": 3.5999999999999996,
+    "nominal_print_bounds": [
+      217,
+      253,
+      72
+    ],
+    "P1S_centered_nominal_Y_margin_each": 1.5,
+    "tool_checks": [
+      {
+        "center": [
+          20,
+          -20
+        ],
+        "tool_diameter": 20,
+        "tool_bottom_z": 24,
+        "plastic_intersection_mm3": 0.0
+      },
+      {
+        "center": [
+          20,
+          213.0
+        ],
+        "tool_diameter": 20,
+        "tool_bottom_z": 24,
+        "plastic_intersection_mm3": 0.0
+      },
+      {
+        "center": [
+          186,
+          -20
+        ],
+        "tool_diameter": 20,
+        "tool_bottom_z": 24,
+        "plastic_intersection_mm3": 0.0
+      },
+      {
+        "center": [
+          186,
+          213.0
+        ],
+        "tool_diameter": 20,
+        "tool_bottom_z": 24,
+        "plastic_intersection_mm3": 0.0
+      }
+    ],
+    "limits": "External screw length/anchor depend on mounting surface. Center on P1S and check machine exclusions; no more than 1.5 mm nominal Y margin before brim."
+  },
+  "fillets": {
+    "base_vertical_corner_R": 3,
+    "lid_vertical_corner_R": 4,
+    "mount_vertical_corner_R": 4,
+    "outer_rim_R": 1.2,
+    "panel_exposed_face_edge_R": 0.6,
+    "grille_internal_corner_R": 1.2,
+    "exceptions": "Keep bed-contact faces, rib crests, rail reference faces, insert seats and 45-degree vent closures dimensionally controlled."
+  }
+}

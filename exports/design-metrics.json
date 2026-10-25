@@ -1,0 +1,157 @@
+{
+  "revision": "0.6-storage-modules",
+  "envelope": {
+    "outer_mm": [
+      206.0,
+      181.0,
+      112.0
+    ],
+    "base_mount_print_mm": [
+      206.0,
+      233.0,
+      76.5
+    ],
+    "lid_print_mm": [
+      206.0,
+      181.0,
+      40.0
+    ],
+    "rev04_outer_mm": [
+      218.8,
+      205.8,
+      112
+    ]
+  },
+  "roof": {
+    "hex_cells": 216,
+    "across_flats_mm": 10.0,
+    "web_mm": 1.8,
+    "depth_mm": 6.0,
+    "open_area_mm2": 18706.1,
+    "open_percent_of_lid_plan": 50.24,
+    "finger_probe_note": "10 mm across flats (11.5 mm across corners) keeps the 12 mm IEC 61032 test finger out of the fan.",
+    "inlet_chamfer": {
+      "flare_per_side_mm": 0.6,
+      "depth_mm": 1.0,
+      "wall_angle_from_cell_axis_deg": 31.0,
+      "fan_side_across_flats_mm": 11.2,
+      "fan_side_web_land_mm": 0.6,
+      "fan_side_open_area_mm2": 23465.0,
+      "full_web_depth_mm": 5.0,
+      "note": "Tapered entry on the fan side reduces the sharp-edge inlet loss; the 10 mm A/F exterior opening still sets the finger limit and the minimum flow area. Not tested in airflow."
+    },
+    "roof_underside_z": 106.0,
+    "nominal_cooler_clearance_mm": 14.742,
+    "rev04": "67.37% open with 25 x 29 mm cells (finger-accessible), 11.242 mm cooler clearance"
+  },
+  "vents": {
+    "lid_side_and_end_slots": 60,
+    "lid_wall_open_mm2": 4594.0,
+    "base_side_slots": 16,
+    "base_and_hatch_open_mm2": 2822.7,
+    "panel_slots_each": 17,
+    "panel_open_mm2_each": 1176.7
+  },
+  "cooler_tiedown": {
+    "screw_length_nominal_mm": 35.0,
+    "agx_top_z": 40.758,
+    "thread_engagement_mm": 4.0,
+    "tim_thickness_mm": 0.5,
+    "pattern_mm": [
+      92,
+      79
+    ],
+    "centers": [
+      [
+        59.0,
+        66.0
+      ],
+      [
+        151.0,
+        66.0
+      ],
+      [
+        59.0,
+        145.0
+      ],
+      [
+        151.0,
+        145.0
+      ]
+    ],
+    "column_diameter": 14.0,
+    "landing_diameter": 7.14,
+    "clearance_hole": 3.4,
+    "countersink_diameter": 7.0,
+    "countersink_angle_deg": 90,
+    "head_seat_z": 9.758,
+    "engagement_check_mm": 4.0,
+    "floor_ribs": [
+      3.0,
+      3.0
+    ],
+    "limits": "M3 inferred from the module holes; standoff thread depth must be >= 4.5 mm. Printed column creep under clamp load not tested."
+  },
+  "lid_fastening": {
+    "screws": "M3 x 16 ISO 4762 socket head",
+    "positions": [
+      [
+        8.8,
+        30.0
+      ],
+      [
+        8.8,
+        162.0
+      ],
+      [
+        197.2,
+        30.0
+      ],
+      [
+        197.2,
+        162.0
+      ]
+    ],
+    "insert": "M3 x 10 heat-set into base columns",
+    "engagement_mm": 10.0
+  },
+  "mounts": {
+    "tab_width": 32.0,
+    "tab_projection": 26.0,
+    "tab_thickness": 8.0,
+    "slot": [
+      12.0,
+      6.6
+    ],
+    "slot_centers": [
+      [
+        26.0,
+        -9.5
+      ],
+      [
+        26.0,
+        201.5
+      ],
+      [
+        180.0,
+        -9.5
+      ],
+      [
+        180.0,
+        201.5
+      ]
+    ],
+    "pattern_mm": [
+      154.0,
+      211.0
+    ],
+    "P1S_centered_Y_margin_each": 11.5
+  },
+  "edges": {
+    "vertical_corner_R": 8.0,
+    "roof_edge_chamfer": 1.5,
+    "split_reveal_chamfer": 0.6,
+    "base_bottom_chamfer": 0.8,
+    "window_lead_in_chamfer": 0.6
+  }
+}

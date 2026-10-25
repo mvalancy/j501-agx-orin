@@ -1,0 +1,134 @@
+{
+  "base": {
+    "print_bounds_mm": [
+      217.0,
+      193.0,
+      72.0
+    ],
+    "within_nominal_P1S_256_cube": true,
+    "downward_surface_area_over_47deg_excluding_bed_mm2": 1.008,
+    "large_face_centers_mm": [],
+    "interpretation": "Screen only; not a slicer. Small chamfers/bores may bridge. Inspect any large downward faces, layer paths, brims and excluded machine regions."
+  },
+  "base_mount": {
+    "print_bounds_mm": [
+      217.0,
+      253.0,
+      72.0
+    ],
+    "within_nominal_P1S_256_cube": true,
+    "downward_surface_area_over_47deg_excluding_bed_mm2": 1.008,
+    "large_face_centers_mm": [],
+    "interpretation": "Screen only; not a slicer. Small chamfers/bores may bridge. Inspect any large downward faces, layer paths, brims and excluded machine regions."
+  },
+  "cover": {
+    "print_bounds_mm": [
+      218.8,
+      205.8,
+      64.0
+    ],
+    "within_nominal_P1S_256_cube": true,
+    "downward_surface_area_over_47deg_excluding_bed_mm2": 0.0,
+    "large_face_centers_mm": [],
+    "interpretation": "Screen only; not a slicer. Small chamfers/bores may bridge. Inspect any large downward faces, layer paths, brims and excluded machine regions."
+  },
+  "front_no_gmsl": {
+    "print_bounds_mm": [
+      185.5,
+      63.8,
+      6.0
+    ],
+    "within_nominal_P1S_256_cube": true,
+    "downward_surface_area_over_47deg_excluding_bed_mm2": 0.0,
+    "large_face_centers_mm": [],
+    "interpretation": "Screen only; not a slicer. Small chamfers/bores may bridge. Inspect any large downward faces, layer paths, brims and excluded machine regions."
+  },
+  "front_gmsl": {
+    "print_bounds_mm": [
+      185.5,
+      63.8,
+      6.0
+    ],
+    "within_nominal_P1S_256_cube": true,
+    "downward_surface_area_over_47deg_excluding_bed_mm2": 0.0,
+    "large_face_centers_mm": [],
+    "interpretation": "Screen only; not a slicer. Small chamfers/bores may bridge. Inspect any large downward faces, layer paths, brims and excluded machine regions."
+  },
+  "rear_io": {
+    "print_bounds_mm": [
+      185.5,
+      63.8,
+      6.0
+    ],
+    "within_nominal_P1S_256_cube": true,
+    "downward_surface_area_over_47deg_excluding_bed_mm2": 0.0,
+    "large_face_centers_mm": [],
+    "interpretation": "Screen only; not a slicer. Small chamfers/bores may bridge. Inspect any large downward faces, layer paths, brims and excluded machine regions."
+  },
+  "insert_coupon": {
+    "print_bounds_mm": [
+      104.0,
+      18.0,
+      20.0
+    ],
+    "within_nominal_P1S_256_cube": true,
+    "downward_surface_area_over_47deg_excluding_bed_mm2": 2.019,
+    "large_face_centers_mm": [],
+    "interpretation": "Screen only; not a slicer. Small chamfers/bores may bridge. Inspect any large downward faces, layer paths, brims and excluded machine regions."
+  },
+  "mount_fit_template": {
+    "print_bounds_mm": [
+      162.0,
+      142.0,
+      3.0
+    ],
+    "within_nominal_P1S_256_cube": true,
+    "downward_surface_area_over_47deg_excluding_bed_mm2": 0.0,
+    "large_face_centers_mm": [],
+    "interpretation": "Screen only; not a slicer. Small chamfers/bores may bridge. Inspect any large downward faces, layer paths, brims and excluded machine regions."
+  },
+  "side_hatch": {
+    "print_bounds_mm": [
+      63.8,
+      49.5,
+      12.0
+    ],
+    "within_nominal_P1S_256_cube": true,
+    "downward_surface_area_over_47deg_excluding_bed_mm2": 0.0,
+    "large_face_centers_mm": [],
+    "interpretation": "Screen only; not a slicer. Small chamfers/bores may bridge. Inspect any large downward faces, layer paths, brims and excluded machine regions."
+  },
+  "m3_insert_coupon": {
+    "print_bounds_mm": [
+      90.0,
+      20.0,
+      14.0
+    ],
+    "within_nominal_P1S_256_cube": true,
+    "downward_surface_area_over_47deg_excluding_bed_mm2": 0.0,
+    "large_face_centers_mm": [],
+    "interpretation": "Screen only; not a slicer. Small chamfers/bores may bridge. Inspect any large downward faces, layer paths, brims and excluded machine regions."
+  },
+  "rail_coupon": {
+    "print_bounds_mm": [
+      20.0,
+      20.0,
+      24.0
+    ],
+    "within_nominal_P1S_256_cube": true,
+    "downward_surface_area_over_47deg_excluding_bed_mm2": 0.0,
+    "large_face_centers_mm": [],
+    "interpretation": "Screen only; not a slicer. Small chamfers/bores may bridge. Inspect any large downward faces, layer paths, brims and excluded machine regions."
+  },
+  "rail_key": {
+    "print_bounds_mm": [
+      10.0,
+      6.0,
+      18.0
+    ],
+    "within_nominal_P1S_256_cube": true,
+    "downward_surface_area_over_47deg_excluding_bed_mm2": 0.0,
+    "large_face_centers_mm": [],
+    "interpretation": "Screen only; not a slicer. Small chamfers/bores may bridge. Inspect any large downward faces, layer paths, brims and excluded machine regions."
+  }
+}

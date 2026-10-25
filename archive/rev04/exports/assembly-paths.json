@@ -1,0 +1,14 @@
+{
+  "scope": "Rigid front/rear panel vertical translation, using complete carrier Y extent as sufficient nonintersection proof. No installed cables. Actual hardware and tolerances not measured.",
+  "front_panel_back_y": 11.25,
+  "carrier_min_y": 11.620000000000005,
+  "front_clearance": 0.37000000000000455,
+  "rear_panel_front_y": 180.75,
+  "carrier_max_y": 180.5,
+  "rear_clearance": 0.25,
+  "candidate_gmsl_front_y": 12.0,
+  "candidate_gmsl_front_clearance": 0.75,
+  "no_thin_snap_arm": true,
+  "panel_retention": "Channels constrain horizontal motion; cover stops block upward withdrawal. Remove cover before lifting panels.",
+  "pass": true
+}

@@ -1,0 +1,206 @@
+{
+  "base": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      206.0,
+      181.0,
+      76.5
+    ],
+    "volume_cm3": 293.04
+  },
+  "base_mount": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      206.0,
+      233.0,
+      76.5
+    ],
+    "volume_cm3": 317.65
+  },
+  "cover": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      206.0,
+      181.0,
+      40.0
+    ],
+    "volume_cm3": 198.35
+  },
+  "front_no_gmsl": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      185.5,
+      67.8,
+      3.0
+    ],
+    "volume_cm3": 30.64
+  },
+  "front_gmsl": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      185.5,
+      67.8,
+      3.0
+    ],
+    "volume_cm3": 28.88
+  },
+  "rear_io": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      185.5,
+      67.8,
+      5.4
+    ],
+    "volume_cm3": 29.26
+  },
+  "side_hatch": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      60.6,
+      43.6,
+      4.0
+    ],
+    "volume_cm3": 8.78
+  },
+  "mount_fit_template": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      171.979,
+      151.978,
+      12.01
+    ],
+    "volume_cm3": 24.18
+  },
+  "m3_insert_coupon": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      90.0,
+      20.0,
+      14.0
+    ],
+    "volume_cm3": 24.54
+  },
+  "countersink_coupon": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      40.0,
+      20.0,
+      15.748
+    ],
+    "volume_cm3": 5.87
+  },
+  "rail_coupon": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      16.0,
+      9.0,
+      24.0
+    ],
+    "volume_cm3": 3.02
+  },
+  "rail_key": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      10.0,
+      3.0,
+      18.0
+    ],
+    "volume_cm3": 0.54
+  },
+  "storage_35": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      206.0,
+      181.0,
+      32.0
+    ],
+    "volume_cm3": 182.48
+  },
+  "storage_25": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      206.0,
+      181.0,
+      22.0
+    ],
+    "volume_cm3": 159.45
+  },
+  "storage_mount_plate": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      206.0,
+      233.0,
+      11.99
+    ],
+    "volume_cm3": 167.43
+  },
+  "chimney_cap": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      16.5,
+      36.9,
+      4.0
+    ],
+    "volume_cm3": 1.81
+  },
+  "ssd_clip": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      10.0,
+      11.0,
+      10.5
+    ],
+    "volume_cm3": 0.52
+  }
+}

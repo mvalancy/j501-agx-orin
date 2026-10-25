@@ -1,0 +1,14 @@
+{
+  "local_links_missing": [],
+  "all_parts_single_valid_watertight": true,
+  "plastic_intersections_zero": true,
+  "carrier_and_hardware_pass": true,
+  "open_shell_pass": true,
+  "mount_checks_pass": true,
+  "storage_checks_pass": true,
+  "assembly_paths_pass": true,
+  "nominal_P1S_bounds_pass": true,
+  "print_parts_checked": 17,
+  "physical_fit_verified": false,
+  "slicer_run": false
+}

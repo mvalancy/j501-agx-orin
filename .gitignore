@@ -1,0 +1,33 @@
+.venv/
+__pycache__/
+*.part
+
+# Vendor references are not redistributed: tools/fetch_references.py downloads them from references/sources.json.
+# Only our own measurements and indices are tracked.
+references/**
+!references/
+!references/sources.json
+!references/extra-source-urls.json
+!references/seeed-oshw-tree.json
+!references/measurements.log
+!references/edge-components.json
+!references/mount-features.json
+!references/open-shells.json
+!references/pcb-circles.json
+!references/pcb-hole-fits.json
+!references/solids.json
+!references/pcb-outline.step
+!references/pcb-outline.stl
+!references/hardware/
+!references/hardware/indices.json
+
+# Exports that contain vendor geometry (carrier board, NVIDIA module), or are rebuilt each run
+exports/assembly_detailed.step*
+exports/assembly_gmsl.step
+exports/gmsl_reference_assembly.step
+exports/module_registered.step
+exports/*.zip
+exports/*.log
+preview/*.log
+preview/server-url.txt
+archive/*/exports/*.log

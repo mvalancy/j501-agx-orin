@@ -1,0 +1,261 @@
+{
+  "revision": "0.4-open-lid-rounded-case",
+  "units": "mm",
+  "pcb": {
+    "width": 176.0,
+    "depth": 163.0,
+    "thickness": 1.578,
+    "origin_in_source_step": [
+      32.199,
+      -510.506,
+      -1.578
+    ],
+    "mount_holes": [
+      [
+        15,
+        16.5
+      ],
+      [
+        165,
+        16.5
+      ],
+      [
+        15,
+        146.5
+      ],
+      [
+        165,
+        146.5
+      ]
+    ],
+    "module_mount_centers": [
+      [
+        44,
+        51
+      ],
+      [
+        136,
+        51
+      ],
+      [
+        44,
+        130
+      ],
+      [
+        136,
+        130
+      ]
+    ],
+    "lowest_component": -6.5
+  },
+  "enclosure": {
+    "pcb_margin": 15.0,
+    "floor": 8,
+    "wall": 6,
+    "base_height": 72,
+    "height": 112,
+    "lid_overlap": 24,
+    "lid_clearance": 0.4,
+    "panel_thickness": 6,
+    "panel_slot_width": 6.5,
+    "panel_side_clearance": 0.25,
+    "panel_top_clearance": 0.2,
+    "m3_clearance": 3.4,
+    "insert_pilot_diameter": 7.5,
+    "insert_pocket_depth": 11.0,
+    "cover_screw_z": 60,
+    "m6_clearance": 6.6,
+    "insert_entry_diameter": 8.2,
+    "insert_entry_depth": 0.6,
+    "cover_insert_length": 10,
+    "board_insert_pilot": 3.9,
+    "board_insert_length": 10,
+    "board_insert_depth": 11,
+    "board_post_diameter": 16,
+    "board_landing_diameter": 7,
+    "board_landing_height": 4.5,
+    "cover_screw_locations": [
+      [
+        0,
+        24
+      ],
+      [
+        206,
+        169
+      ]
+    ],
+    "integral_ear_thickness": 12,
+    "front_panel_y": 5.25,
+    "rear_panel_y": 180.75,
+    "board_support_height": 12.0,
+    "roof_rib_width": 2.4,
+    "roof_rib_depth": 10,
+    "roof_grid_columns": 7,
+    "roof_grid_rows": 6,
+    "roof_field_inset": 4,
+    "roof_opening_corner_radius": 1.2,
+    "outer_corner_radius": 3,
+    "cover_corner_radius": 4,
+    "external_rim_radius": 1.2,
+    "panel_edge_radius": 0.6,
+    "mount_ear_projection": 30,
+    "mount_ear_width": 40,
+    "mount_ear_thickness": 16,
+    "mount_ear_x": [
+      20,
+      186
+    ],
+    "mount_hole_offset": 20,
+    "mount_washer_envelope_diameter": 16,
+    "mount_tool_envelope_diameter": 20
+  },
+  "cooler": {
+    "size": [
+      110.0,
+      100.0,
+      50.0
+    ],
+    "center_in_pcb": [
+      90.0,
+      90.5
+    ],
+    "seat_above_pcb_top": 19.18,
+    "minimum_top_clearance": 10.0,
+    "identity_confirmed": false
+  },
+  "gmsl": {
+    "board_size": [
+      103.0,
+      45.0
+    ],
+    "preview_origin_in_pcb": [
+      20,
+      0.0,
+      17.578
+    ],
+    "preview_height": 15.7,
+    "position_confirmed": false,
+    "stack_between_pcb_surfaces": 16,
+    "candidate_port_left_edges": [
+      52,
+      72
+    ],
+    "candidate_support_centers": [
+      [
+        27,
+        16
+      ],
+      [
+        114,
+        37.2
+      ]
+    ],
+    "candidate_support_thread": "M3 assumed; preserve supplied hardware"
+  },
+  "openings": {
+    "front_audio": [
+      30.65,
+      -0.42,
+      49.65,
+      8.58
+    ],
+    "front_network_power": [
+      88.9,
+      0.5,
+      155.3,
+      16.2
+    ],
+    "front_gmsl": [
+      51.2,
+      1.0,
+      84.8,
+      18.4
+    ],
+    "rear_terminal": [
+      26,
+      -0.1,
+      66.6,
+      17.6
+    ],
+    "rear_hdmi_usb": [
+      70.6,
+      0.3,
+      108.4,
+      18.8
+    ],
+    "rear_usb_c_pair": [
+      112.4,
+      -3.9,
+      135.5,
+      1.8
+    ],
+    "front_audio_gmsl": [
+      30.65,
+      -0.42,
+      84.8,
+      18.4
+    ]
+  },
+  "user_inserts": {
+    "M3": {
+      "tip_diameter": 3.75,
+      "body_diameter": 4.2,
+      "lengths": [
+        4,
+        6,
+        8,
+        10
+      ]
+    },
+    "M4": {
+      "tip_diameter": 5.4,
+      "body_diameter": 6,
+      "lengths": [
+        4,
+        6,
+        8,
+        10
+      ]
+    },
+    "M5": {
+      "tip_diameter": 6.12,
+      "body_diameter": 7,
+      "lengths": [
+        6,
+        8,
+        10
+      ]
+    },
+    "M6": {
+      "tip_diameter": 7.25,
+      "body_diameter": 8,
+      "lengths": [
+        6,
+        8,
+        10
+      ]
+    },
+    "source": "User message, 2026-10-23",
+    "starter_tip_length_approx": 1.0
+  },
+  "printer": {
+    "model": "Bambu Lab P1S",
+    "nominal_build_volume": [
+      256,
+      256,
+      256
+    ],
+    "filament": "not yet specified",
+    "rail_fit_coupon_required": true
+  },
+  "opening_notes": {
+    "front_audio": "CON1/CON2: shared clean opening for adjacent 3.5 mm audio jacks; source shells 151/152 plus plug allowance.",
+    "front_network_power": "J5/J12 RJ45, LED4 and J2 power. Single clean rectangular cluster because closely spaced housings leave weak webs.",
+    "front_gmsl": "Only on GMSL panel. Two mini-FAKRA candidate connector mouths, common rectangular window. XY remains provisional.",
+    "rear_terminal": "J25 20-pin industrial terminal, not ventilation.",
+    "rear_hdmi_usb": "J8 HDMI + J7 dual USB-A + J26 vertical USB-A. Includes restored J7 source shell; J26 source height is a placeholder and corrected footprint envelope is provisional. Rear web is 4 mm minimum. Opening follows mating access; housing flanges sit behind the bezel. Cable overmold fit unconfirmed.",
+    "rear_usb_c_pair": "J9 and J10 genuine underside USB-C ports, grouped in one straight slot. Starts at X112.4 for a 4 mm web; verify metal plug and overmold against this service aperture.",
+    "front_sim": "J18 nano-SIM is internal service access. No opening in either front panel; remove front panel to service. Former slot misidentified as USB-C is removed.",
+    "front_audio_gmsl": "One clean shared window for audio and both mini-FAKRA mouths; avoids thin strips between adjacent connectors. Only GMSL variant."
+  }
+}

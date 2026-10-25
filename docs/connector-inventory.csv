@@ -1,0 +1,33 @@
+reference,part_number_or_description,function,schematic_sheet,model_or_geometry,evidence_status,missing_or_required_check
+J2,YL032-100-002,2-way 5.08 mm power terminal,carrier 7,solid 2897,Schematic identity; carrier body present,"Exact mate, screw access and cable boot model missing"
+J5,LINK-PP LPJG16459BENL,1 GbE RJ45,carrier 11,solid 4650,Schematic identity; source body present,Selected cable boot and latch-release clearance
+J12,LINK-PP LPJK9436BENL,10 GbE RJ45,carrier 10,solid 4439,Schematic identity; source body present,Independent drawing download unsuccessful; exact cable model missing
+CON1/CON2,MTEP43-205AAB-19305,3.5 mm audio output/input,carrier 28,solids 5106..5113 + shells 151/152,Schematic MPN differs from STEP library Cliff FC68125,Source geometry is a library surrogate; verify front mouth and plug barrel
+J18,ST-SIM-SP132,Nano-SIM socket on front underside,carrier 18,solid 4848; STEP product SIM7_4P_13_1X13_5X1_55MM,Corrected identity; not USB-C,No external cutout; remove front panel for card service
+J25 / J2_TB1,YL032-096-020 / YL032-098-020,2x10 3.81 mm industrial terminal and mating plug,carrier 22,solid 4922 / source terminal assembly,Schematic identifies both sides,Mating plug/wires not separately modeled; measure projection and screwdriver access
+J8,Foxconn QJ3119C-WFB1-4F,Vertical HDMI,carrier 20,solid 4863; foxconn-QJ3119C-WFB1-4F.pdf,Source geometry + manufacturer drawing downloaded,Cable overmold unspecified
+J7,Foxconn UAA111C-84161-4H,Dual stacked USB-A,carrier 13,solids 5170..5175 + open shell 157,"Restored full shell 15.67 wide, 19.398 overall Z incl pins",Drawing web-accessible; local download 403. Cable models missing
+J26,USB3.0 A TYPE (generic),Vertical single USB-A,carrier 14,solid 5154 is only 3.81 mm high; footprint says 13.85 mm,Incomplete STEP placeholder identified,Exact MPN/model missing. Bronze-colored 13.85 mm corrected-height envelope added; verify actual mouth and shell
+J9,UBF31-2347-1,USB-C OTG on underside,carrier 15,solid 4819,Schematic + source geometry; ref mapping inferred from footprint,Mating cable and exact MPN vendor model missing
+J10,USB2.0 TYPE C LONG (generic),USB-C debug on underside,carrier 15,solid 5137,Generic schematic identity; source body present,Exact MPN and cable overmold missing
+J17,Header2x10Pin2.54MM,Right-angle control/jumper header beside coin cell,carrier 21,solid 4867,2x10 2.54 mm; source model present,Jumper cap generic; verify pin numbering on hardware before configuring
+J15,4P 1.25 mm generic,5 V fan header,carrier 21,"Full source STEP, not separately indexed",Schematic pitch only; do not infer JST compatibility,"Exact family, mate and user cooler voltage/wiring"
+J20 / J28,Samtec QSH-030-01-L-D-A,CSI/GMSL mezzanine sockets,carrier 29,solids 5114/5115; catalog,Exact schematic part; source lower halves present,Which socket mates to GMSL and upper part exact STEP need confirmation
+Module socket,Molex 2034560003,AGX Orin carrier connector,carrier STEP product name,solid 2149,Exact source name; counterpart 2048430001 in NVIDIA module,"Mated stack from Molex sheet 2, 8 mm; standalone download timed out"
+J14,2E0BC26-F20BE-7H,M.2 Key E,carrier 16,Full source STEP,Schematic MPN; installed board options unknown,"Wi-Fi card, antenna pigtails, bulkheads and fastener models not selected"
+J6,2E0BC26-F85BM-7H,M.2 Key M SSD,carrier 17,Full source STEP,Schematic MPN,Actual SSD/heatsink and retention hardware not selected
+J11,2E0BC21-S85BB-7H,M.2 Key B,carrier 18,Full source STEP,Schematic MPN,"Modem, antenna and cable routing not selected"
+J13,ST-PC-002,Mini PCIe,carrier 19,Full source STEP,Schematic MPN,Optional expansion module not selected
+J19,Header2x7 1.27 mm,Debug/internal,carrier 24,Full source STEP,Generic part,Exact mating harness not selected
+J33,ST-BF-254-025-2*5P,IDC 2x5,carrier 25,Full source STEP,Schematic MPN,Mating ribbon cable not selected
+J21/J24,JSATA-03A125,SATA data,carrier 27,Full source STEP,Schematic MPN,SATA drives and cable bend envelopes not selected; no drive bays in this scope
+J22/J23,PH4P2.0 (generic),SATA power,carrier 27,Full source STEP,Pitch/family designation only,Do not assume generic PH naming proves manufacturer interchangeability
+J31,Header2x5 2.54 mm,Internal debug,carrier 30,Full source STEP,Generic part,No external aperture needed
+GMSL J1,Samtec QTH-030-04-L-D-A,GMSL mezzanine header,GMSL 7,Catalog-based 16 mm mating envelope,Exact schematic part; exact upper STEP not obtained,Local envelope and socket choice provisional; no connector purchase required
+GMSL J2/J3,FAKRA min; candidate Amphenol FM4-NZRP-PCB-1,Two quad mini-FAKRA housings,GMSL 6,Downloaded Amphenol STEP + drawing,Exact candidate geometry; Seeed MPN NOT confirmed,Confirm key/color/manufacturer and camera-side latch/boot/bend envelope
+GMSL J4,Header2x5 2.54 mm,Optional header,GMSL 7,Not modeled; schematic generic,Population and XY unconfirmed,Check actual board; add keepout if populated
+GMSL U1/U5,MAX96724RGTNV,Deserializer ICs,GMSL 4/5,8x8x0.9 package envelopes,Schematic package dimensions; XY photo estimate,Exact package CAD and component XY layout absent
+GMSL L4/L5/L8/L11/L14/L17/L20/L23,SPM0635-151M,150 uH PoC inductors,GMSL 6,6.5x5.6 footprint; assumed 3.5 height,Package footprint from schematic; placement/height provisional,Exact supplier drawing and populated height missing
+GMSL PoC small inductors,AWL3225FP220MTF / PFL1005-561MRW,22 uH and 560 nH filters,GMSL 6,Not individually modeled,Schematic MPNs,Not a complete electrical BOM; no placement file available
+GMSL factory mounting kit,Unspecified supplied copper/brass supports and screws,Retains addon to carrier,Seeed installation photo,Two 16 mm support proxies at candidate CAD centers,Preserve existing parts; M3 depiction assumed,"Measure thread, seat-to-seat length, washer and support OD"
+Large cooler,Reference Seeed SKU100099421,110x100x50 mm cooler/fan,100099421.pdf,Envelope + illustrative fins/fan,User cooler identity not confirmed,"Exact base, retention screws, fan and TIM CAD missing"

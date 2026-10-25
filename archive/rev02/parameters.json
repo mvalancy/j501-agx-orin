@@ -1,0 +1,252 @@
+{
+  "revision": "0.2-fit-check",
+  "units": "mm",
+  "pcb": {
+    "width": 176.0,
+    "depth": 163.0,
+    "thickness": 1.578,
+    "origin_in_source_step": [
+      32.199,
+      -510.506,
+      -1.578
+    ],
+    "mount_holes": [
+      [
+        15,
+        16.5
+      ],
+      [
+        165,
+        16.5
+      ],
+      [
+        15,
+        146.5
+      ],
+      [
+        165,
+        146.5
+      ]
+    ],
+    "module_mount_centers": [
+      [
+        44,
+        51
+      ],
+      [
+        136,
+        51
+      ],
+      [
+        44,
+        130
+      ],
+      [
+        136,
+        130
+      ]
+    ],
+    "lowest_component": -6.5
+  },
+  "enclosure": {
+    "pcb_margin": 15.0,
+    "floor": 8,
+    "standoff": 12.0,
+    "wall": 6,
+    "base_height": 72,
+    "height": 112,
+    "lid_overlap": 24,
+    "lid_clearance": 0.4,
+    "panel_thickness": 6,
+    "panel_slot_width": 6.8,
+    "panel_side_clearance": 0.3,
+    "panel_top_clearance": 0.4,
+    "m3_clearance": 3.4,
+    "m4_clearance": 4.5,
+    "insert_pilot_diameter": 7.5,
+    "insert_pocket_depth": 11.0,
+    "cover_screw_z": 60,
+    "cover_screw_y": [
+      24,
+      169
+    ],
+    "mount_ear_y": [
+      59.0,
+      134.0
+    ],
+    "m6_clearance": 6.6,
+    "insert_entry_diameter": 8.2,
+    "insert_entry_depth": 0.6,
+    "cover_insert_length": 10,
+    "mount_insert_length": 10,
+    "mount_insert_depth": 11,
+    "mount_thickness": 14,
+    "board_insert_pilot": 3.9,
+    "board_insert_length": 10,
+    "board_insert_depth": 11,
+    "board_post_diameter": 16,
+    "board_landing_diameter": 7,
+    "board_landing_height": 4.5,
+    "panel_screw_z": 60,
+    "port_clearance": 0.6
+  },
+  "cooler": {
+    "size": [
+      110.0,
+      100.0,
+      50.0
+    ],
+    "center_in_pcb": [
+      90.0,
+      90.5
+    ],
+    "seat_above_pcb_top": 19.18,
+    "minimum_top_clearance": 10.0,
+    "identity_confirmed": false
+  },
+  "gmsl": {
+    "board_size": [
+      103.0,
+      45.0
+    ],
+    "preview_origin_in_pcb": [
+      20,
+      0.0,
+      17.578
+    ],
+    "preview_height": 15.7,
+    "position_confirmed": false,
+    "stack_between_pcb_surfaces": 16,
+    "candidate_port_left_edges": [
+      52,
+      72
+    ],
+    "candidate_support_centers": [
+      [
+        27,
+        16
+      ],
+      [
+        114,
+        37.2
+      ]
+    ],
+    "candidate_support_thread": "M3 assumed; preserve supplied hardware"
+  },
+  "openings": {
+    "front_audio": [
+      31.916,
+      -1.228,
+      48.388,
+      7.078
+    ],
+    "front_usb_c": [
+      61.823,
+      -1.5458,
+      74.123,
+      0
+    ],
+    "front_eth_1g": [
+      89.676,
+      -2.072,
+      106.026,
+      15.428
+    ],
+    "front_eth_10g": [
+      109.566,
+      -1.932,
+      126.466,
+      15.328
+    ],
+    "front_indicators": [
+      127.594,
+      1.678,
+      132.224,
+      11.178
+    ],
+    "front_power": [
+      134.29,
+      -2.322,
+      154.61,
+      9.978
+    ],
+    "rear_terminal": [
+      26.605,
+      -1.022,
+      65.905,
+      16.8965
+    ],
+    "rear_hdmi": [
+      70.25,
+      -2.142,
+      78.13,
+      18.0091
+    ],
+    "rear_usb_stack": [
+      83.251,
+      3.3256,
+      94.351,
+      16.9256
+    ],
+    "rear_usb_a": [
+      100.943,
+      1.578,
+      108.063,
+      5.388
+    ],
+    "rear_bottom_a": [
+      111.88,
+      -3.16,
+      122.63,
+      0
+    ],
+    "rear_bottom_b": [
+      125.78,
+      -3.205,
+      134.72,
+      0.995
+    ]
+  },
+  "user_inserts": {
+    "M3": {
+      "tip_diameter": 3.75,
+      "body_diameter": 4.2,
+      "lengths": [
+        4,
+        6,
+        8,
+        10
+      ]
+    },
+    "M4": {
+      "tip_diameter": 5.4,
+      "body_diameter": 6,
+      "lengths": [
+        4,
+        6,
+        8,
+        10
+      ]
+    },
+    "M5": {
+      "tip_diameter": 6.12,
+      "body_diameter": 7,
+      "lengths": [
+        6,
+        8,
+        10
+      ]
+    },
+    "M6": {
+      "tip_diameter": 7.25,
+      "body_diameter": 8,
+      "lengths": [
+        6,
+        8,
+        10
+      ]
+    },
+    "source": "User message, 2026-10-23",
+    "starter_tip_length_approx": 1.0
+  }
+}

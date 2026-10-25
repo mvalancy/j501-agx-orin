@@ -1,0 +1,146 @@
+{
+  "base": {
+    "degenerate_tessellation_faces_removed": 4,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      217.0,
+      193.0,
+      72.0
+    ],
+    "volume_cm3": 514.57
+  },
+  "base_mount": {
+    "degenerate_tessellation_faces_removed": 4,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      217.0,
+      253.0,
+      72.0
+    ],
+    "volume_cm3": 589.62
+  },
+  "cover": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      218.8,
+      205.8,
+      64.0
+    ],
+    "volume_cm3": 335.99
+  },
+  "front_no_gmsl": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      185.5,
+      63.8,
+      6.0
+    ],
+    "volume_cm3": 63.67
+  },
+  "front_gmsl": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      185.5,
+      63.8,
+      6.0
+    ],
+    "volume_cm3": 58.58
+  },
+  "rear_io": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      185.5,
+      63.8,
+      6.0
+    ],
+    "volume_cm3": 61.65
+  },
+  "insert_coupon": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      104.0,
+      18.0,
+      20.0
+    ],
+    "volume_cm3": 34.67
+  },
+  "mount_fit_template": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      162.0,
+      142.0,
+      3.0
+    ],
+    "volume_cm3": 10.5
+  },
+  "side_hatch": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      63.8,
+      49.5,
+      12.0
+    ],
+    "volume_cm3": 19.42
+  },
+  "m3_insert_coupon": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      90.0,
+      20.0,
+      14.0
+    ],
+    "volume_cm3": 24.54
+  },
+  "rail_coupon": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      20.0,
+      20.0,
+      24.0
+    ],
+    "volume_cm3": 7.96
+  },
+  "rail_key": {
+    "degenerate_tessellation_faces_removed": 0,
+    "cad_valid": true,
+    "solid_count": 1,
+    "watertight": true,
+    "print_bounds_mm": [
+      10.0,
+      6.0,
+      18.0
+    ],
+    "volume_cm3": 1.08
+  }
+}
