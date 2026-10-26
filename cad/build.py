@@ -9,7 +9,8 @@ import json, math
 from functools import lru_cache
 import cadquery as cq
 ROOT=Path(__file__).resolve().parents[1]
-P=json.loads((ROOT/'cad/parameters.json').read_text())
+from ports import resolve  # port windows come from the mated plug models
+P=resolve(json.loads((ROOT/'cad/parameters.json').read_text()))
 p,e,c=P['pcb'],P['enclosure'],P['cooler']
 M=e['pcb_margin']; W=e['width']; Y0=e['front_y']; Y1=e['rear_y']; D=Y1-Y0
 F=e['floor']; Z=F+e['board_support_height']; T=e['wall']; H=e['height']; BH=e['base_height']
@@ -109,13 +110,18 @@ def support(x,y,broad_d,land_d,land_h,z0=None):
 def board_holes(): return [(M+x,M+y) for x,y in p['mount_holes']]
 def heatsink_holes(): return [(M+x,M+y) for x,y in p['module_mount_centers']]
 
+def insert_seat(x,y,z,sense):
+    # Short oversize seat under the lead-in cone so the insert tip drops in and stands upright before heating.
+    # z is the hole mouth; sense -1 drills downward, +1 upward (inserts fitted from below).
+    return cyl(x,y,z+sense*.59,e['insert_seat_diameter']/2,e['insert_seat_depth']+.01,(0,0,sense))
+
 @lru_cache(maxsize=None)
 def board_posts():
     posts=[]
     for x,y in board_holes():
         post=support(x,y,e['board_post_diameter'],e['board_landing_diameter'],e['board_landing_height'])
         post=subtract(post,[cyl(x,y,Z,e['board_insert_pilot']/2,e['board_insert_depth'],(0,0,-1)),
-                            cone(x,y,Z,2.2,e['board_insert_pilot']/2,.6,(0,0,-1))])
+                            cone(x,y,Z,2.2,e['board_insert_pilot']/2,.6,(0,0,-1)),insert_seat(x,y,Z,-1)])
         posts.append(post)
     return posts
 
@@ -230,13 +236,13 @@ def base(with_ears=False,relief=True):
     body=combine([body]+adds)
     cuts=[]
     for x,y in e['lid_screw_centers']:
-        cuts+=[cyl(x,y,BH+.01,e['lid_insert_pilot']/2,e['lid_insert_depth']+.01,(0,0,-1)),cone(x,y,BH+.01,2.2,e['lid_insert_pilot']/2,.6,(0,0,-1))]
+        cuts+=[cyl(x,y,BH+.01,e['lid_insert_pilot']/2,e['lid_insert_depth']+.01,(0,0,-1)),cone(x,y,BH+.01,2.2,e['lid_insert_pilot']/2,.6,(0,0,-1)),insert_seat(x,y,BH,-1)]
     for x,y in board_holes():
         cuts.append(cyl(x,y,Z,e['board_insert_pilot']/2,e['board_insert_depth'],(0,0,-1)))
     cuts+=heatsink_screw_cuts()+antenna_cuts()+(underside_relief() if relief else [])+[cap_recess()]
     cb=S['foot_counterbore']
     for x,y in S['standoff_centers']:  # storage stacking: hex counterbore + M3 insert from below in each column foot
-        cuts+=[cyl(x,y,-1,S['column_bore']/2,cb+1),cyl(x,y,cb-.01,e['lid_insert_pilot']/2,S['base_insert_depth']+.01),cone(x,y,cb-.01,2.2,e['lid_insert_pilot']/2,.6)]
+        cuts+=[cyl(x,y,-1,S['column_bore']/2,cb+1),cyl(x,y,cb-.01,e['lid_insert_pilot']/2,S['base_insert_depth']+.01),cone(x,y,cb-.01,2.2,e['lid_insert_pilot']/2,.6),insert_seat(x,y,cb,1)]
     d,dep=e['foot_pocket']
     cuts+=[cyl(x,y,-1,d/2,dep+1) for x,y in e['foot_pockets']]
     body=subtract(body,cuts)
@@ -272,7 +278,7 @@ def cover():
     cuts=[box(r0,Y0+3.2,BH-1,r1-r0,D-6.4,rh+1),box(W-r1,Y0+3.2,BH-1,r1-r0,D-6.4,rh+1)]
     hz=e['lid_screw_head_z']
     for x,y in e['lid_screw_centers']:
-        cuts+=[cyl(x,y,hz,e['lid_counterbore_diameter']/2,H-hz+1),cyl(x,y,BH-1,e['m3_clearance']/2,hz-BH+1.01)]
+        cuts+=[cyl(x,y,hz,e['lid_counterbore_diameter']/2,H-hz+1),cyl(x,y,BH-1,e['lid_screw_clearance']/2,hz-BH+1.01)]
     vz0,vz1=e['lid_vent_z']
     for y in vent_positions(*e['side_vent_y']):
         cuts+=[slot('x',-1,T+2,y,vz0,vz1,e['vent_width']),slot('x',W-T-1,T+2,y,vz0,vz1,e['vent_width'])]
@@ -319,6 +325,8 @@ def port_labels(side,gmsl,y_face,front):
         if k=='usb_a':x=M+(x0+108.75)/2  # one legend under the stacked and vertical USB-A ports
         z=Z+z1+4.2 if v.get('label_above') else min(Z+z0-3.6,Z-6.5)
         out.append(label(v['label'],x,z,y_face,front))
+        # Per-pin marks (e.g. polarity) centred above the window over their pin.
+        out+=[label(m['text'],M+m['x'],Z+z1+e['mark_size']/2+1.2,y_face,front,size=e['mark_size']) for m in v.get('marks',[])]
     return out
 
 @lru_cache(maxsize=None)

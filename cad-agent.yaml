@@ -10,6 +10,7 @@ cad:
     - {name: build,             run: cad/build.py,              log: build.log}
     - {name: clearances,        run: tools/check_clearances.py, log: carrier-clearances.log, needs: [build]}
     - {name: shells,            run: tools/check_shells.py,     log: shell-clearances.log, needs: [build]}
+    - {name: ports,             run: tools/check_ports.py,      log: port-checks.log, needs: [build]}
     - {name: assembly-paths,    run: tools/assembly_paths.py,   log: assembly-paths.log, needs: [build]}
     - {name: print-review,      run: tools/print_review.py,     needs: [build]}
     - {name: design-metrics,    run: tools/design_metrics.py,   log: design-metrics.log, needs: [build]}
@@ -31,15 +32,21 @@ cad:
     - {id: carrier, title: Carrier and hardware clearances, file: exports/carrier-clearances.json, evidence: [preview/open.png]}
     - {id: shells,  title: Open-shell clearances,           file: exports/shell-clearances.json}
     - {id: paths,   title: Plate insertion paths,           file: exports/assembly-paths.json, evidence: [preview/exploded.png]}
+    - {id: ports,   title: Mated plug fit at every port,    file: exports/port-checks.json, evidence: [preview/port-fit.png]}
     - {id: mounts,  title: Mounting tabs and driver access, file: exports/mount-checks.json, evidence: [preview/mount-clearance.png]}
     - {id: storage, title: "Storage trays, cable routes and underside slots", file: exports/storage-checks.json, evidence: [preview/cable-routing.png]}
     - id: review
       title: Review validation
       file: exports/review-validation.json
       pass_key: [all_parts_single_valid_watertight, plastic_intersections_zero, carrier_and_hardware_pass,
-                 open_shell_pass, mount_checks_pass, storage_checks_pass, assembly_paths_pass, nominal_P1S_bounds_pass]
+                 open_shell_pass, port_plug_fit_pass, mount_checks_pass, storage_checks_pass, assembly_paths_pass, nominal_P1S_bounds_pass]
   package:
-    name: j501-agx-rev06-fit-check
+    name: j501-agx-rev07-fit-check
     include: [README.md, ASSEMBLY.md, "docs/assembly/*", requirements.txt, cad/parameters.json, "docs/*", "exports/*.stl", "exports/*.3mf",
               "exports/*.step", "exports/*.json", references/sources.json]
   html_pages: [preview/index.html, README.md, ASSEMBLY.md, docs/engineering-review.html]
+  view:
+    colors: {base: "#2f343c", base_mount: "#2f343c", cover: "#3b3f46", front_gmsl: "#8a9099", front_no_gmsl: "#8a9099",
+             rear_io: "#8a9099", side_hatch: "#8a9099", chimney_cap: "#5aa9e6"}
+    hidden: [base_mount, front_gmsl, mount_fit_template, m3_insert_coupon, countersink_coupon, rail_coupon, rail_key,
+             storage_35, storage_25, storage_mount_plate, ssd_clip]

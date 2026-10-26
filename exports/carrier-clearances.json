@@ -14,42 +14,42 @@
     {
       "item": "H1 lid M3 insert",
       "part": "base_mount",
-      "intersection_mm3": 17.0267
+      "intersection_mm3": 16.0808
     },
     {
       "item": "H1 lid M3 insert",
       "part": "base_mount",
-      "intersection_mm3": 17.0267
+      "intersection_mm3": 16.0808
     },
     {
       "item": "H1 lid M3 insert",
       "part": "base_mount",
-      "intersection_mm3": 17.0267
+      "intersection_mm3": 16.0808
     },
     {
       "item": "H1 lid M3 insert",
       "part": "base_mount",
-      "intersection_mm3": 17.0267
+      "intersection_mm3": 16.0808
     },
     {
       "item": "H4 M3 board insert",
       "part": "base_mount",
-      "intersection_mm3": 17.0076
+      "intersection_mm3": 16.0619
     },
     {
       "item": "H4 M3 board insert",
       "part": "base_mount",
-      "intersection_mm3": 17.0076
+      "intersection_mm3": 16.0619
     },
     {
       "item": "H4 M3 board insert",
       "part": "base_mount",
-      "intersection_mm3": 17.0076
+      "intersection_mm3": 16.0619
     },
     {
       "item": "H4 M3 board insert",
       "part": "base_mount",
-      "intersection_mm3": 17.0076
+      "intersection_mm3": 16.0619
     }
   ],
   "pass": true

@@ -2,7 +2,7 @@
 
 # Renders
 
-Every picture of the Rev 0.6 design, rendered from the CAD by [`tools/render.py`](../tools/render.py). Click a picture for full size.
+Every picture of the Rev 0.7 design, rendered from the CAD by [`tools/render.py`](../tools/render.py). Click a picture for full size.
 
 The same renders are on the local review site, which adds STL, 3MF and Bambu Studio download buttons:
 `python tools/serve_preview.py` serves [`index.html`](index.html). The print files themselves are in [`exports/`](../exports/).

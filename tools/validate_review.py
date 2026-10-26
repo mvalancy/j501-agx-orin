@@ -21,7 +21,7 @@ report={'local_links_missing':missing,
  'all_parts_single_valid_watertight':all(v['cad_valid'] and v['solid_count']==1 and v['watertight'] for v in geo.values()),
  'plastic_intersections_zero':all(x['intersection_mm3']<.01 for x in load('assembly-checks.json')['plastic_intersections']),
  'carrier_and_hardware_pass':load('carrier-clearances.json')['pass'],'open_shell_pass':load('shell-clearances.json')['pass'],
- 'mount_checks_pass':load('mount-checks.json')['pass'],'storage_checks_pass':load('storage-checks.json')['pass'],'assembly_paths_pass':load('assembly-paths.json')['pass'],
+ 'mount_checks_pass':load('mount-checks.json')['pass'],'port_plug_fit_pass':load('port-checks.json')['pass'],'storage_checks_pass':load('storage-checks.json')['pass'],'assembly_paths_pass':load('assembly-paths.json')['pass'],
  'nominal_P1S_bounds_pass':all(v['within_nominal_P1S_256_cube'] for v in pr.values()),
  'print_parts_checked':len(parts),'physical_fit_verified':False,'slicer_run':False}
 (E/'review-validation.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))

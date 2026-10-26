@@ -1,5 +1,5 @@
 {
-  "revision": "0.6-storage-modules",
+  "revision": "0.7-port-fit",
   "units": "mm",
   "pcb": {
     "width": 176.0,
@@ -121,7 +121,12 @@
     "lid_screw_head_z": 78.0,
     "lid_counterbore_diameter": 6.4,
     "m3_clearance": 3.4,
+    "lid_screw_clearance": 3.6,
+    "lid_screw_clearance_note": "User print test 2026-10-25: M3 screws did not slide through the 3.4 lid holes; opened to 3.6.",
     "lid_insert_pilot": 3.9,
+    "insert_seat_diameter": 4.05,
+    "insert_seat_depth": 1.0,
+    "insert_seat_note": "User print test 2026-10-25: the insert tip (D3.75) did not sit in the D3.9 pilot before heating. A D4.05 x 1.0 seat below the lead-in lets it stand upright; the D3.9 bore below keeps the melt grip.",
     "lid_insert_depth": 11.0,
     "heatsink_column_diameter": 14.0,
     "heatsink_landing_diameter": 7.14,
@@ -253,6 +258,7 @@
     "min_panel_web": 1.8,
     "label_depth": 0.5,
     "label_size": 3.6,
+    "mark_size": 5.0,
     "mount_ear_x": [
       26.0,
       180.0
@@ -378,15 +384,39 @@
   "ports": {
     "front": {
       "audio": {
-        "box": [
-          31.65,
-          0.08,
-          48.65,
-          8.08
-        ],
-        "r": 3.99,
+        "r": 4.5,
         "label": "AUDIO",
-        "basis": "CON1/CON2 shells 151/152 centres (35.65,4.08),(44.65,4.08); one obround 8 mm tall, Ø6 plug barrel + clearance"
+        "mate": {
+          "face": [
+            32.652,
+            1.578,
+            47.652,
+            7.578
+          ],
+          "face_w": 2.0,
+          "centre_on": "receptacle",
+          "clearance": 0.5,
+          "plugs": [
+            {
+              "family": "trs35",
+              "axis": [
+                35.652,
+                4.578
+              ],
+              "overmold_d": 8.0
+            },
+            {
+              "family": "trs35",
+              "axis": [
+                44.652,
+                4.578
+              ],
+              "overmold_d": 8.0
+            }
+          ],
+          "basis": "CON1/CON2 (MJ2135 library body) nose D6.0 at x 35.652 / 44.652, axis z 4.578, nose face y -2.0. Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded. Plug overmold D8 assumed (slim plugs 5.5-6, common up to 8; the 9 mm jack pitch caps it)."
+        },
+        "basis": "One obround over both jacks, centred on the jack axes; sized for two D8 plug overmolds + 0.5."
       },
       "gmsl": {
         "box": [
@@ -401,110 +431,281 @@
         "basis": "Two candidate FM4 mini-FAKRA mouths; XY provisional (unchanged from Rev 0.4)"
       },
       "lan_1g": {
-        "box": [
-          89.18,
-          -2.57,
-          106.53,
-          15.93
-        ],
         "r": 1.5,
-        "label": "1G",
-        "basis": "J5 solid 4650 face bbox + 0.5"
+        "label": "1GbE",
+        "mate": {
+          "face": [
+            89.876,
+            1.928,
+            105.826,
+            15.428
+          ],
+          "face_w": 2.081,
+          "centre_on": "receptacle",
+          "clearance": 0.5,
+          "plugs": [
+            {
+              "family": "rj45",
+              "cavity": [
+                91.901,
+                4.678,
+                103.801,
+                14.574
+              ],
+              "latch": "up"
+            }
+          ],
+          "basis": "J5 LINK-PP LPJG16459BENL shield face and plug opening (latch up). Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded."
+        },
+        "basis": "Centred on the J5 face; clears the RJ45 plug body and latch lever on insertion + 0.5; face LEDs visible."
       },
       "lan_10g": {
-        "box": [
-          109.07,
-          -2.43,
-          126.97,
-          15.83
-        ],
         "r": 1.5,
-        "label": "10G",
-        "basis": "J12 solid 4439 face bbox + 0.5"
+        "label": "10GbE",
+        "mate": {
+          "face": [
+            109.716,
+            1.828,
+            126.316,
+            15.328
+          ],
+          "face_w": 2.141,
+          "centre_on": "receptacle",
+          "clearance": 0.5,
+          "plugs": [
+            {
+              "family": "rj45",
+              "cavity": [
+                112.091,
+                4.548,
+                123.941,
+                14.431
+              ],
+              "latch": "up"
+            }
+          ],
+          "basis": "J12 LINK-PP LPJK9436BENL shield face and plug opening (latch up). Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded."
+        },
+        "basis": "Centred on the J12 face; clears the RJ45 plug body and latch lever on insertion + 0.5."
       },
       "led": {
         "box": [
-          127.09,
-          1.18,
-          132.72,
-          11.68
+          127.937,
+          2.203,
+          131.882,
+          11.153
         ],
         "r": 1.0,
         "label": "",
-        "basis": "LED4 solid 4866 + 0.5; bridged to neighbours (gap < min web)"
+        "basis": "LED4 light pipes x 128.437..131.382, z 2.703..10.653 at y -1.5 (+0.5); bridged to neighbours when the web is < min_panel_web. Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded."
       },
       "dc_in": {
-        "box": [
-          133.79,
-          -2.82,
-          155.11,
-          10.48
+        "r": 0.5,
+        "label": "DC IN 12-36V",
+        "marks": [
+          {
+            "text": "−",
+            "x": 141.91
+          },
+          {
+            "text": "+",
+            "x": 146.99
+          }
         ],
-        "r": 1.5,
-        "label": "DC IN",
-        "basis": "J2 solid 2897 face incl. plug screw flanges + 0.5"
+        "polarity_basis": "J2 pin 1 = DCJ_IN (12-36 V, through F1), pin 2 = GND (carrier schematic sheet 7). Pins at x 141.91 / 146.99 are identical in the STEP; pin 1 is taken as the pin next to the F1 fuse holder (x 147). INFERRED, verify with a meter before first power-up.",
+        "mate": {
+          "face": [
+            134.29,
+            1.578,
+            154.61,
+            9.978
+          ],
+          "face_w": 2.7,
+          "centre_on": "plug",
+          "clearance": 0.5,
+          "plugs": [
+            {
+              "family": "terminal_plug_flanged",
+              "screws": [
+                [
+                  136.83,
+                  5.328
+                ],
+                [
+                  152.07,
+                  5.328
+                ]
+              ],
+              "positions": 2,
+              "pitch": 5.08,
+              "basis": "Phoenix Contact MSTB 2,5/2-STF-5,08 (1777989) dimensional drawing: 20.17 W x 15 H, 18.2 long incl. 8.3 tongue"
+            }
+          ],
+          "basis": "J2 YL032-100-002 2-pin 5.08 mm horizontal header with screw flanges (GF style); flange screw holes at x 136.83 / 152.07 (15.24 apart, matches the STF plug), z 5.328; face y -2.7. Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded."
+        },
+        "basis": "Sized and centred on the mated screw-flange plug, which is 15 mm tall on an 8.4 mm header and passes through the plate (body 9.9 mm outside the header face). Wire the plug before inserting it: its clamp screws face up."
       }
     },
     "rear": {
       "io_terminal": {
-        "box": [
-          26.11,
-          -0.52,
-          66.41,
-          17.4
-        ],
-        "r": 1.5,
+        "r": 0.5,
         "label": "I/O",
-        "basis": "J25 solid 4922 face bbox + 0.5"
+        "mate": {
+          "face": [
+            26.605,
+            1.578,
+            65.905,
+            16.897
+          ],
+          "face_w": 165.5,
+          "centre_on": "receptacle",
+          "clearance": 0.5,
+          "plugs": [
+            {
+              "family": "face_plug",
+              "outline": [
+                26.605,
+                1.578,
+                65.905,
+                16.897
+              ]
+            }
+          ],
+          "basis": "J25 + J2_TB1 2x10 3.81 mm push-in plug, modelled mated in the carrier STEP (its face shows the wire entries). Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded."
+        },
+        "basis": "Centred on the mated J25 plug face + 0.5."
       },
       "hdmi": {
-        "box": [
-          68.44,
-          -0.95,
-          79.94,
-          20.55
-        ],
         "r": 2.0,
         "label": "HDMI",
-        "basis": "J8 vertical HDMI centre (74.19,9.8); 11.5 x 21.5 rotated overmold envelope"
+        "mate": {
+          "face": [
+            71.515,
+            3.178,
+            76.865,
+            17.978
+          ],
+          "face_w": 164.786,
+          "centre_on": "plug",
+          "clearance": 0.25,
+          "plugs": [
+            {
+              "family": "overmold",
+              "centre": [
+                74.19,
+                10.578
+              ],
+              "width": 11.0,
+              "height": 21.0,
+              "r": 1.75
+            }
+          ],
+          "basis": "J8 Foxconn QJ3119C vertical HDMI face; typical HDMI overmold 21 x 11 rotated (assumed). Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded."
+        },
+        "basis": "Centred on the J8 mouth; 11 x 21 rotated overmold + 0.25."
       },
       "usb_a": {
-        "box": [
-          80.55,
-          1.3,
-          97.05,
-          18.9
-        ],
         "r": 2.0,
         "label": "USB",
-        "basis": "J7 stacked USB-A centres z 5.55/14.65; two 16.5 x 8.5 overmolds"
+        "mate": {
+          "face": [
+            82.251,
+            3.056,
+            95.351,
+            17.276
+          ],
+          "face_w": 165.265,
+          "clearance": 0.25,
+          "plugs": [
+            {
+              "family": "overmold",
+              "centre": [
+                88.8,
+                5.55
+              ],
+              "width": 16.0,
+              "height": 8.0,
+              "r": 1.75
+            },
+            {
+              "family": "overmold",
+              "centre": [
+                88.8,
+                14.65
+              ],
+              "width": 16.0,
+              "height": 8.0,
+              "r": 1.75
+            }
+          ],
+          "basis": "J7 Foxconn UAA111C stacked USB-A, port centres z 5.55 / 14.65; typical 16 x 8 overmolds (assumed). Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded."
+        },
+        "basis": "Two 16 x 8 USB-A overmolds + 0.25."
       },
       "usb_a_vertical": {
-        "box": [
-          100.25,
-          0.25,
-          108.75,
-          16.75
-        ],
         "r": 2.0,
         "label": "",
-        "basis": "J26 corrected 13.85 mm envelope; 8.5 x 16.5 rotated overmold"
+        "mate": {
+          "face_w": 164.698,
+          "clearance": 0.25,
+          "plugs": [
+            {
+              "family": "overmold",
+              "centre": [
+                104.5,
+                8.5
+              ],
+              "width": 8.0,
+              "height": 16.0,
+              "r": 1.75
+            }
+          ],
+          "basis": "J26 STEP is an incomplete 3.8 mm placeholder; footprint says 13.85 mm. Corrected envelope, centre assumed; 8 x 16 rotated overmold."
+        },
+        "basis": "J26 corrected envelope; 8 x 16 rotated overmold + 0.25. Verify on hardware."
       },
       "usb_c": {
-        "box": [
-          110.76,
-          -5.58,
-          136.75,
-          2.89
-        ],
         "r": 3.5,
         "label": "USB-C",
         "label_above": true,
-        "basis": "J9 (117.26,-1.58) and J10 (130.25,-1.11) mouths; two 13 x 8 overmold envelopes side by side"
+        "mate": {
+          "face": [
+            111.88,
+            -3.16,
+            122.63,
+            0.0
+          ],
+          "face_w": 164.53,
+          "clearance": 0.25,
+          "plugs": [
+            {
+              "family": "overmold",
+              "centre": [
+                117.26,
+                -1.58
+              ],
+              "width": 12.5,
+              "height": 7.5,
+              "r": 3.25
+            },
+            {
+              "family": "overmold",
+              "centre": [
+                130.25,
+                -1.11
+              ],
+              "width": 12.5,
+              "height": 7.5,
+              "r": 3.25
+            }
+          ],
+          "basis": "J9 (117.26,-1.58) and J10 (130.25,-1.11) underside USB-C mouths; typical 12.5 x 7.5 overmolds (assumed). Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded."
+        },
+        "basis": "Two USB-C overmolds + 0.25, side by side."
       }
     }
   },
-  "plug_envelopes_note": "Receptacle faces sit 3.25-5.05 mm behind the panel exterior. Plugs whose overmold reaches the receptacle face (USB-A/C, HDMI) therefore enter the window, so those windows are sized to typical overmolds, not to the receptacle.",
+  "plug_envelopes_note": "Every external port window is derived from its mated plug (cadagent.connectors via cad/ports.py), never from a receptacle bounding box: bounding boxes include pins below the board and miss plugs larger than the receptacle. tools/check_ports.py sweeps each plug in along its axis against the printed parts.",
   "underside_envelopes": {
     "frame": "PCB datum [x0,y0,z0,x1,y1,z1]; z below the PCB underside is negative",
     "items": [

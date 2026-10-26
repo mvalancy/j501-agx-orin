@@ -9,7 +9,7 @@
       181.0,
       76.5
     ],
-    "volume_cm3": 293.04
+    "volume_cm3": 293.03
   },
   "base_mount": {
     "degenerate_tessellation_faces_removed": 0,
@@ -21,7 +21,7 @@
       233.0,
       76.5
     ],
-    "volume_cm3": 317.65
+    "volume_cm3": 317.64
   },
   "cover": {
     "degenerate_tessellation_faces_removed": 0,
@@ -33,7 +33,7 @@
       181.0,
       40.0
     ],
-    "volume_cm3": 198.35
+    "volume_cm3": 198.33
   },
   "front_no_gmsl": {
     "degenerate_tessellation_faces_removed": 0,
@@ -45,7 +45,7 @@
       67.8,
       3.0
     ],
-    "volume_cm3": 30.64
+    "volume_cm3": 30.77
   },
   "front_gmsl": {
     "degenerate_tessellation_faces_removed": 0,
@@ -57,7 +57,7 @@
       67.8,
       3.0
     ],
-    "volume_cm3": 28.88
+    "volume_cm3": 29.0
   },
   "rear_io": {
     "degenerate_tessellation_faces_removed": 0,
@@ -69,7 +69,7 @@
       67.8,
       5.4
     ],
-    "volume_cm3": 29.26
+    "volume_cm3": 29.45
   },
   "side_hatch": {
     "degenerate_tessellation_faces_removed": 0,

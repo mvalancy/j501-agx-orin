@@ -1,7 +1,8 @@
 """Generate evidence tables and a linked review page from the working model."""
 from pathlib import Path
-import csv,json,hashlib,html
-R=Path(__file__).resolve().parents[1];D=R/'docs';D.mkdir(exist_ok=True);P=json.loads((R/'cad/parameters.json').read_text())
+import csv,json,hashlib,html,sys
+R=Path(__file__).resolve().parents[1];D=R/'docs';D.mkdir(exist_ok=True);sys.path.insert(0,str(R/'cad'));from ports import resolve
+P=resolve(json.loads((R/'cad/parameters.json').read_text()))
 S=json.loads((R/'references/sources.json').read_text())
 extra={'202003906_reServer_Industrial_J501_Carrier_Board_v1.0_SCH_PDF_20240529.pdf':'https://files.seeedstudio.com/wiki/reComputer-Jetson/J501/202003906_reServer_Industrial_J501_Carrier_Board_v1.0_SCH_PDF_20240529.pdf','samtec-qsh-qth.pdf':'https://suddendocs.samtec.com/catalog_english/qsh.pdf','Jetson_AGX_Orin_Module_3D_STEP_Model.zip':'https://developer.nvidia.com/downloads/jetson-agx-orin-module-3d-step-modelzip','FM4-NZRP-PCB-1.stp':'https://s3-us-west-2.amazonaws.com/catsy.582/FM4-NZRP-PCB-1.stp','FM4-NXRP-PCB-1.pdf':'https://s3-us-west-2.amazonaws.com/catsy.582/FM4-NXRP-PCB-1.pdf','gmsl_connectoin.png':'https://files.seeedstudio.com/wiki/reComputer-Jetson/J501/gmsl_connectoin.png','gmsl.png':'https://files.seeedstudio.com/wiki/reComputer-Jetson/J501/gmsl.png','seeed-oshw-tree.json':'https://api.github.com/repos/Seeed-Studio/OSHW-Jetson-Series/git/trees/main?recursive=1','interfaces.html':'https://wiki.seeedstudio.com/j501_carrier_board_interfaces_usage/'}
 extra.update(json.loads((R/'references/extra-source-urls.json').read_text()))
@@ -88,10 +89,10 @@ write('measurement-register.csv',['id','parameter','value','units','status','sou
 I=[]
 def inv(ref,part,role,sheet,geometry,status,missing):I.append([ref,part,role,sheet,geometry,status,missing])
 for a in [
-('J2','YL032-100-002','2-way 5.08 mm power terminal','carrier 7','solid 2897','Schematic identity; carrier body present','Exact mate, screw access and cable boot model missing'),
-('J5','LINK-PP LPJG16459BENL','1 GbE RJ45','carrier 11','solid 4650','Schematic identity; source body present','Selected cable boot and latch-release clearance'),
-('J12','LINK-PP LPJK9436BENL','10 GbE RJ45','carrier 10','solid 4439','Schematic identity; source body present','Independent drawing download unsuccessful; exact cable model missing'),
-('CON1/CON2','MTEP43-205AAB-19305','3.5 mm audio output/input','carrier 28','solids 5106..5113 + shells 151/152','Schematic MPN differs from STEP library Cliff FC68125','Source geometry is a library surrogate; verify front mouth and plug barrel'),
+('J2','YL032-100-002','2-way 5.08 mm screw-flange power header (pin 1 DCJ_IN 12-36 V via F1, pin 2 GND)','carrier 7','solid 2897; mate Phoenix MSTB 2,5/2-STF-5,08 envelope','Schematic identity; carrier body present; mate from Phoenix 1777989 drawing','Mated plug modelled and swept (port-checks.json). Pin 1 side inferred from F1 placement: verify polarity with a meter'),
+('J5','LINK-PP LPJG16459BENL','1 GbE RJ45','carrier 11','solid 4650','Schematic identity; source body present','RJ45 plug + latch lever modelled and swept (port-checks.json); boot size assumed, check your cables'),
+('J12','LINK-PP LPJK9436BENL','10 GbE RJ45','carrier 10','solid 4439','Schematic identity; source body present','Independent drawing download unsuccessful; RJ45 plug + latch lever modelled and swept (port-checks.json); boot size assumed'),
+('CON1/CON2','MTEP43-205AAB-19305','3.5 mm audio output/input','carrier 28','solids 5106..5113 + shells 151/152','Schematic MPN differs from STEP library Cliff FC68125','Source geometry is a library surrogate; nose axis measured (z 4.578); D8 plug overmold assumed and swept (port-checks.json)'),
 ('J18','ST-SIM-SP132','Nano-SIM socket on front underside','carrier 18','solid 4848; STEP product SIM7_4P_13_1X13_5X1_55MM','Corrected identity; not USB-C','No external cutout; remove front panel for card service'),
 ('J25 / J2_TB1','YL032-096-020 / YL032-098-020','2x10 3.81 mm industrial terminal and mating plug','carrier 22','solid 4922 / source terminal assembly','Schematic identifies both sides','Mating plug/wires not separately modeled; measure projection and screwdriver access'),
 ('J8','Foxconn QJ3119C-WFB1-4F','Vertical HDMI','carrier 20','solid 4863; foxconn-QJ3119C-WFB1-4F.pdf','Source geometry + manufacturer drawing downloaded','Cable overmold unspecified'),

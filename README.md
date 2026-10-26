@@ -3,11 +3,11 @@
 <p align="center">
   A 3D-printable housing for the <a href="https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html">Seeed reServer Industrial J501 carrier board</a>
   with an NVIDIA Jetson AGX Orin module.<br>
-  <b>Rev 0.6 · fit-check prototype</b> · fits a 256 mm printer bed · MIT licensed
+  <b>Rev 0.7 · fit-check prototype</b> · fits a 256 mm printer bed · MIT licensed
 </p>
 
 <p align="center">
-  <img src="preview/assembled.png" alt="Rev 0.6 enclosure, assembled" width="820">
+  <img src="preview/assembled.png" alt="Rev 0.7 enclosure, assembled" width="820">
 </p>
 
 ```mermaid
@@ -20,7 +20,7 @@ flowchart LR
     F -.-> G[Drive trays, optional]
 ```
 
-**Download:** [Rev 0.6 print package](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.6): all STL files, assembly instructions and renders in one zip.
+**Download:** [Rev 0.7 print package](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.7): all STL files, assembly instructions and renders in one zip.
 
 **Browse the parts:** the [print index](exports/README.md) shows every part with a picture, its size, a 3D view and download links. Every folder has a README with pictures.
 
@@ -160,17 +160,41 @@ Stack any mix, in any order:
 
 ### Port windows
 
-The windows are defined in `cad/parameters.json` under `ports`, in the PCB X/Z datum. Each entry records its source solid and sizing basis, and the full list is in [docs/cutout-register.csv](docs/cutout-register.csv).
+Every window is **derived from the mating plug**, placed on the receptacle's measured mating axis
+([`cad/ports.py`](cad/ports.py), using `cadagent.connectors`). None is sized from a receptacle bounding box: a bounding
+box includes pins below the board, which put the windows about 2 mm low. Each port in `cad/parameters.json` has a
+`mate` entry giving:
 
-How the windows are sized:
+- the receptacle face (measured by slicing the board model at its mating face);
+- the plug model and its source.
 
-- **Plug fits fully inside the receptacle face** (RJ45, terminals, audio): the window follows the housing face + 0.5 mm.
-- **Overmold enters the window** (USB-A, USB-C, HDMI): the window follows a typical overmold envelope. These are 16.5 × 8.5 mm (USB-A), 13 × 8 mm (USB-C) and 11.5 × 21.5 mm (HDMI, rotated).
-- **Webs narrower than 1.8 mm** are bridged instead:
-  - Front: 10G, LED4 and DC IN.
-  - Rear: HDMI and USB-A.
+The full list is in [docs/cutout-register.csv](docs/cutout-register.csv).
 
-All of this still needs checking against your actual cables.
+| Port | Mating plug modelled | Window |
+|---|---|---|
+| DC IN | Phoenix MSTB 2,5/2-STF-5,08 screw-flange plug (Phoenix drawing): 20.17 × 15 mm, 9.9 mm outside the header | Centred on the plug |
+| 1GbE, 10GbE | RJ45 plug 11.7 mm wide + latch lever (Panduit/TIA values) | Centred on the jack face, LEDs visible |
+| AUDIO | 3.5 mm plugs with D8 overmolds (assumed) on the jack axes | Centred on the two jacks |
+| USB-A, USB-C, HDMI | Typical overmolds: 16 × 8 / 12.5 × 7.5 / 21 × 11 mm, rounded (assumed) | Centred on the mouths |
+| I/O | The 2 × 10 push-in plug, already mated in the board model | Centred on the plug face |
+
+Front windows have 0.5 mm clearance and rear windows 0.25 mm. Webs narrower than 1.8 mm are bridged.
+[`tools/check_ports.py`](tools/check_ports.py) checks each plug by sweeping it in along its axis against the base,
+cover and plate. The check passes only with zero overlap, the clearance met all round (corner radii included) and no
+plug-to-plug clash. Results are in [exports/port-checks.json](exports/port-checks.json); the evidence image is
+[preview/port-fit.png](preview/port-fit.png).
+
+<p align="center"><img src="preview/port-fit.png" alt="Front and rear plate windows with receptacle faces and mated plug sections" width="760"></p>
+
+**Legends:** "DC IN 12-36V" with − / + over the two pins, "1GbE", "10GbE".
+
+> [!WARNING]
+> The DC polarity marks are **inferred**. The schematic gives J2 pin 1 = DCJ_IN (12-36 V, through fuse F1) and
+> pin 2 = GND. The board model does not show which physical pin is pin 1, so + is placed on the pin next to F1
+> (the right-hand pin, seen from the front). Confirm this with a meter before first power-up. If it is the other way
+> round, swap the two `marks` in `cad/parameters.json`.
+
+Overmold and boot sizes are typical values; check them against your actual cables.
 
 ### Geometry provenance
 

@@ -259,3 +259,10 @@ def storage_cables(kinds,links,ssd7=False):
             bx,by,bz=board;w=(15.5,7.0) if sig=='data' else (10.0,4.5);pl=c['board_plug_length']
             items.append((f'C plug at board: {name}',b.box(bx-w[1]/2,by-w[0]/2,bz-pl,w[1],w[0],pl),(.12,.12,.13)))
     return items
+
+def mated_plugs(side='front'):
+    # Mating plugs in the mated position, from the same envelopes the port check sweeps (cadagent.connectors).
+    import ports as pt
+    from cadagent.connectors import envelope
+    return [(f'Mated plug: {k}',envelope(v['mate'],pt.frame(b.P,side),sweep=False),(.95,.62,.30))
+            for k,v in b.P['ports'][side].items() if 'mate' in v]

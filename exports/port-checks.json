@@ -1,0 +1,766 @@
+{
+  "revision": "0.7-port-fit",
+  "method": "Each plug envelope (cadagent.connectors) is swept from its mated position out to its far end and intersected with the base, cover and plate; the sweep grown by the port clearance must also be clear. Plug dimensions are catalogue or typical values, listed per port with their basis.",
+  "configs": {
+    "front_no_gmsl": {
+      "pass": true,
+      "ports": {
+        "audio": {
+          "window": [
+            31.152,
+            0.078,
+            49.152,
+            9.078
+          ],
+          "clearance_mm": 0.5,
+          "plugs": [
+            {
+              "family": "trs35",
+              "axis": [
+                35.652,
+                4.578
+              ],
+              "overmold_d": 8.0
+            },
+            {
+              "family": "trs35",
+              "axis": [
+                44.652,
+                4.578
+              ],
+              "overmold_d": 8.0
+            }
+          ],
+          "basis": "CON1/CON2 (MJ2135 library body) nose D6.0 at x 35.652 / 44.652, axis z 4.578, nose face y -2.0. Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded. Plug overmold D8 assumed (slim plugs 5.5-6, common up to 8; the 9 mm jack pitch caps it).",
+          "sweep_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_no_gmsl": 0.0
+          },
+          "clearance_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_no_gmsl": 0.0
+          },
+          "plug_section": [
+            31.652,
+            0.578,
+            48.652,
+            8.578
+          ],
+          "margins_mm": {
+            "left": 0.5,
+            "bottom": 0.5,
+            "right": 0.5,
+            "top": 0.5
+          },
+          "min_margin_mm": 0.5,
+          "window_centre_minus_plug_centre_mm": [
+            0.0,
+            0.0
+          ],
+          "window_centre_minus_face_centre_mm": [
+            0.0,
+            -0.0
+          ],
+          "pass": true
+        },
+        "lan_1g": {
+          "window": [
+            89.376,
+            0.782,
+            106.326,
+            16.574
+          ],
+          "clearance_mm": 0.5,
+          "plugs": [
+            {
+              "family": "rj45",
+              "cavity": [
+                91.901,
+                4.678,
+                103.801,
+                14.574
+              ],
+              "latch": "up"
+            }
+          ],
+          "basis": "J5 LINK-PP LPJG16459BENL shield face and plug opening (latch up). Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded.",
+          "sweep_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_no_gmsl": 0.0
+          },
+          "clearance_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_no_gmsl": 0.0
+          },
+          "plug_section": [
+            92.001,
+            4.678,
+            103.701,
+            16.074
+          ],
+          "margins_mm": {
+            "left": 2.625,
+            "bottom": 3.896,
+            "right": 2.625,
+            "top": 0.5
+          },
+          "min_margin_mm": 0.5,
+          "window_centre_minus_plug_centre_mm": [
+            0.0,
+            -1.698
+          ],
+          "window_centre_minus_face_centre_mm": [
+            0.0,
+            0.0
+          ],
+          "pass": true
+        },
+        "lan_10g": {
+          "window": [
+            109.216,
+            0.725,
+            126.816,
+            16.431
+          ],
+          "clearance_mm": 0.5,
+          "plugs": [
+            {
+              "family": "rj45",
+              "cavity": [
+                112.091,
+                4.548,
+                123.941,
+                14.431
+              ],
+              "latch": "up"
+            }
+          ],
+          "basis": "J12 LINK-PP LPJK9436BENL shield face and plug opening (latch up). Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded.",
+          "sweep_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_no_gmsl": 0.0
+          },
+          "clearance_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_no_gmsl": 0.0
+          },
+          "plug_section": [
+            112.166,
+            4.548,
+            123.866,
+            15.931
+          ],
+          "margins_mm": {
+            "left": 2.95,
+            "bottom": 3.823,
+            "right": 2.95,
+            "top": 0.5
+          },
+          "min_margin_mm": 0.5,
+          "window_centre_minus_plug_centre_mm": [
+            0.0,
+            -1.661
+          ],
+          "window_centre_minus_face_centre_mm": [
+            0.0,
+            0.0
+          ],
+          "pass": true
+        },
+        "dc_in": {
+          "window": [
+            133.79,
+            0.928,
+            155.11,
+            16.928
+          ],
+          "clearance_mm": 0.5,
+          "plugs": [
+            {
+              "family": "terminal_plug_flanged",
+              "screws": [
+                [
+                  136.83,
+                  5.328
+                ],
+                [
+                  152.07,
+                  5.328
+                ]
+              ],
+              "positions": 2,
+              "pitch": 5.08,
+              "basis": "Phoenix Contact MSTB 2,5/2-STF-5,08 (1777989) dimensional drawing: 20.17 W x 15 H, 18.2 long incl. 8.3 tongue"
+            }
+          ],
+          "basis": "J2 YL032-100-002 2-pin 5.08 mm horizontal header with screw flanges (GF style); flange screw holes at x 136.83 / 152.07 (15.24 apart, matches the STF plug), z 5.328; face y -2.7. Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded.",
+          "sweep_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_no_gmsl": 0.0
+          },
+          "clearance_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_no_gmsl": 0.0
+          },
+          "plug_section": [
+            134.365,
+            1.428,
+            154.535,
+            16.428
+          ],
+          "margins_mm": {
+            "left": 0.575,
+            "bottom": 0.5,
+            "right": 0.575,
+            "top": 0.5
+          },
+          "min_margin_mm": 0.5,
+          "window_centre_minus_plug_centre_mm": [
+            0.0,
+            0.0
+          ],
+          "window_centre_minus_face_centre_mm": [
+            0.0,
+            3.15
+          ],
+          "pass": true
+        }
+      },
+      "plug_to_plug": []
+    },
+    "front_gmsl": {
+      "pass": true,
+      "ports": {
+        "audio": {
+          "window": [
+            31.152,
+            0.078,
+            49.152,
+            9.078
+          ],
+          "clearance_mm": 0.5,
+          "plugs": [
+            {
+              "family": "trs35",
+              "axis": [
+                35.652,
+                4.578
+              ],
+              "overmold_d": 8.0
+            },
+            {
+              "family": "trs35",
+              "axis": [
+                44.652,
+                4.578
+              ],
+              "overmold_d": 8.0
+            }
+          ],
+          "basis": "CON1/CON2 (MJ2135 library body) nose D6.0 at x 35.652 / 44.652, axis z 4.578, nose face y -2.0. Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded. Plug overmold D8 assumed (slim plugs 5.5-6, common up to 8; the 9 mm jack pitch caps it).",
+          "sweep_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_gmsl": 0.0
+          },
+          "clearance_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_gmsl": 0.0
+          },
+          "plug_section": [
+            31.652,
+            0.578,
+            48.652,
+            8.578
+          ],
+          "margins_mm": {
+            "left": 0.5,
+            "bottom": 0.5,
+            "right": 0.5,
+            "top": 0.5
+          },
+          "min_margin_mm": 0.5,
+          "window_centre_minus_plug_centre_mm": [
+            0.0,
+            0.0
+          ],
+          "window_centre_minus_face_centre_mm": [
+            0.0,
+            -0.0
+          ],
+          "pass": true
+        },
+        "lan_1g": {
+          "window": [
+            89.376,
+            0.782,
+            106.326,
+            16.574
+          ],
+          "clearance_mm": 0.5,
+          "plugs": [
+            {
+              "family": "rj45",
+              "cavity": [
+                91.901,
+                4.678,
+                103.801,
+                14.574
+              ],
+              "latch": "up"
+            }
+          ],
+          "basis": "J5 LINK-PP LPJG16459BENL shield face and plug opening (latch up). Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded.",
+          "sweep_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_gmsl": 0.0
+          },
+          "clearance_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_gmsl": 0.0
+          },
+          "plug_section": [
+            92.001,
+            4.678,
+            103.701,
+            16.074
+          ],
+          "margins_mm": {
+            "left": 2.625,
+            "bottom": 3.896,
+            "right": 2.625,
+            "top": 0.5
+          },
+          "min_margin_mm": 0.5,
+          "window_centre_minus_plug_centre_mm": [
+            0.0,
+            -1.698
+          ],
+          "window_centre_minus_face_centre_mm": [
+            0.0,
+            0.0
+          ],
+          "pass": true
+        },
+        "lan_10g": {
+          "window": [
+            109.216,
+            0.725,
+            126.816,
+            16.431
+          ],
+          "clearance_mm": 0.5,
+          "plugs": [
+            {
+              "family": "rj45",
+              "cavity": [
+                112.091,
+                4.548,
+                123.941,
+                14.431
+              ],
+              "latch": "up"
+            }
+          ],
+          "basis": "J12 LINK-PP LPJK9436BENL shield face and plug opening (latch up). Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded.",
+          "sweep_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_gmsl": 0.0
+          },
+          "clearance_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_gmsl": 0.0
+          },
+          "plug_section": [
+            112.166,
+            4.548,
+            123.866,
+            15.931
+          ],
+          "margins_mm": {
+            "left": 2.95,
+            "bottom": 3.823,
+            "right": 2.95,
+            "top": 0.5
+          },
+          "min_margin_mm": 0.5,
+          "window_centre_minus_plug_centre_mm": [
+            0.0,
+            -1.661
+          ],
+          "window_centre_minus_face_centre_mm": [
+            0.0,
+            0.0
+          ],
+          "pass": true
+        },
+        "dc_in": {
+          "window": [
+            133.79,
+            0.928,
+            155.11,
+            16.928
+          ],
+          "clearance_mm": 0.5,
+          "plugs": [
+            {
+              "family": "terminal_plug_flanged",
+              "screws": [
+                [
+                  136.83,
+                  5.328
+                ],
+                [
+                  152.07,
+                  5.328
+                ]
+              ],
+              "positions": 2,
+              "pitch": 5.08,
+              "basis": "Phoenix Contact MSTB 2,5/2-STF-5,08 (1777989) dimensional drawing: 20.17 W x 15 H, 18.2 long incl. 8.3 tongue"
+            }
+          ],
+          "basis": "J2 YL032-100-002 2-pin 5.08 mm horizontal header with screw flanges (GF style); flange screw holes at x 136.83 / 152.07 (15.24 apart, matches the STF plug), z 5.328; face y -2.7. Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded.",
+          "sweep_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_gmsl": 0.0
+          },
+          "clearance_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "front_gmsl": 0.0
+          },
+          "plug_section": [
+            134.365,
+            1.428,
+            154.535,
+            16.428
+          ],
+          "margins_mm": {
+            "left": 0.575,
+            "bottom": 0.5,
+            "right": 0.575,
+            "top": 0.5
+          },
+          "min_margin_mm": 0.5,
+          "window_centre_minus_plug_centre_mm": [
+            0.0,
+            0.0
+          ],
+          "window_centre_minus_face_centre_mm": [
+            0.0,
+            3.15
+          ],
+          "pass": true
+        }
+      },
+      "plug_to_plug": []
+    },
+    "rear_io": {
+      "pass": true,
+      "ports": {
+        "io_terminal": {
+          "window": [
+            26.105,
+            1.078,
+            66.405,
+            17.397
+          ],
+          "clearance_mm": 0.5,
+          "plugs": [
+            {
+              "family": "face_plug",
+              "outline": [
+                26.605,
+                1.578,
+                65.905,
+                16.897
+              ]
+            }
+          ],
+          "basis": "J25 + J2_TB1 2x10 3.81 mm push-in plug, modelled mated in the carrier STEP (its face shows the wire entries). Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded.",
+          "sweep_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "rear_io": 0.0
+          },
+          "clearance_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "rear_io": 0.0
+          },
+          "plug_section": [
+            26.605,
+            1.578,
+            65.905,
+            16.897
+          ],
+          "margins_mm": {
+            "left": 0.5,
+            "bottom": 0.5,
+            "right": 0.5,
+            "top": 0.5
+          },
+          "min_margin_mm": 0.5,
+          "window_centre_minus_plug_centre_mm": [
+            0.0,
+            0.0
+          ],
+          "window_centre_minus_face_centre_mm": [
+            0.0,
+            0.0
+          ],
+          "pass": true
+        },
+        "hdmi": {
+          "window": [
+            68.44,
+            -0.172,
+            79.94,
+            21.328
+          ],
+          "clearance_mm": 0.25,
+          "plugs": [
+            {
+              "family": "overmold",
+              "centre": [
+                74.19,
+                10.578
+              ],
+              "width": 11.0,
+              "height": 21.0,
+              "r": 1.75
+            }
+          ],
+          "basis": "J8 Foxconn QJ3119C vertical HDMI face; typical HDMI overmold 21 x 11 rotated (assumed). Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded.",
+          "sweep_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "rear_io": 0.0
+          },
+          "clearance_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "rear_io": 0.0
+          },
+          "plug_section": [
+            68.69,
+            0.078,
+            79.69,
+            21.078
+          ],
+          "margins_mm": {
+            "left": 0.25,
+            "bottom": 0.25,
+            "right": 0.25,
+            "top": 0.25
+          },
+          "min_margin_mm": 0.25,
+          "window_centre_minus_plug_centre_mm": [
+            0.0,
+            0.0
+          ],
+          "window_centre_minus_face_centre_mm": [
+            0.0,
+            -0.0
+          ],
+          "pass": true
+        },
+        "usb_a": {
+          "window": [
+            80.55,
+            1.3,
+            97.05,
+            18.9
+          ],
+          "clearance_mm": 0.25,
+          "plugs": [
+            {
+              "family": "overmold",
+              "centre": [
+                88.8,
+                5.55
+              ],
+              "width": 16.0,
+              "height": 8.0,
+              "r": 1.75
+            },
+            {
+              "family": "overmold",
+              "centre": [
+                88.8,
+                14.65
+              ],
+              "width": 16.0,
+              "height": 8.0,
+              "r": 1.75
+            }
+          ],
+          "basis": "J7 Foxconn UAA111C stacked USB-A, port centres z 5.55 / 14.65; typical 16 x 8 overmolds (assumed). Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded.",
+          "sweep_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "rear_io": 0.0
+          },
+          "clearance_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "rear_io": 0.0
+          },
+          "plug_section": [
+            80.8,
+            1.55,
+            96.8,
+            18.65
+          ],
+          "margins_mm": {
+            "left": 0.25,
+            "bottom": 0.25,
+            "right": 0.25,
+            "top": 0.25
+          },
+          "min_margin_mm": 0.25,
+          "window_centre_minus_plug_centre_mm": [
+            0.0,
+            0.0
+          ],
+          "window_centre_minus_face_centre_mm": [
+            -0.001,
+            -0.066
+          ],
+          "pass": true
+        },
+        "usb_a_vertical": {
+          "window": [
+            100.25,
+            0.25,
+            108.75,
+            16.75
+          ],
+          "clearance_mm": 0.25,
+          "plugs": [
+            {
+              "family": "overmold",
+              "centre": [
+                104.5,
+                8.5
+              ],
+              "width": 8.0,
+              "height": 16.0,
+              "r": 1.75
+            }
+          ],
+          "basis": "J26 STEP is an incomplete 3.8 mm placeholder; footprint says 13.85 mm. Corrected envelope, centre assumed; 8 x 16 rotated overmold.",
+          "sweep_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "rear_io": 0.0
+          },
+          "clearance_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "rear_io": 0.0
+          },
+          "plug_section": [
+            100.5,
+            0.5,
+            108.5,
+            16.5
+          ],
+          "margins_mm": {
+            "left": 0.25,
+            "bottom": 0.25,
+            "right": 0.25,
+            "top": 0.25
+          },
+          "min_margin_mm": 0.25,
+          "window_centre_minus_plug_centre_mm": [
+            0.0,
+            0.0
+          ],
+          "pass": true
+        },
+        "usb_c": {
+          "window": [
+            110.76,
+            -5.58,
+            136.75,
+            2.89
+          ],
+          "clearance_mm": 0.25,
+          "plugs": [
+            {
+              "family": "overmold",
+              "centre": [
+                117.26,
+                -1.58
+              ],
+              "width": 12.5,
+              "height": 7.5,
+              "r": 3.25
+            },
+            {
+              "family": "overmold",
+              "centre": [
+                130.25,
+                -1.11
+              ],
+              "width": 12.5,
+              "height": 7.5,
+              "r": 3.25
+            }
+          ],
+          "basis": "J9 (117.26,-1.58) and J10 (130.25,-1.11) underside USB-C mouths; typical 12.5 x 7.5 overmolds (assumed). Measured by slicing references/hardware/carrier-full.stl (+ open shells) at the mating face, 2026-10-25; pins and pegs below the PCB excluded.",
+          "sweep_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "rear_io": 0.0
+          },
+          "clearance_interference_mm3": {
+            "base": 0.0,
+            "cover": 0.0,
+            "rear_io": 0.0
+          },
+          "plug_section": [
+            111.01,
+            -5.33,
+            136.5,
+            2.64
+          ],
+          "margins_mm": {
+            "left": 0.25,
+            "bottom": 0.25,
+            "right": 0.25,
+            "top": 0.25
+          },
+          "min_margin_mm": 0.25,
+          "window_centre_minus_plug_centre_mm": [
+            0.0,
+            0.0
+          ],
+          "window_centre_minus_face_centre_mm": [
+            6.5,
+            0.235
+          ],
+          "pass": true
+        }
+      },
+      "plug_to_plug": []
+    }
+  },
+  "pass": true
+}

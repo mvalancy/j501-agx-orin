@@ -389,6 +389,16 @@
           }
         },
         {
+          "name": "ports \u00b7 Mated plug fit at every port",
+          "status": "pass",
+          "message": "pass true in exports/port-checks.json",
+          "evidence": {
+            "type": "screenshot",
+            "path": "../preview/port-fit.png",
+            "title": "Mated plug fit at every port"
+          }
+        },
+        {
           "name": "mounts \u00b7 Mounting tabs and driver access",
           "status": "pass",
           "message": "pass true in exports/mount-checks.json",
@@ -411,7 +421,7 @@
         {
           "name": "review \u00b7 Review validation",
           "status": "pass",
-          "message": "all_parts_single_valid_watertight, plastic_intersections_zero, carrier_and_hardware_pass, open_shell_pass, mount_checks_pass, storage_checks_pass, assembly_paths_pass, nominal_P1S_bounds_pass true in exports/review-validation.json \u00b7 physical fit not verified",
+          "message": "all_parts_single_valid_watertight, plastic_intersections_zero, carrier_and_hardware_pass, open_shell_pass, port_plug_fit_pass, mount_checks_pass, storage_checks_pass, assembly_paths_pass, nominal_P1S_bounds_pass true in exports/review-validation.json \u00b7 physical fit not verified",
           "evidence": {
             "type": "link",
             "url": "../exports/review-validation.json",
@@ -449,16 +459,16 @@
   ],
   "header_meta": {
     "project": "j501-agx",
-    "revision": "rev 0.6-storage-modules",
-    "generated": "2026-10-25 16:36 UTC"
+    "revision": "rev 0.7-port-fit",
+    "generated": "2026-10-26 05:11 UTC"
   },
   "footer_meta": {
-    "checks": "44 pass / 0 fail / 0 skip",
+    "checks": "45 pass / 0 fail / 0 skip",
     "physical_fit": "physical fit NOT verified (CAD only)",
     "slicer": "slicer not run"
   },
   "project": "j501-agx",
-  "revision": "0.6-storage-modules",
+  "revision": "0.7-port-fit",
   "physical_fit_verified": false,
   "slicer_run": false,
   "pass": true

@@ -2,7 +2,7 @@
 
 # Print files
 
-The parts you need to print for the Rev 0.6 enclosure. Click a picture or **3D view** to spin the part in GitHub's
+The parts you need to print for the Rev 0.7 enclosure. Click a picture or **3D view** to spin the part in GitHub's
 built-in STL viewer, or use the links under it to download the part:
 
 - **3MF** opens in Bambu Studio and other slicers, on a 256 mm plate.
@@ -11,7 +11,7 @@ built-in STL viewer, or use the links under it to download the part:
 
 STL and 3MF files are already in print orientation. Every part fits a 256 mm bed. Sizes are outside dimensions, largest first.
 
-**One download:** the [Rev 0.6 print package](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.6) has every STL, the instructions and the renders.
+**One download:** the [Rev 0.7 print package](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.7) has every STL, the instructions and the renders.
 **Hardware to buy:** [main README](../README.md#hardware-to-buy). **Build steps:** [ASSEMBLY.md](../ASSEMBLY.md).
 
 <p align="center">
@@ -202,7 +202,7 @@ The design pipeline (`cad-agent all`) writes these. You don't need them for prin
 
 | File | What it is |
 |---|---|
-| `j501-agx-rev06-fit-check-manifest.json` | sha256 of every file from the last pipeline run; CI checks the print files against it |
+| `j501-agx-rev07-fit-check-manifest.json` | sha256 of every file from the last pipeline run; CI checks the print files against it |
 | `review-validation.json` | Pass or fail for every design check |
 | `geometry-checks.json`, `print-review.json` | Per-part geometry and printability checks |
 | `assembly-checks.json`, `assembly-paths.json`, `mount-checks.json` | Assembly order, plate insertion paths, mounting tabs |
