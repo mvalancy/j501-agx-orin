@@ -24,11 +24,11 @@ with PdfPages(R/'docs/check-sheet.pdf') as pdf:
  notes(fig,'PCB 176 × 163\nB1–B4: carrier-to-housing\n150 × 130 pitch, M3 inserts\n\nC1–C4: cooler tie-down\n92 × 79 pitch\nD14 printed column (dashed)\nScrew from below the floor,\nthrough PCB, into the cooler.\n\nEnclosure translation:\nPCB underside → (15, 15, 20)\nP9 template has both patterns.')
  pdf.savefig(fig);plt.close(fig)
  fig=page('02 — Vertical stack');ax=fig.add_axes([.1,.15,.52,.7]);ax.set_aspect('equal')
- for x,z,w,hh,label,col in [(0,0,130,b.F,'4 mm floor',SHELL),(15,b.Z,100,b.p['thickness'],'Carrier PCB',PCB),(40,29.578,70,1.57,'Module PCB',PCB),(35,seat,80,50,'Reference cooler 50 high',CU),(5,37.578,45,1.6,'GMSL PCB',PCB),(0,b.H-b.RT,130,b.RT,'6 mm hex roof',SHELL),(0,b.BH-.3,130,.6,'Lid / base split Z72','#c33')]:
+ for x,z,w,hh,label,col in [(0,0,130,b.F,'4 mm floor',SHELL),(15,b.Z,100,b.p['thickness'],'Carrier PCB',PCB),(40,29.578,70,1.57,'Module PCB',PCB),(35,seat,80,b.c['size'][2],f"Reference cooler {b.c['size'][2]:g} high",CU),(5,37.578,45,1.6,'GMSL PCB',PCB),(0,b.H-b.RT,130,b.RT,f'{b.RT:g} mm hex roof',SHELL),(0,b.BH-.3,130,.6,'Lid / base split Z72','#c33')]:
   ax.add_patch(Rectangle((x,z),w,hh,color=col,alpha=.75));ax.text(x+2,z+hh/2,label,fontsize=8,va='center')
- for z in (b.F,b.Z,21.578,29.578,seat,seat+50,b.BH,b.H-b.RT,b.H):ax.plot([0,130],[z,z],color='gray',alpha=.2)
+ for z in (b.F,b.Z,21.578,29.578,seat,seat+b.c['size'][2],b.BH,b.H-b.RT,b.H):ax.plot([0,130],[z,z],color='gray',alpha=.2)
  ax.set(xlim=(-5,140),ylim=(-4,118),ylabel='Enclosure Z');ax.set_xticks([])
- notes(fig,f'PCB underside {b.Z:.3f}\nPCB top 21.578\nModule underside 29.578\nTTP/cooler seat {seat:.3f}\nReference cooler top {seat+50:.3f}\nRoof underside {b.H-b.RT:.3f}\nCooler → roof {b.H-b.RT-seat-50:.3f}\n\nUnderside clearance {e["board_support_height"]+b.p["lowest_component"]:.1f}\n(lowest part −6.5 below PCB)\n\nGMSL PCB top 39.178 is 1.58\nbelow the cooler seat where\nthey overlap by 4.5 mm in plan:\nmeasure before printing P3.',x=.66)
+ notes(fig,f'PCB underside {b.Z:.3f}\nPCB top 21.578\nModule underside 29.578\nTTP/cooler seat {seat:.3f}\nReference cooler top {seat+b.c['size'][2]:.3f}\nRoof underside {b.H-b.RT:.3f}\nCooler → roof {b.H-b.RT-seat-b.c['size'][2]:.3f}\n\nUnderside clearance {e["board_support_height"]+b.p["lowest_component"]:.1f}\n(lowest part −6.5 below PCB)\n\nGMSL PCB top 39.178 is 1.58\nbelow the cooler seat where\nthey overlap by 4.5 mm in plan:\nmeasure before printing P3.',x=.66)
  pdf.savefig(fig);plt.close(fig)
  fig=page('03 — Cooler tie-down column and board support');ax=fig.add_axes([.06,.14,.6,.74]);ax.set_aspect('equal')
  cr=e['heatsink_column_diameter']/2;lr=e['heatsink_landing_diameter']/2;lh=e['board_landing_height'];cs=e['heatsink_countersink_diameter']/2;hr=e['heatsink_clearance']/2

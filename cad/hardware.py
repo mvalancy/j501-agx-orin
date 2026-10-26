@@ -92,17 +92,31 @@ def cooler_and_module():
     seat=b.COOLER_SEAT
     # Module envelope and existing cooler retention screws, not replacement specifications.
     module=cq.Shape.importBrep(str(b.ROOT/'references/nvidia-module/p3701-sku0-simplified.brep')).rotate((0,0,0),(0,0,1),-90).translate((b.M+48.25,b.M+131.5,b.Z+b.p['thickness']+8))
-    base=b.box(cx-sx/2,cy-sy/2,seat,sx,sy,3)
+    # Seeed WS-RDN-601 (datasheet S03): copper base with 3 flattened heat pipes, stacked aluminium fins open at the two
+    # exhaust faces, closed side plates, an 8015 fan under a top cover. Fin count and pitch are a visual stand-in.
+    th=b.P['thermal']['cooler'];bt,ct=th['base_thickness'],th['cover_thickness'];x0,y0=cx-sx/2,cy-sy/2;top=seat+sz
+    zf=top-ct-15.5;along_x=th['exhaust_axis']=='x'
+    base=b.box(x0,y0,seat,sx,sy,bt)
     for x,y in b.p['module_mount_centers']:
-        base=base.cut(b.cyl(b.M+x,b.M+y,seat-1,2.2,5))
-    items=[('E2 NVIDIA AGX Orin source STEP',module,COL['dark']),('E3 cooler copper base envelope',base,COL['copper'])]
-    for x in range(int(cx-sx/2)+8,int(cx+sx/2)-7,5):
-        items.append(('E3 approximate cooling fins',b.box(x,cy-sy/2+8,seat+3,1.2,sy-16,31),(.55,.55,.56)))
-    ring=b.cyl(cx,cy,seat+34,46,16).cut(b.cyl(cx,cy,seat+33,42,18))
-    hub=b.cyl(cx,cy,seat+34,14,16)
-    items += [('E3 fan frame',ring,COL['dark']),('E3 fan hub',hub,COL['dark'])]
-    for a in range(0,360,45):
-        blade=b.box(cx+10,cy-7,seat+40,32,14,3).rotate((cx,cy,0),(cx,cy,1),a)
+        base=base.cut(b.cyl(b.M+x,b.M+y,seat-1,2.2,bt+2))
+    items=[('E2 NVIDIA AGX Orin source STEP',module,COL['dark']),('E3 cooler copper base, 3 heat pipes',base,COL['copper'])]
+    for i in (-1,0,1):  # heat pipes run across the fins
+        hp=b.box(cx-sx/2+4,cy+i*24-3,seat+bt-1.2,sx-8,6,1.6) if not along_x else b.box(cx+i*28-3,cy-sy/2+4,seat+bt-1.2,6,sy-8,1.6)
+        items.append(('E3 heat pipe',hp,COL['copper']))
+    fins=[]
+    if along_x:   # plates parallel to X, stacked along Y: air leaves at the +/-X faces
+        for y in [y0+1.5+i*2.6 for i in range(int((sy-3)/2.6)+1)]:fins.append(b.box(x0,y,seat+bt,sx,.6,zf-seat-bt))
+    else:
+        for x in [x0+1.5+i*2.6 for i in range(int((sx-3)/2.6)+1)]:fins.append(b.box(x,y0,seat+bt,.6,sy,zf-seat-bt))
+    items+=[('E3 stacked aluminium fins (visual pitch)',f,(.62,.63,.65)) for f in fins]
+    sides=[b.box(x0,y0,seat+bt,sx,.8,sz-bt),b.box(x0,y0+sy-.8,seat+bt,sx,.8,sz-bt)] if along_x else [b.box(x0,y0,seat+bt,.8,sy,sz-bt),b.box(x0+sx-.8,y0,seat+bt,.8,sy,sz-bt)]
+    items+=[('E3 cooler side plate',q,COL['dark']) for q in sides]
+    frame=b.box(cx-40,cy-40,zf,80,80,15.5).cut(b.cyl(cx,cy,zf-1,38.5,18))
+    hub=b.cyl(cx,cy,zf,16.5,15.5)
+    cover=b.box(x0,y0,top-ct,sx,sy,ct).cut(b.cyl(cx,cy,top-ct-1,38,ct+2)).fuse(b.cyl(cx,cy,top-ct,16.5,ct))
+    items += [('E3 fan frame (8015)',frame,COL['dark']),('E3 fan hub',hub,COL['dark']),('E3 cooler top cover',cover,COL['dark'])]
+    for a in range(0,360,40):
+        blade=b.box(cx+17,cy-6,zf+5,20,12,2).rotate((cx,cy,0),(cx,cy,1),a)
         items.append(('E3 fan blade',blade,COL['dark']))
     return items+heatsink_tiedown()
 

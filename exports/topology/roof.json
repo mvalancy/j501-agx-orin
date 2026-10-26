@@ -1,0 +1,41 @@
+{
+  "voxel_mm": 2.0,
+  "grid": [
+    103,
+    90,
+    7
+  ],
+  "elements": 64890,
+  "design_elements": 40650,
+  "keep_elements": 16752,
+  "volfrac_target": 0.15,
+  "volfrac_result": 0.15,
+  "solid_fraction_above_half": 0.1409,
+  "grey_fraction": 0.2237,
+  "compliance_nmm": 16.431,
+  "filter_mm": 5.0,
+  "overhang": "-z",
+  "iterations": 60,
+  "E_mpa": 2700,
+  "loads": [
+    {
+      "lo": [
+        6.0,
+        11.5,
+        91.99
+      ],
+      "hi": [
+        200.0,
+        180.5,
+        92.01
+      ],
+      "force_n": [
+        0,
+        0,
+        -300.0
+      ]
+    }
+  ],
+  "method": "SIMP p=3, density filter, MMA (pyMOTO); minimum compliance at a volume fraction of the design region",
+  "study": "Lid roof: 300 N spread over the top; held where the lid sits on the walls"
+}

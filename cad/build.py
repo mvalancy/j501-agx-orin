@@ -245,12 +245,21 @@ def base(with_ears=False,relief=True):
         cuts+=[cyl(x,y,-1,S['column_bore']/2,cb+1),cyl(x,y,cb-.01,e['lid_insert_pilot']/2,S['base_insert_depth']+.01),cone(x,y,cb-.01,2.2,e['lid_insert_pilot']/2,.6),insert_seat(x,y,cb,1)]
     d,dep=e['foot_pocket']
     cuts+=[cyl(x,y,-1,d/2,dep+1) for x,y in e['foot_pockets']]
+    cuts+=floor_vents()
     body=subtract(body,cuts)
     if with_ears:
         body=combine([body]+[mount_ear(x,front) for x in e['mount_ear_x'] for front in (True,False)])
         L,w=e['mount_slot'];r=w/2
         body=subtract(body,[combine([box(x-L/2+r,y-r,-1,L-w,w,e['mount_ear_thickness']+2),cyl(x-L/2+r,y,-1,r,e['mount_ear_thickness']+2),cyl(x+L/2-r,y,-1,r,e['mount_ear_thickness']+2)]) for x,y in mount_slot_centers()])
     return body
+
+def floor_vents():
+    # Hex openings where the floor topology study found no load path (exports/topology/floor-vents.json).
+    v=e.get('floor_vents')
+    if not v or not (ROOT/v['file']).exists():return []
+    pts=json.loads((ROOT/v['file']).read_text())['centres']
+    if not pts:return []
+    s=v['across_flats'];return [cq.Workplane('XY').pushPoints(pts).polygon(6,2*s/math.sqrt(3)).extrude(F+2).val().translate((0,0,-1))]
 
 # ---------------------------------------------------------------- lid
 def hex_centers():
@@ -279,18 +288,47 @@ def cover():
     hz=e['lid_screw_head_z']
     for x,y in e['lid_screw_centers']:
         cuts+=[cyl(x,y,hz,e['lid_counterbore_diameter']/2,H-hz+1),cyl(x,y,BH-1,e['lid_screw_clearance']/2,hz-BH+1.01)]
-    vz0,vz1=e['lid_vent_z']
-    for y in vent_positions(*e['side_vent_y']):
-        cuts+=[slot('x',-1,T+2,y,vz0,vz1,e['vent_width']),slot('x',W-T-1,T+2,y,vz0,vz1,e['vent_width'])]
-    for x in vent_positions(*e['panel_vent_x']):
-        cuts+=[slot('y',Y0-1,T+2,x,vz0,vz1,e['vent_width']),slot('y',Y1-T-1,T+2,x,vz0,vz1,e['vent_width'])]
+    if e.get('lid_vent_z'):  # Rev 0.8 drops them: the short lid's walls carry the roof load, and the roof cells vent
+        vz0,vz1=e['lid_vent_z']
+        for y in vent_positions(*e['side_vent_y']):
+            cuts+=[slot('x',-1,T+2,y,vz0,vz1,e['vent_width']),slot('x',W-T-1,T+2,y,vz0,vz1,e['vent_width'])]
+        for x in vent_positions(*e['panel_vent_x']):
+            cuts+=[slot('y',Y0-1,T+2,x,vz0,vz1,e['vent_width']),slot('y',Y1-T-1,T+2,x,vz0,vz1,e['vent_width'])]
     s_af=e['hex_across_flats'];hexes=cq.Workplane('XY').pushPoints(hex_centers()).polygon(6,2*s_af/math.sqrt(3)).extrude(RT+2).val().translate((0,0,roof_z-1))
     # Fan-side inlet chamfer: each cell widens toward the cooler so the webs meet the airflow with a tapered edge.
     # The exterior face keeps the 10 mm A/F finger limit; in roof-down print orientation the chamfer is not an overhang.
     f,fd,ov=e['hex_inlet_flare'],e['hex_inlet_depth'],.01;ang=math.degrees(math.atan(f/fd))
     inlet=cq.Workplane('XY').workplane(offset=roof_z-ov).pushPoints(hex_centers()).polygon(6,2*(s_af+2*f+2*ov*f/fd)/math.sqrt(3)).extrude(fd+ov,taper=ang).vals()
     cuts+=[hexes]+inlet
-    return subtract(s,cuts)
+    s=subtract(s,cuts)
+    adds=[]
+    if e.get('fan_duct'):adds.append(fan_duct())  # added after the vents are cut, so the hex cells cannot notch the ring
+    adds+=roof_ribs()
+    return combine([s]+adds) if adds else s
+
+def roof_ribs():
+    # Stiffening ribs under the roof, placed from the roof topology study (tools/topology.py roof). Like the duct they
+    # run through the roof, so where one crosses a hex cell it prints from the bed instead of bridging the hole.
+    r=e.get('roof_ribs')
+    if not r:return []
+    w,dep=r['width'],r['depth'];top=H-e['roof_edge_chamfer'];z0=H-RT-dep;out=[];k=1.5
+    # each rib runs 1.5 mm into the wall and the ring it meets: flush (coplanar) joins tessellate with gaps
+    cav=rrect(T-k,Y0+T-k,W-T+k,Y1-T+k,e['cavity_corner_radius'],z0-1,top-z0+2)
+    for x0,y0,x1,y1 in r['segments']:
+        L=math.hypot(x1-x0,y1-y0);ang=math.degrees(math.atan2(y1-y0,x1-x0))
+        out.append(box(-k,-w/2,z0,L+2*k,w,top-z0).rotate((0,0,0),(0,0,1),ang).translate((x0,y0,0)).intersect(cav))
+    d=e.get('fan_duct')
+    if d:  # keep the intake clear
+        cx,cy=c['center_in_pcb'][0]+M,c['center_in_pcb'][1]+M
+        out=[q.cut(cyl(cx,cy,z0-1,d['inner_diameter']/2,top-z0+3)) for q in out]
+    return out
+
+def fan_duct():
+    # Intake ring under the roof, centred on the cooler: outside air in through the cells inside it, exhaust out around it.
+    # It runs through the roof too, so where it crosses a hex cell it is a wall printed from the bed, not a bridge.
+    d=e['fan_duct'];cx,cy=c['center_in_pcb'][0]+M,c['center_in_pcb'][1]+M;ri=d['inner_diameter']/2
+    z0=COOLER_SEAT+c['size'][2]+d['gap_above_cooler']
+    return cyl(cx,cy,z0,ri+d['wall'],H-e['roof_edge_chamfer']-z0).cut(cyl(cx,cy,z0-1,ri,H-z0+2))
 
 # ---------------------------------------------------------------- panels
 def flared(x0,z0,x1,z1,r,face_y,inward,c,depth):

@@ -23,6 +23,10 @@ cad:
     - {name: render,            run: tools/render.py,           log: render.log}
     - {name: assembly-steps,    run: tools/render_steps.py,     needs: [build]}
     - {name: readmes,           run: tools/write_readmes.py,    needs: [print-review]}
+    - {name: structure,         run: tools/structure.py,        log: structure.log, needs: [build]}
+    - {name: heatsink-study,    run: tools/heatsink_study.py}
+    - {name: simulation,        run: tools/check_sim.py,        log: simulation-checks.log}
+    - {name: sim-report,        run: tools/sim_report.py}
     - {name: validate,          run: tools/validate_review.py}
   part_ids: {base: P1, base_mount: P1M, cover: P2, front_gmsl: P3, front_no_gmsl: P4, rear_io: P5,
              mount_fit_template: P9, side_hatch: P10, m3_insert_coupon: P11, rail_coupon: P12,
@@ -35,6 +39,7 @@ cad:
     - {id: ports,   title: Mated plug fit at every port,    file: exports/port-checks.json, evidence: [preview/port-fit.png]}
     - {id: mounts,  title: Mounting tabs and driver access, file: exports/mount-checks.json, evidence: [preview/mount-clearance.png]}
     - {id: storage, title: "Storage trays, cable routes and underside slots", file: exports/storage-checks.json, evidence: [preview/cable-routing.png]}
+    - {id: simulation, title: "Strength, airflow and filament (simulation)", file: exports/simulation-checks.json, evidence: [preview/simulation.html]}
     - id: review
       title: Review validation
       file: exports/review-validation.json
@@ -44,6 +49,8 @@ cad:
     name: j501-agx-rev07-fit-check
     include: [README.md, ASSEMBLY.md, "docs/assembly/*", requirements.txt, cad/parameters.json, "docs/*", "exports/*.stl", "exports/*.3mf",
               "exports/*.step", "exports/*.json", references/sources.json]
+  # cad-agent slice: real grams and print time for the enclosure set (Bambu Studio CLI, P1S 0.20 Standard, PLA Basic)
+  slicer: {filament: pla, parts: [base, cover, front_no_gmsl, rear_io, side_hatch]}
   html_pages: [preview/index.html, README.md, ASSEMBLY.md, docs/engineering-review.html]
   view:
     colors: {base: "#2f343c", base_mount: "#2f343c", cover: "#3b3f46", front_gmsl: "#8a9099", front_no_gmsl: "#8a9099",

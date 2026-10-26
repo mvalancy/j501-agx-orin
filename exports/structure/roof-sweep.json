@@ -1,0 +1,106 @@
+{
+ "target_deflection_mm": 1.1881,
+ "rows": [
+  {
+   "roof_mm": 3.5,
+   "ribs": "none",
+   "volume_cm3": 110.1,
+   "deflection_mm": 2.4056,
+   "p999_mpa": 19.4,
+   "sf_p999": 1.29,
+   "minutes": 3.1,
+   "ok": false
+  },
+  {
+   "roof_mm": 3.5,
+   "ribs": "cross",
+   "volume_cm3": 113.0,
+   "deflection_mm": 1.5487,
+   "p999_mpa": 19.6,
+   "sf_p999": 1.27,
+   "minutes": 3.4,
+   "ok": false
+  },
+  {
+   "roof_mm": 3.5,
+   "ribs": "star",
+   "volume_cm3": 117.2,
+   "deflection_mm": 1.2837,
+   "p999_mpa": 16.5,
+   "sf_p999": 1.52,
+   "minutes": 1.9,
+   "ok": false
+  },
+  {
+   "roof_mm": 4.0,
+   "ribs": "none",
+   "volume_cm3": 117.6,
+   "deflection_mm": 1.7735,
+   "p999_mpa": 15.3,
+   "sf_p999": 1.63,
+   "minutes": 1.5,
+   "ok": false
+  },
+  {
+   "roof_mm": 4.0,
+   "ribs": "cross",
+   "volume_cm3": 120.7,
+   "deflection_mm": 1.2415,
+   "p999_mpa": 16.2,
+   "sf_p999": 1.54,
+   "minutes": 1.7,
+   "ok": false
+  },
+  {
+   "roof_mm": 4.0,
+   "ribs": "star",
+   "volume_cm3": 125.0,
+   "deflection_mm": 1.0442,
+   "p999_mpa": 13.9,
+   "sf_p999": 1.8,
+   "minutes": 1.9,
+   "ok": false
+  },
+  {
+   "roof_mm": 4.5,
+   "ribs": "none",
+   "volume_cm3": 125.1,
+   "deflection_mm": 1.3764,
+   "p999_mpa": 13.1,
+   "sf_p999": 1.91,
+   "minutes": 1.5,
+   "ok": false
+  },
+  {
+   "roof_mm": 4.5,
+   "ribs": "cross",
+   "volume_cm3": 128.3,
+   "deflection_mm": 1.022,
+   "p999_mpa": 13.7,
+   "sf_p999": 1.82,
+   "minutes": 1.6,
+   "ok": false
+  },
+  {
+   "roof_mm": 4.5,
+   "ribs": "star",
+   "volume_cm3": 132.9,
+   "deflection_mm": 0.8706,
+   "p999_mpa": 11.7,
+   "sf_p999": 2.14,
+   "minutes": 1.9,
+   "ok": true
+  }
+ ],
+ "best": {
+  "roof_mm": 4.5,
+  "ribs": "star",
+  "volume_cm3": 132.9,
+  "deflection_mm": 0.8706,
+  "p999_mpa": 11.7,
+  "sf_p999": 2.14,
+  "minutes": 1.9,
+  "ok": true
+ },
+ "method": "300 N spread over the lid top, lid held at its rim; PLA layer strength; lightest passing variant"
+}
