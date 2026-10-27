@@ -1,5 +1,5 @@
 {
-  "revision": "0.7-port-fit",
+  "revision": "0.8-thermal",
   "plastic_intersections": [
     {
       "parts": [
@@ -101,8 +101,8 @@
     }
   ],
   "underside_clearance_mm": 9.5,
-  "assumed_cooler_top_z": 91.258,
-  "assumed_cooler_to_roof_mm": 14.742,
+  "assumed_cooler_top_z": 75.258,
+  "assumed_cooler_to_roof_mm": 12.242,
   "physical_fit_verified": false,
   "gmsl_position_verified": false,
   "cooler_identity_verified": false

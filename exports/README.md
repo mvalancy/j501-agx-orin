@@ -2,7 +2,7 @@
 
 # Print files
 
-The parts you need to print for the Rev 0.7 enclosure. Click a picture or **3D view** to spin the part in GitHub's
+The parts you need to print for the Rev 0.8 enclosure. Click a picture or **3D view** to spin the part in GitHub's
 built-in STL viewer, or use the links under it to download the part:
 
 - **3MF** opens in Bambu Studio and other slicers, on a 256 mm plate.
@@ -11,7 +11,7 @@ built-in STL viewer, or use the links under it to download the part:
 
 STL and 3MF files are already in print orientation. Every part fits a 256 mm bed. Sizes are outside dimensions, largest first.
 
-**One download:** the [Rev 0.7 print package](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.7) has every STL, the instructions and the renders.
+**One download:** the [Rev 0.8 print package](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.8) has every STL, the instructions and the renders.
 **Hardware to buy:** [main README](../README.md#hardware-to-buy). **Build steps:** [ASSEMBLY.md](../ASSEMBLY.md).
 
 <p align="center">
@@ -52,7 +52,7 @@ Desktop, or any setup with drive trays. Board supports, cooler columns, SATA flo
 <td width="33%" valign="top">
 <a href="cover.stl"><img src="../preview/part-cover.png" alt="P2 Cover" width="100%"></a><br>
 <b>P2 · Cover</b><br>
-<sub>Qty 1 · 206 × 181 × 40 mm</sub><br>
+<sub>Qty 1 · 206 × 181 × 20 mm</sub><br>
 Hex-grille lid. Captures the plates and hatch; 4 × M3 × 16 from the top.<br>
 <b><a href="cover.stl">3D view</a></b> · <a href="cover.3mf?raw=true">3MF</a> · <a href="cover.stl?raw=true">STL</a> · <a href="cover.step?raw=true">STEP</a>
 </td>
@@ -192,7 +192,13 @@ Should slide in P12 without rattling.<br>
 An M3 × 35 flat head should sit flush on its cone.<br>
 <b><a href="countersink_coupon.stl">3D view</a></b> · <a href="countersink_coupon.3mf?raw=true">3MF</a> · <a href="countersink_coupon.stl?raw=true">STL</a> · <a href="countersink_coupon.step?raw=true">STEP</a>
 </td>
-<td width="33%"></td>
+<td width="33%" valign="top">
+<a href="rpsma_coupon.stl"><img src="../preview/part-rpsma_coupon.png" alt="P20 Antenna hole coupon" width="100%"></a><br>
+<b>P20 · Antenna hole coupon</b><br>
+<sub>Qty 1 · 60 × 20 × 14 mm</sub><br>
+Four D-holes, 5.9–6.2 mm across the flat. Use the tightest one an RP-SMA bulkhead pushes into without turning.<br>
+<b><a href="rpsma_coupon.stl">3D view</a></b> · <a href="rpsma_coupon.3mf?raw=true">3MF</a> · <a href="rpsma_coupon.stl?raw=true">STL</a> · <a href="rpsma_coupon.step?raw=true">STEP</a>
+</td>
 </tr>
 </table>
 
@@ -202,7 +208,7 @@ The design pipeline (`cad-agent all`) writes these. You don't need them for prin
 
 | File | What it is |
 |---|---|
-| `j501-agx-rev07-fit-check-manifest.json` | sha256 of every file from the last pipeline run; CI checks the print files against it |
+| `j501-agx-rev08-fit-check-manifest.json` | sha256 of every file from the last pipeline run; CI checks the print files against it |
 | `review-validation.json` | Pass or fail for every design check |
 | `geometry-checks.json`, `print-review.json` | Per-part geometry and printability checks |
 | `assembly-checks.json`, `assembly-paths.json`, `mount-checks.json` | Assembly order, plate insertion paths, mounting tabs |

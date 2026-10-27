@@ -1,0 +1,49 @@
+{
+  "slicer": "Bambu Studio (command line)",
+  "printer": "Bambu Lab P1S 0.4 nozzle",
+  "process": "0.20mm Standard @BBL X1C",
+  "filament": "Bambu PLA Basic @BBL P1S 0.4 nozzle",
+  "overrides": {},
+  "slicer_executable": "/usr/bin/snap",
+  "parts": {
+    "base": {
+      "grams": 188.32,
+      "minutes": 336.9,
+      "filament_m": 62.14,
+      "error": "Success.",
+      "sha256": "1d54f7a95078588ff5ebae37b3388df8cfddf23b20f8e35803c9d25cac7c6843"
+    },
+    "cover": {
+      "grams": 121.57,
+      "minutes": 273.4,
+      "filament_m": 40.11,
+      "error": "Success.",
+      "sha256": "cbea74768447c40c811632bc41208a3f49de7fc790820e00c07c3a4f5f5c4713"
+    },
+    "front_no_gmsl": {
+      "grams": 26.26,
+      "minutes": 45.3,
+      "filament_m": 8.66,
+      "error": "Success.",
+      "sha256": "c0be1c124009ab48df37b73fdbdaafe10c97843f8f96001515eb9127094e8237"
+    },
+    "rear_io": {
+      "grams": 25.35,
+      "minutes": 45.0,
+      "filament_m": 8.36,
+      "error": "Success.",
+      "sha256": "a4aafbd331af2886ae093fae261560118b742e2bb48e442aae6acf3959d4ca3d"
+    },
+    "side_hatch": {
+      "grams": 6.56,
+      "minutes": 11.2,
+      "filament_m": 2.16,
+      "error": "Success.",
+      "sha256": "818e469fb42d59873001467a6c535bda343960ca16b554143c7bf02be5ca4474"
+    }
+  },
+  "total_grams": 368.1,
+  "total_hours": 11.86,
+  "pass": true,
+  "note": "Slicer estimates for one copy of each part with the stated profile; supports off unless the profile turns them on."
+}

@@ -1,10 +1,10 @@
 {
-  "revision": "0.7-port-fit",
+  "revision": "0.8-thermal",
   "envelope": {
     "outer_mm": [
       206.0,
       181.0,
-      112.0
+      92.0
     ],
     "base_mount_print_mm": [
       206.0,
@@ -14,7 +14,7 @@
     "lid_print_mm": [
       206.0,
       181.0,
-      40.0
+      20.0
     ],
     "rev04_outer_mm": [
       218.8,
@@ -26,7 +26,7 @@
     "hex_cells": 216,
     "across_flats_mm": 10.0,
     "web_mm": 1.8,
-    "depth_mm": 6.0,
+    "depth_mm": 4.5,
     "open_area_mm2": 18706.1,
     "open_percent_of_lid_plan": 50.24,
     "finger_probe_note": "10 mm across flats (11.5 mm across corners) keeps the 12 mm IEC 61032 test finger out of the fan.",
@@ -37,16 +37,16 @@
       "fan_side_across_flats_mm": 11.2,
       "fan_side_web_land_mm": 0.6,
       "fan_side_open_area_mm2": 23465.0,
-      "full_web_depth_mm": 5.0,
+      "full_web_depth_mm": 3.5,
       "note": "Tapered entry on the fan side reduces the sharp-edge inlet loss; the 10 mm A/F exterior opening still sets the finger limit and the minimum flow area. Not tested in airflow."
     },
-    "roof_underside_z": 106.0,
-    "nominal_cooler_clearance_mm": 14.742,
+    "roof_underside_z": 87.5,
+    "nominal_cooler_clearance_mm": 12.242,
     "rev04": "67.37% open with 25 x 29 mm cells (finger-accessible), 11.242 mm cooler clearance"
   },
   "vents": {
     "lid_side_and_end_slots": 60,
-    "lid_wall_open_mm2": 4594.0,
+    "lid_wall_open_mm2": 2434.0,
     "base_side_slots": 16,
     "base_and_hatch_open_mm2": 2822.7,
     "panel_slots_each": 17,

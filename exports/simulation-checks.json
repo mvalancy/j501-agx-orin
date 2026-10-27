@@ -1,0 +1,43 @@
+{
+  "revision": "0.8-thermal",
+  "pass": true,
+  "checks": [
+    {
+      "check": "structure lid_press",
+      "pass": true,
+      "detail": "SF 2.53 (min 2.0), deflection 0.7631 mm (max 1.19), revision 0.8-thermal"
+    },
+    {
+      "check": "structure base_mount",
+      "pass": true,
+      "detail": "SF 3.71 (min 2.0), deflection 0.9068 mm, revision 0.8-thermal"
+    },
+    {
+      "check": "CFD on this revision",
+      "pass": true,
+      "detail": "result revision 0.8-thermal"
+    },
+    {
+      "check": "thermal plate margin",
+      "pass": true,
+      "detail": "57.2 \u00b0C, 22.8 K under the limit (min 10.0)"
+    },
+    {
+      "check": "fan operating point",
+      "pass": true,
+      "detail": "7.76 CFM, 0.339 of free air"
+    },
+    {
+      "check": "no re-breathing",
+      "pass": false,
+      "detail": "air into the fan +7.1 K above the room (target 3.0 K); advisory: its effect is in the plate temperature, which is gated above",
+      "advisory": true
+    },
+    {
+      "check": "CFD converged",
+      "pass": true,
+      "detail": "fins calibrated: True (carry 40.49 W of 40); energy balance -1.4 %"
+    }
+  ],
+  "note": "Reads committed simulation results; CFD and topology optimisation are run by hand (hours), FEA by tools/structure.py."
+}

@@ -32,7 +32,7 @@
   "stiffness_n_per_mm": 1288.5,
   "case": "lid_press",
   "revision": "0.8-thermal",
-  "solve_minutes": 5.6,
+  "solve_minutes": 1.8,
   "von_mises_p99_mpa": 5.13,
   "von_mises_p999_mpa": 9.86,
   "peak_at_mm": [

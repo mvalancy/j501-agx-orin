@@ -29,7 +29,7 @@
         {
           "name": "P2 \u00b7 cover",
           "status": "pass",
-          "message": "valid single solid \u00b7 watertight \u00b7 206 \u00d7 181 \u00d7 40 mm \u00b7 fits Bambu Lab P1S bed 256 \u00d7 256 \u00d7 256 mm",
+          "message": "valid single solid \u00b7 watertight \u00b7 206 \u00d7 181 \u00d7 20 mm \u00b7 fits Bambu Lab P1S bed 256 \u00d7 256 \u00d7 256 mm",
           "evidence": {
             "type": "screenshot",
             "path": "../preview/part-cover.png",
@@ -104,6 +104,16 @@
             "type": "screenshot",
             "path": "../preview/part-countersink_coupon.png",
             "title": "P14 \u00b7 countersink coupon"
+          }
+        },
+        {
+          "name": "P20 \u00b7 rpsma coupon",
+          "status": "pass",
+          "message": "valid single solid \u00b7 watertight \u00b7 60 \u00d7 14 \u00d7 20 mm \u00b7 fits Bambu Lab P1S bed 256 \u00d7 256 \u00d7 256 mm",
+          "evidence": {
+            "type": "screenshot",
+            "path": "../preview/part-rpsma_coupon.png",
+            "title": "P20 \u00b7 rpsma coupon"
           }
         },
         {
@@ -283,6 +293,16 @@
           }
         },
         {
+          "name": "P20 \u00b7 rpsma coupon",
+          "status": "pass",
+          "message": "STL + 3MF (print orientation), STEP (assembly)",
+          "evidence": {
+            "type": "link",
+            "url": "../exports/rpsma_coupon.3mf",
+            "label": "rpsma_coupon.3mf"
+          }
+        },
+        {
           "name": "P12 \u00b7 rail coupon",
           "status": "pass",
           "message": "STL + 3MF (print orientation), STEP (assembly)",
@@ -419,6 +439,16 @@
           }
         },
         {
+          "name": "simulation \u00b7 Strength, airflow and filament (simulation)",
+          "status": "pass",
+          "message": "pass true in exports/simulation-checks.json",
+          "evidence": {
+            "type": "screenshot",
+            "path": "../preview/simulation.html",
+            "title": "Strength, airflow and filament (simulation)"
+          }
+        },
+        {
           "name": "review \u00b7 Review validation",
           "status": "pass",
           "message": "all_parts_single_valid_watertight, plastic_intersections_zero, carrier_and_hardware_pass, open_shell_pass, port_plug_fit_pass, mount_checks_pass, storage_checks_pass, assembly_paths_pass, nominal_P1S_bounds_pass true in exports/review-validation.json \u00b7 physical fit not verified",
@@ -459,17 +489,17 @@
   ],
   "header_meta": {
     "project": "j501-agx",
-    "revision": "rev 0.7-port-fit",
-    "generated": "2026-10-26 05:11 UTC"
+    "revision": "rev 0.8-thermal",
+    "generated": "2026-10-27 12:32 UTC"
   },
   "footer_meta": {
-    "checks": "45 pass / 0 fail / 0 skip",
+    "checks": "48 pass / 0 fail / 0 skip",
     "physical_fit": "physical fit NOT verified (CAD only)",
-    "slicer": "slicer not run"
+    "slicer": "sliced (Bambu Studio (command line)): 368.1 g, 11.86 h for 5 part(s), 0.20mm Standard @BBL X1C, Bambu PLA Basic @BBL P1S 0.4 nozzle"
   },
   "project": "j501-agx",
-  "revision": "0.7-port-fit",
+  "revision": "0.8-thermal",
   "physical_fit_verified": false,
-  "slicer_run": false,
+  "slicer_run": true,
   "pass": true
 }

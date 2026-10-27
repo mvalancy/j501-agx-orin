@@ -9,7 +9,7 @@
   "storage_checks_pass": true,
   "assembly_paths_pass": true,
   "nominal_P1S_bounds_pass": true,
-  "print_parts_checked": 17,
+  "print_parts_checked": 18,
   "physical_fit_verified": false,
   "slicer_run": false
 }

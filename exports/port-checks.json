@@ -1,5 +1,5 @@
 {
-  "revision": "0.7-port-fit",
+  "revision": "0.8-thermal",
   "method": "Each plug envelope (cadagent.connectors) is swept from its mated position out to its far end and intersected with the base, cover and plate; the sweep grown by the port clearance must also be clear. Plug dimensions are catalogue or typical values, listed per port with their basis.",
   "configs": {
     "front_no_gmsl": {
