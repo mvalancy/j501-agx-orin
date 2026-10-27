@@ -5,7 +5,7 @@ P1/P1M,Cooler tie-down columns,14 mm body / 7.14 mm pad-sized land / 3.4 hole / 
 P1/P1M,Lid columns,"10 mm columns merged into the side walls, M3 insert at Z72",Vertical,Accessible with the base bolted down
 P1/P1M,Plate channels,3.5 mm channels in corner posts and sill,Vertical slots print cleanly,Rail coupon P12/P13 first
 P1/P1M,J17 notch,V grooves 1.2 deep,45-degree flanks; 2 mm2 groove-end ceilings,Hatch prints flat with V tongues
-P1/P1M,Antenna bulkhead holes,4 x D6.6 with D12.5 inner spot face,"Horizontal holes use 45-degree teardrop roofs, capped below the split",Base stays the fixed chassis; nothing tethers the lid or plates
+P1/P1M,Antenna bulkhead holes,4 x D6.6 D-holes with D12.5 inner spot face,The flat is on top: a 3.8 mm bridge in place of a teardrop roof; the spot face keeps its teardrop,Base stays the fixed chassis; nothing tethers the lid or plates
 P5,Service pin holes,"D1.6 + 45-degree lead-in, D4.4 inner guide sleeve 2.4 long",Holes vertical in print; sleeve grows from the plate,Plate slide-in sweep checked against the carrier
 P15/P16,Storage trays,"3 mm floor/walls, R8, standoff columns D11 with 6.6 bore and 2 mm ledge, SFF hole pads, rails, chimney, tie anchors",Floor down; ledge underside is a 1.6 mm annular bridge; screw counterbores print on the bed face,Drive screws recess in counterbores so trays stack flat
 P17,Storage mount plate,8 mm frame + P1M tabs,Floor down; gussets trimmed at the tray outline,Carries the whole stack on wall/robot

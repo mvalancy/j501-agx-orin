@@ -7,7 +7,7 @@ s=e['hex_across_flats'];cell=math.sqrt(3)/2*s*s;n=len(b.hex_centers());opened=n*
 seat=b.COOLER_SEAT;cooler_top=seat+b.c['size'][2]
 def stadium(w,hgt):return w*(hgt-w)+math.pi*(w/2)**2
 vw=e['vent_width'];side=len(b.vent_positions(*e['side_vent_y']));pan=len(b.vent_positions(*e['panel_vent_x']))
-lid_v=stadium(vw,e['lid_vent_z'][1]-e['lid_vent_z'][0]);base_v=stadium(vw,e['base_vent_z'][1]-e['base_vent_z'][0]);pv=stadium(e['panel_vent_width'],e['panel_vent_z'][1]-e['panel_vent_z'][0])
+lid_v=stadium(vw,e['lid_vent_z'][1]-e['lid_vent_z'][0]) if e.get('lid_vent_z') else 0;base_v=stadium(vw,e['base_vent_z'][1]-e['base_vent_z'][0]);pv=stadium(e['panel_vent_width'],e['panel_vent_z'][1]-e['panel_vent_z'][0])
 vents={'lid_side_and_end_slots':2*side+2*pan,'lid_wall_open_mm2':round((2*side+2*pan)*lid_v,1),'base_side_slots':2*side-(side-len(b.hatch_vent_y()))+0,'base_and_hatch_open_mm2':round((2*side)*base_v,1),'panel_slots_each':pan,'panel_open_mm2_each':round(pan*pv,1)}
 L=h.heatsink_screw_length();hz=h.heatsink_screw_head_z()
 r={'revision':b.P['revision'],

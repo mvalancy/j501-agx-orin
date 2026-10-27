@@ -2,7 +2,7 @@
 
 # Renders
 
-Every picture of the Rev 0.7 design, rendered from the CAD by [`tools/render.py`](../tools/render.py). Click a picture for full size.
+Every picture of the Rev 0.8 design, rendered from the CAD by [`tools/render.py`](../tools/render.py). Click a picture for full size.
 
 The same renders are on the local review site, which adds STL, 3MF and Bambu Studio download buttons:
 `python tools/serve_preview.py` serves [`index.html`](index.html). The print files themselves are in [`exports/`](../exports/).
@@ -110,7 +110,7 @@ Click a part to open it in GitHub's 3D viewer. Download links for each part are 
 </tr>
 <tr>
 <td width="25%" valign="top"><a href="../exports/countersink_coupon.stl"><img src="part-countersink_coupon.png" alt="P14 Countersink coupon" width="100%"></a><br><b>P14</b> Countersink coupon</td>
-<td width="25%"></td>
+<td width="25%" valign="top"><a href="../exports/rpsma_coupon.stl"><img src="part-rpsma_coupon.png" alt="P20 Antenna hole coupon" width="100%"></a><br><b>P20</b> Antenna hole coupon</td>
 <td width="25%"></td>
 <td width="25%"></td>
 </tr>

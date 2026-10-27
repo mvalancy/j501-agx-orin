@@ -1,5 +1,5 @@
 {
-  "revision": "0.7-port-fit",
+  "revision": "0.8-thermal",
   "units": "mm",
   "pcb": {
     "width": 176.0,
@@ -56,8 +56,8 @@
     "floor": 4.0,
     "wall": 4.0,
     "base_height": 72.0,
-    "height": 112.0,
-    "roof_thickness": 6.0,
+    "height": 92.0,
+    "roof_thickness": 4.5,
     "outer_corner_radius": 8.0,
     "cavity_corner_radius": 4.0,
     "base_bottom_chamfer": 0.8,
@@ -178,8 +178,8 @@
       56
     ],
     "lid_vent_z": [
-      80,
-      100
+      75,
+      86
     ],
     "panel_vent_x": [
       31,
@@ -243,6 +243,10 @@
       ],
       "z": 62.0,
       "hole": 6.6,
+      "across_flat": 6.0,
+      "flat_side": "top",
+      "flat_note": "RP-SMA bulkhead threads (1/4-36 UNS) carry one milled flat, 5.8 mm across (Wurth WR-CXASY 65530206515305: panel cutout D6.5 with the flat 6.0 across, panel 2.8 mm max). The hole's flat stops the body turning while the nut is tightened. On top it prints as a 3.8 mm bridge in place of a teardrop. Confirm across_flat with the P20 coupon.",
+      "coupon_across_flat": [5.9, 6.0, 6.1, 6.2],
       "spot_face_diameter": 12.5,
       "local_wall": 2.5,
       "cap_z": 70.0,
@@ -282,13 +286,83 @@
     "lid_column_note": "Each lid-screw column is fused to its side wall by a full-height buttress (wall face to column centre) with 4 mm concave fillets, plus a 3 mm radius fillet where it meets the floor (base) or roof (lid).",
     "support_floor_flare": 3.0,
     "support_shoulder_gusset": 2.0,
-    "support_fillet_note": "Board posts and cooler columns: 3 mm concave radius fillet at the floor and 2 mm concave radius fillet between the pad landing and the broad column. Both stay below the landing top and are re-cut by the component relief."
+    "support_fillet_note": "Board posts and cooler columns: 3 mm concave radius fillet at the floor and 2 mm concave radius fillet between the pad landing and the broad column. Both stay below the landing top and are re-cut by the component relief.",
+    "fan_duct": {
+      "inner_diameter": 80.0,
+      "wall": 1.6,
+      "gap_above_cooler": 2.0,
+      "note": "Rev 0.8: a ring under the roof around the fan so the fan breathes outside air through the hex cells inside the ring; the cells outside it let the hot exhaust out. Ends 2 mm above the cooler top (lid lifts off freely). Checked in CFD (tools/thermal.py)."
+    },
+    "floor_vents": {
+      "file": "exports/topology/floor-vents.json",
+      "threshold": 0.3,
+      "across_flats": 10.0,
+      "web": 2.4,
+      "rib_clearance": 1.5,
+      "note": "Rev 0.8: hexagonal openings where the floor topology study (tools/topology.py floor: robot mounting, 10 g down + 5 g sideways) says the floor carries no load. They save filament and let cool air in under the board. 10 mm across flats keeps fingers out."
+    },
+    "roof_ribs": {
+      "width": 2.0,
+      "depth": 6.0,
+      "segments": [
+        [
+          4.0,
+          105.5,
+          63.4,
+          105.5
+        ],
+        [
+          146.6,
+          105.5,
+          202.0,
+          105.5
+        ],
+        [
+          105.0,
+          9.5,
+          105.0,
+          63.9
+        ],
+        [
+          105.0,
+          147.1,
+          105.0,
+          182.5
+        ],
+        [
+          8.8,
+          30.0,
+          72.27,
+          79.82
+        ],
+        [
+          8.8,
+          162.0,
+          69.13,
+          126.57
+        ],
+        [
+          197.2,
+          30.0,
+          137.19,
+          79.14
+        ],
+        [
+          197.2,
+          162.0,
+          140.47,
+          127.24
+        ]
+      ],
+      "note": "Rev 0.8: eight ribs under the roof, from the intake ring to the middle of each wall and to the four lid-screw corners: the radial pattern of the roof topology study (tools/topology.py roof). Chosen by tools/roof_sweep.py as the lightest lid that is stiffer than Rev 0.7 and keeps a safety factor of 2 (99.9th-percentile stress) under 300 N."
+    },
+    "roof_note": "Rev 0.8: 4.5 mm roof with ribs (Rev 0.7: 6 mm, no ribs)."
   },
   "cooler": {
     "size": [
-      110.0,
       100.0,
-      50.0
+      87.0,
+      34.0
     ],
     "center_in_pcb": [
       90.0,
@@ -298,7 +372,8 @@
     "tim_thickness": 0.5,
     "tim_note": "Thermal pad between the AGX thermal plate and the heatsink; 0.5 mm nominal, measure the fitted pad. Raises the heatsink, not the standoff thread start.",
     "minimum_top_clearance": 10.0,
-    "identity_confirmed": false
+    "identity_confirmed": false,
+    "size_note": "Rev 0.8: Seeed heatsink with fan for reServer J501 (p-5970, WS-RDN-601), 100 x 87 x 34 mm (datasheet S03), the README reference cooler. The earlier 110 x 100 x 50 envelope came from the reComputer mini J501 heatsink (S05), a different product. Measure the fitted cooler height before printing."
   },
   "gmsl": {
     "board_size": [
@@ -504,7 +579,7 @@
         "label": "DC IN 12-36V",
         "marks": [
           {
-            "text": "−",
+            "text": "\u2212",
             "x": 141.91
           },
           {
@@ -982,5 +1057,92 @@
     "connector_x_note": "Drive connector ends sit this far from the left outer face so leads leaving the chimney keep their minimum bend radius before the straight lead into the drive plug.",
     "column_fillet": 3.0,
     "column_flare": 3.0
+  },
+  "thermal": {
+    "note": "Inputs to tools/thermal.py (cadagent.cfd + cadagent.heatsink). Datasheet values are cited; 'assumed' values are engineering guesses to replace with measurements.",
+    "limits": {
+      "ttp_max_c": 80,
+      "soc_sw_throttle_c": 99,
+      "soc_hw_shutdown_c": 105,
+      "pla_hdt_c": 57,
+      "petg_hdt_c": 69,
+      "pla_wall_limit_c": 50,
+      "petg_wall_limit_c": 60,
+      "basis": "NVIDIA Jetson AGX Orin datasheet DS-10662-001 (TTP 80 C max) and Jetson Linux r36.4 thermal page (99 C SW throttle, 105 C HW shutdown); Bambu Lab TDS heat deflection at 0.45 MPa (PLA Basic 57 C, PETG Basic 69 C). Wall limits are a design margin below HDT, our choice."
+    },
+    "module": {
+      "power_modes_w": [
+        15,
+        30,
+        40
+      ],
+      "ttp_thickness": 4.0,
+      "soc_size": 40.0,
+      "soc_thickness": 1.5,
+      "soc_offset": [
+        0.0,
+        0.0
+      ],
+      "tim_k": 6.0,
+      "basis": "AGX Orin 32 GB: 15/30/40 W modes (datasheet). Module envelope 100 x 87 x 16 mm from the NVIDIA STEP. Thermal plate thickness, SoC footprint and position under the plate, and the pad conductivity are assumed."
+    },
+    "cooler": {
+      "model": "Seeed heatsink with fan for Jetson AGX Orin, WS-RDN-601",
+      "datasheet": "references/323011387Jetson_AGX_Orin_Heatsink_100x87x34mm-datasheet.pdf",
+      "size": [
+        100.0,
+        87.0,
+        34.0
+      ],
+      "base_thickness": 3.5,
+      "cover_thickness": 1.0,
+      "fin_pitch": 1.8,
+      "fin_thickness": 0.3,
+      "k_base_eff": 1500.0,
+      "k_fin": 200.0,
+      "exhaust_axis": "x",
+      "heat_pipes": 3,
+      "basis": "Datasheet: 100 x 87 x 34 mm, copper heat pipes through stacked aluminium fins ('air-conditioner outdoor unit' construction), 8015 fan under a top grille, rated 100-120 W; the underside photo shows 3 flattened heat pipes and closed side plates. Assumed: fins 0.3 mm at 1.8 mm pitch, 3.5 mm base, air leaving through the two faces at +/-X (fin edges), effective base conductivity 1500 W/mK. Measure: fin count and thickness, which faces show fin edges, total height.",
+      "block_effectiveness_guess": 0.25,
+      "block_effectiveness_note": "Starting point for the fin-temperature calibration only: a coarse J501 run delivered about 8.6 W at 43.5 C fins with 33 C intake air, i.e. the CFD fin block works at roughly a quarter of the uniform-flow conductance, because air from the fan turns straight out along the upper channels."
+    },
+    "fan": {
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "d_outer": 76.0,
+      "d_hub": 33.0,
+      "bore": 77.0,
+      "thickness": 6.0,
+      "dp0_pa": 15.2,
+      "q_free_m3h": 38.9,
+      "note": "8015 PWM fan, 5 V, 2300 RPM: 22.90 CFM free air, 1.55 mmH2O at zero flow (datasheet; its two row labels are swapped). Straight-line curve between the two; blowing down into the fins (assumed); hub diameter from the drawing (about 33 mm)."
+    },
+    "case": {
+      "cell_mm": 8.0,
+      "ambient_c": 25.0,
+      "iterations": 1500,
+      "basis": "Room air 25 C around the enclosure on a table (adiabatic floor 3 mm below the base: rubber feet), open (hydrostatic) on the other five sides, 30 mm beyond the walls and 40 mm above the roof.",
+      "margin_side": 30.0,
+      "margin_top": 40.0
+    },
+    "criteria": {
+      "ttp_margin_c": 10.0,
+      "min_fan_fraction_of_free_air": 0.1,
+      "max_intake_rise_c": 3.0,
+      "note": "Thermal plate at least 10 C under its 80 C limit at 40 W in 25 C air; fan at least 10 % of free air; air into the fan within 3 C of the room (no re-breathing)."
+    }
+  },
+  "structure": {
+    "note": "Acceptance criteria for tools/structure.py results (tools/check_sim.py). Stress is the 99.9th percentile away from the supports, against PLA layer strength; deflection limits keep each revision at least as stiff as Rev 0.7.",
+    "lid_press": {
+      "max_deflection_mm": 1.19,
+      "min_sf_p999": 2.0
+    },
+    "base_mount": {
+      "min_sf_p999": 2.0
+    }
   }
 }

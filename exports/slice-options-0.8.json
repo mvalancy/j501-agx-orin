@@ -1,0 +1,17 @@
+{
+ "15% grid (default)": {
+  "base": 188.28,
+  "cover": 121.57,
+  "base+lid": 309.9
+ },
+ "10% gyroid": {
+  "base": 178.23,
+  "cover": 118.39,
+  "base+lid": 296.6
+ },
+ "3 walls, 8% gyroid": {
+  "base": 203.09,
+  "cover": 124.85,
+  "base+lid": 327.9
+ }
+}

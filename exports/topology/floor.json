@@ -1,0 +1,160 @@
+{
+  "voxel_mm": 2.0,
+  "grid": [
+    103,
+    90,
+    2
+  ],
+  "elements": 18540,
+  "design_elements": 13240,
+  "keep_elements": 5300,
+  "volfrac_target": 0.35,
+  "volfrac_result": 0.35,
+  "solid_fraction_above_half": 0.3476,
+  "grey_fraction": 0.169,
+  "compliance_nmm": 108.0274,
+  "filter_mm": 6.0,
+  "overhang": "+z",
+  "iterations": 41,
+  "E_mpa": 2700,
+  "loads": [
+    {
+      "lo": [
+        26.0,
+        27.5,
+        3.99
+      ],
+      "hi": [
+        34.0,
+        35.5,
+        4.01
+      ],
+      "force_n": [
+        0,
+        9.375,
+        -18.75
+      ]
+    },
+    {
+      "lo": [
+        176.0,
+        27.5,
+        3.99
+      ],
+      "hi": [
+        184.0,
+        35.5,
+        4.01
+      ],
+      "force_n": [
+        0,
+        9.375,
+        -18.75
+      ]
+    },
+    {
+      "lo": [
+        26.0,
+        157.5,
+        3.99
+      ],
+      "hi": [
+        34.0,
+        165.5,
+        4.01
+      ],
+      "force_n": [
+        0,
+        9.375,
+        -18.75
+      ]
+    },
+    {
+      "lo": [
+        176.0,
+        157.5,
+        3.99
+      ],
+      "hi": [
+        184.0,
+        165.5,
+        4.01
+      ],
+      "force_n": [
+        0,
+        9.375,
+        -18.75
+      ]
+    },
+    {
+      "lo": [
+        55.0,
+        62.0,
+        3.99
+      ],
+      "hi": [
+        63.0,
+        70.0,
+        4.01
+      ],
+      "force_n": [
+        0,
+        9.375,
+        -18.75
+      ]
+    },
+    {
+      "lo": [
+        147.0,
+        62.0,
+        3.99
+      ],
+      "hi": [
+        155.0,
+        70.0,
+        4.01
+      ],
+      "force_n": [
+        0,
+        9.375,
+        -18.75
+      ]
+    },
+    {
+      "lo": [
+        55.0,
+        141.0,
+        3.99
+      ],
+      "hi": [
+        63.0,
+        149.0,
+        4.01
+      ],
+      "force_n": [
+        0,
+        9.375,
+        -18.75
+      ]
+    },
+    {
+      "lo": [
+        147.0,
+        141.0,
+        3.99
+      ],
+      "hi": [
+        155.0,
+        149.0,
+        4.01
+      ],
+      "force_n": [
+        0,
+        9.375,
+        -18.75
+      ]
+    }
+  ],
+  "method": "SIMP p=3, density filter, MMA (pyMOTO); minimum compliance at a volume fraction of the design region",
+  "study": "Base floor, robot mounting: held at the 4 ears; 150 N down + 75 N sideways through the posts and columns"
+}

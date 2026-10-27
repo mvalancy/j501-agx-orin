@@ -75,6 +75,13 @@ def teardrop_x(x0,length,y,z,r,cap=None):
     if cap is not None and z+r*math.sqrt(2)>cap:s=s.intersect(box(x0-1,y-r-1,z-r-1,length+2,2*r+2,cap-(z-r-1)))
     return s
 
+def d_hole_x(x0,length,y,z,r,across,side='top'):
+    # Horizontal round hole along X with one flat (an anti-rotation D, e.g. a bulkhead connector's milled thread).
+    # 'top': the flat is a short bridge that replaces the hole's steepest overhang, so no teardrop is needed.
+    s=cyl(x0,y,z,r,length,(1,0,0))
+    keep=box(x0-1,y-r-1,z-r,length+2,2*r+2,across) if side=='top' else box(x0-1,y-r-1,z+r-across,length+2,2*r+2,across)
+    return s.intersect(keep)
+
 def vent_positions(lo,hi,pitch=None):
     pitch=pitch or e['vent_pitch'];n=int(round((hi-lo)/pitch));return [lo+i*pitch for i in range(n+1)]
 
@@ -212,7 +219,7 @@ def antenna_cuts():
     a=e['antenna_bulkheads'];z=a['z'];cuts=[]
     for q in a['positions']:
         left=q['side']=='left';y=q['y'];lw=a['local_wall']
-        cuts.append(teardrop_x(-1 if left else W-T-1,T+2,y,z,a['hole']/2,a['cap_z']))
+        cuts.append(d_hole_x(-1 if left else W-T-1,T+2,y,z,a['hole']/2,a['across_flat'],a['flat_side']))
         # Inner spot face thins the wall locally so short bulkhead threads still leave room for nut and antenna.
         cuts.append(teardrop_x(lw if left else W-T-1,T-lw+1,y,z,a['spot_face_diameter']/2,a['cap_z']))
         cuts.append(label_x(q['label'],y+(a['label_offset'] if y<(Y0+Y1)/2 else -a['label_offset']),z,left))
@@ -245,12 +252,21 @@ def base(with_ears=False,relief=True):
         cuts+=[cyl(x,y,-1,S['column_bore']/2,cb+1),cyl(x,y,cb-.01,e['lid_insert_pilot']/2,S['base_insert_depth']+.01),cone(x,y,cb-.01,2.2,e['lid_insert_pilot']/2,.6),insert_seat(x,y,cb,1)]
     d,dep=e['foot_pocket']
     cuts+=[cyl(x,y,-1,d/2,dep+1) for x,y in e['foot_pockets']]
+    cuts+=floor_vents()
     body=subtract(body,cuts)
     if with_ears:
         body=combine([body]+[mount_ear(x,front) for x in e['mount_ear_x'] for front in (True,False)])
         L,w=e['mount_slot'];r=w/2
         body=subtract(body,[combine([box(x-L/2+r,y-r,-1,L-w,w,e['mount_ear_thickness']+2),cyl(x-L/2+r,y,-1,r,e['mount_ear_thickness']+2),cyl(x+L/2-r,y,-1,r,e['mount_ear_thickness']+2)]) for x,y in mount_slot_centers()])
     return body
+
+def floor_vents():
+    # Hex openings where the floor topology study found no load path (exports/topology/floor-vents.json).
+    v=e.get('floor_vents')
+    if not v or not (ROOT/v['file']).exists():return []
+    pts=json.loads((ROOT/v['file']).read_text())['centres']
+    if not pts:return []
+    s=v['across_flats'];return [cq.Workplane('XY').pushPoints(pts).polygon(6,2*s/math.sqrt(3)).extrude(F+2).val().translate((0,0,-1))]
 
 # ---------------------------------------------------------------- lid
 def hex_centers():
@@ -279,18 +295,54 @@ def cover():
     hz=e['lid_screw_head_z']
     for x,y in e['lid_screw_centers']:
         cuts+=[cyl(x,y,hz,e['lid_counterbore_diameter']/2,H-hz+1),cyl(x,y,BH-1,e['lid_screw_clearance']/2,hz-BH+1.01)]
-    vz0,vz1=e['lid_vent_z']
-    for y in vent_positions(*e['side_vent_y']):
-        cuts+=[slot('x',-1,T+2,y,vz0,vz1,e['vent_width']),slot('x',W-T-1,T+2,y,vz0,vz1,e['vent_width'])]
-    for x in vent_positions(*e['panel_vent_x']):
-        cuts+=[slot('y',Y0-1,T+2,x,vz0,vz1,e['vent_width']),slot('y',Y1-T-1,T+2,x,vz0,vz1,e['vent_width'])]
+    if e.get('lid_vent_z'):
+        vz0,vz1=e['lid_vent_z']
+        # A roof rib that ends on a wall must land on solid wall: a vent slot under its end left the rib floating with
+        # 0.5 mm of air each side, the lid's peak stress (local safety factor 1.0 under 300 N). Skip those slots.
+        rr=e.get('roof_ribs') or {};keep=rr.get('width',0)/2+e['vent_width']/2+2.0
+        ends=[(x,y) for s_ in rr.get('segments',[]) for x,y in (s_[:2],s_[2:])]
+        def clear(wall,pos):
+            near={'x0':lambda x,y:x<T+3,'x1':lambda x,y:x>W-T-3,'y0':lambda x,y:y<Y0+T+3,'y1':lambda x,y:y>Y1-T-3}[wall]
+            return all(abs(pos-(y if wall[0]=='x' else x))>keep for x,y in ends if near(x,y))
+        for y in vent_positions(*e['side_vent_y']):
+            cuts+=[slot('x',-1,T+2,y,vz0,vz1,e['vent_width'])]*clear('x0',y)+[slot('x',W-T-1,T+2,y,vz0,vz1,e['vent_width'])]*clear('x1',y)
+        for x in vent_positions(*e['panel_vent_x']):
+            cuts+=[slot('y',Y0-1,T+2,x,vz0,vz1,e['vent_width'])]*clear('y0',x)+[slot('y',Y1-T-1,T+2,x,vz0,vz1,e['vent_width'])]*clear('y1',x)
     s_af=e['hex_across_flats'];hexes=cq.Workplane('XY').pushPoints(hex_centers()).polygon(6,2*s_af/math.sqrt(3)).extrude(RT+2).val().translate((0,0,roof_z-1))
     # Fan-side inlet chamfer: each cell widens toward the cooler so the webs meet the airflow with a tapered edge.
     # The exterior face keeps the 10 mm A/F finger limit; in roof-down print orientation the chamfer is not an overhang.
     f,fd,ov=e['hex_inlet_flare'],e['hex_inlet_depth'],.01;ang=math.degrees(math.atan(f/fd))
     inlet=cq.Workplane('XY').workplane(offset=roof_z-ov).pushPoints(hex_centers()).polygon(6,2*(s_af+2*f+2*ov*f/fd)/math.sqrt(3)).extrude(fd+ov,taper=ang).vals()
     cuts+=[hexes]+inlet
-    return subtract(s,cuts)
+    s=subtract(s,cuts)
+    adds=[]
+    if e.get('fan_duct'):adds.append(fan_duct())  # added after the vents are cut, so the hex cells cannot notch the ring
+    adds+=roof_ribs()
+    return combine([s]+adds) if adds else s
+
+def roof_ribs():
+    # Stiffening ribs under the roof, placed from the roof topology study (tools/topology.py roof). Like the duct they
+    # run through the roof, so where one crosses a hex cell it prints from the bed instead of bridging the hole.
+    r=e.get('roof_ribs')
+    if not r:return []
+    w,dep=r['width'],r['depth'];top=H-e['roof_edge_chamfer'];z0=H-RT-dep;out=[];k=1.5
+    # each rib runs 1.5 mm into the wall and the ring it meets: flush (coplanar) joins tessellate with gaps
+    cav=rrect(T-k,Y0+T-k,W-T+k,Y1-T+k,e['cavity_corner_radius'],z0-1,top-z0+2)
+    for x0,y0,x1,y1 in r['segments']:
+        L=math.hypot(x1-x0,y1-y0);ang=math.degrees(math.atan2(y1-y0,x1-x0))
+        out.append(box(-k,-w/2,z0,L+2*k,w,top-z0).rotate((0,0,0),(0,0,1),ang).translate((x0,y0,0)).intersect(cav))
+    d=e.get('fan_duct')
+    if d:  # keep the intake clear
+        cx,cy=c['center_in_pcb'][0]+M,c['center_in_pcb'][1]+M
+        out=[q.cut(cyl(cx,cy,z0-1,d['inner_diameter']/2,top-z0+3)) for q in out]
+    return out
+
+def fan_duct():
+    # Intake ring under the roof, centred on the cooler: outside air in through the cells inside it, exhaust out around it.
+    # It runs through the roof too, so where it crosses a hex cell it is a wall printed from the bed, not a bridge.
+    d=e['fan_duct'];cx,cy=c['center_in_pcb'][0]+M,c['center_in_pcb'][1]+M;ri=d['inner_diameter']/2
+    z0=COOLER_SEAT+c['size'][2]+d['gap_above_cooler']
+    return cyl(cx,cy,z0,ri+d['wall'],H-e['roof_edge_chamfer']-z0).cut(cyl(cx,cy,z0-1,ri,H-z0+2))
 
 # ---------------------------------------------------------------- panels
 def flared(x0,z0,x1,z1,r,face_y,inward,c,depth):
@@ -377,6 +429,18 @@ def rail_key(): return box(0,0,0,10,PT,18)
 def m3_coupon():
     s=box(0,0,0,90,20,14)
     return subtract(s,[cyl(x,10,14,d/2,11,(0,0,-1)) for x,d in zip((10,27.5,45,62.5,80),(3.7,3.8,3.9,4,4.1))])
+
+def rpsma_coupon():
+    # A strip of the spot-faced antenna wall, printed standing like the base wall, with the D hole at four
+    # across-flat sizes. Use the tightest one the bulkhead's flat still pushes into; set antenna_bulkheads.across_flat.
+    a=e['antenna_bulkheads'];lw=a['local_wall'];sizes=a['coupon_across_flat'];n=len(sizes);pitch=14;zc=12
+    s=combine([box(0,0,0,pitch*n+4,14,2),box(0,0,0,pitch*n+4,lw,zc+8)])
+    cuts=[]
+    for i,af in enumerate(sizes):
+        x=2+pitch*(i+.5)
+        cuts.append(d_hole_x(-1,lw+2,0,zc,a['hole']/2,af,a['flat_side']).rotate((0,0,0),(0,0,1),90).translate((x,0,0)))
+        cuts.append(label(f'{af:.1f}',x,zc-6.5,0,True,2.5))
+    return subtract(s,cuts)
 
 def countersink_coupon():
     # Floor + column section with the raised tie-down seat (nominal and +0.4 mm pocket), to test flat-head seating
@@ -560,7 +624,7 @@ PRINT_ROTATION={'cover':((1,0,0),180),'front_no_gmsl':((1,0,0),90),'front_gmsl':
 def print_parts():
     return {'base':base(),'base_mount':base(True),'cover':cover(),'front_no_gmsl':panel(),'front_gmsl':panel(gmsl=True),
             'rear_io':panel(front=False),'side_hatch':side_hatch(),'mount_fit_template':fit_template(),'m3_insert_coupon':m3_coupon(),
-            'countersink_coupon':countersink_coupon(),'rail_coupon':rail_coupon(),'rail_key':rail_key(),
+            'countersink_coupon':countersink_coupon(),'rpsma_coupon':rpsma_coupon(),'rail_coupon':rail_coupon(),'rail_key':rail_key(),
             'storage_35':storage_module('storage_35'),'storage_25':storage_module('storage_25'),'storage_mount_plate':storage_mount_plate(),'chimney_cap':chimney_cap(),'ssd_clip':ssd_clip()}
 
 if __name__=='__main__':

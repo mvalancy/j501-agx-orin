@@ -36,7 +36,7 @@ PARTS = [('P1','base','Base'),('P1M','base_mount','Base with mounting tabs'),('P
  ('P4','front_no_gmsl','Front plate'),('P5','rear_io','Rear plate'),('P10','side_hatch','Side hatch'),('P18','chimney_cap','Floor cap'),
  ('P15','storage_35','3.5 in tray'),('P16','storage_25','2.5 in tray'),('P17','storage_mount_plate','Mounting plate'),('P19','ssd_clip','SSD clip'),
  ('P9','mount_fit_template','Board fit template'),('P11','m3_insert_coupon','Insert coupon'),('P12','rail_coupon','Rail coupon'),
- ('P13','rail_key','Rail key'),('P14','countersink_coupon','Countersink coupon')]
+ ('P13','rail_key','Rail key'),('P14','countersink_coupon','Countersink coupon'),('P20','rpsma_coupon','Antenna hole coupon')]
 CONNECTORS = [('front_power','DC power input'),('ethernet_10g','10G Ethernet'),('ethernet_1g','1G Ethernet'),('rear_terminal','I/O terminal block'),
  ('rear_tall_connector','Rear tall connector'),('rear_usb_lower','USB, lower'),('rear_usb_upper','USB, upper'),('rear_connector_flat','Rear flat connector'),
  ('rear_bottom_port_a','Rear bottom port A'),('rear_bottom_port_b','Rear bottom port B'),('front_bottom_port','J18 nano-SIM'),('side_header','J17 side header'),
@@ -65,7 +65,8 @@ GROUPS = [
   ('P11', 'm3_insert_coupon', 'Insert coupon', '1', 'Five pilot holes, 3.7–4.1 mm. Use the one that holds an M3 insert best.'),
   ('P12', 'rail_coupon', 'Rail coupon', '1', 'A short length of the plate channel. Test with P13.'),
   ('P13', 'rail_key', 'Rail key', '1', 'Should slide in P12 without rattling.'),
-  ('P14', 'countersink_coupon', 'Countersink coupon', '1', 'An M3 × 35 flat head should sit flush on its cone.')])]
+  ('P14', 'countersink_coupon', 'Countersink coupon', '1', 'An M3 × 35 flat head should sit flush on its cone.'),
+  ('P20', 'rpsma_coupon', 'Antenna hole coupon', '1', 'Four D-holes, 5.9–6.2 mm across the flat. Use the tightest one an RP-SMA bulkhead pushes into without turning.')])]
 BOUNDS = {k: v['print_bounds_mm'] for k, v in json.loads((R / 'exports/print-review.json').read_text()).items()}
 missing = {f for _, _, ps in GROUPS for _, f, *_ in ps} ^ set(BOUNDS)
 assert not missing, f'parts missing from the print index, or not printable: {missing}'

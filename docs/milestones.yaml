@@ -1,0 +1,9 @@
+# Revision milestones, shown on the project site (cad-agent site). Status: done | active | next | blocked.
+- {id: R0.2, title: First fit-check build, status: done, done_when: "board, ears and feet fit on the bench"}
+- {id: R0.3, title: Print-review pass, status: done, done_when: "rail coupon and key slide without rattle"}
+- {id: R0.4, title: Open ribbed lid and larger mounting tabs, status: done, done_when: "lid, tabs and M6 inserts print and fit"}
+- {id: R0.5, title: Antennas and service access, status: done, done_when: "4 RP-SMA bulkheads in the fixed base walls; pin holes reach reset and recovery"}
+- {id: R0.6, title: Flush shell, cooler tie-down and drive trays, status: done, done_when: "the cooler is screwed down through the floor; trays stack"}
+- {id: R0.7, title: Port windows from modelled mating plugs, status: done, done_when: "every plug sweeps in clear; released as rev0.7"}
+- {id: R0.8, title: Less filament, a stronger lid and better airflow, status: active, done_when: "lighter by slicer grams, lid deflection no worse than Rev 0.7, airflow and plate temperature checked in CFD, D-flat antenna holes"}
+- {id: T1, title: Measure the cooler and the module under load, status: next, done_when: "cooler height measured; tegrastats stress test logged against the CFD prediction"}

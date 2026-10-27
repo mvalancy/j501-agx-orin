@@ -73,7 +73,7 @@ print(f'Wrote {out.relative_to(R)}: {len(parts)} STL, {len(steps)} step pictures
 tested = json.loads((R / 'exports/review-validation.json').read_text()).get('physical_fit_verified') is True
 status = ('**Status: fit-checked.** A printed unit has been assembled on the real board.' if tested else
           '**Status: fit-check prototype.** Every part and clearance is checked in CAD only. Nothing has been printed or '
-          'test-fitted yet, so print the test parts (P9, P11–P14) first.')
+          'test-fitted yet, so print the test parts (P9, P11–P14, P20) first.')
 (R / 'exports/release-notes.md').write_text(f'''Print package for the J501 AGX Orin enclosure, Rev {rev}.
 
 **Download `{name}.zip`.** It contains:

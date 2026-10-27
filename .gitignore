@@ -35,3 +35,19 @@ preview/server-url.txt
 archive/*/exports/*.log
 exports/release-notes.md
 exports/release-prerelease
+
+# CFD cases (rebuilt by tools/thermal.py; results go to exports/thermal)
+sim/
+build/
+
+# Generated locally: the review site, the 3D viewer meshes (cad-agent site / cad-agent view), slicer scratch output
+site/
+exports/view/
+preview/site-url.txt
+result.json
+# Airflow videos are tens of MB each: attached to the GitHub release instead of the repository. Debug runs stay local.
+preview/thermal/*.mp4
+preview/thermal/*-debug-*
+exports/thermal/*-debug*
+exports/thermal/*-dbg-*
+exports/thermal/cooled-uniform-heat.json
