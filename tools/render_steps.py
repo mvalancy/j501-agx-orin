@@ -103,7 +103,7 @@ def place(s, x, y):
     bb = s.BoundingBox(); return s.translate((x - bb.xmin, y - bb.ymin, -bb.zmin))
 tpl = b.fit_template(); tb = tpl.BoundingBox()
 coupons, x = [], tb.xmin
-for n, s in [('P11 insert coupon', b.m3_coupon()), ('P12 rail coupon', b.rail_coupon()), ('P13 rail key', b.rail_key()), ('P14 countersink coupon', b.countersink_coupon())]:
+for n, s in [('P11 insert coupon', b.m3_coupon()), ('P12 rail coupon', b.rail_coupon()), ('P13 rail key', b.rail_key()), ('P14 countersink coupon', b.countersink_coupon()), ('P20 antenna hole coupon', b.rpsma_coupon())]:
     s = place(s, x, tb.ymin - 75); bb = s.BoundingBox(); coupons.append((n, s)); x = bb.xmax + 18
 step('01-test-prints.png', '1 · Print the test parts first',
      new=[(tpl, (0, 0, 0))] + [(s, (0, 0, 0)) for _, s in coupons],
@@ -144,7 +144,7 @@ step('06-tiedown.png', '6 · Tie the cooler down: 4 × M3 × 35 flat head from b
 step('07-antennas.png', '7 · Antennas: 4 × RP-SMA bulkheads',
      context=built + [(s, GREY) for s in board_screws] + cooler, meshes=board(0), new=[(s, (0, 0, 0)) for s in antennas],
      callouts=[('WIFI 1', (0, 46, 62)), ('WIFI 2', (0, 145, 62)), ('CELL 1', (206, 46, 62)), ('CELL 2', (206, 145, 62))],
-     note='Push each pigtail through from inside; lock washer and nut outside.', view='front_high')
+     note='Push each pigtail through from inside, the thread flat up to match the hole; lock washer and nut outside.', view='front_high')
 
 step('08-plates.png', '8 · Slide in the plates and hatch',
      context=built + [(s, GREY) for s in board_screws + antennas] + cooler, meshes=board(0),

@@ -75,7 +75,7 @@ def antenna_bulkheads():
     for q in a['positions']:
         y=q['y'];parts=[('body',hexbar(8,6).translate((W-lw-6,y,z)),COL['brass']),
             ('ferrule',b.cyl(W-lw-6,y,z,2.2,10,(-1,0,0)),COL['brass']),
-            ('thread',b.cyl(W-lw,y,z,6.35/2,lw+7,(1,0,0)),COL['brass']),
+            ('thread',b.cyl(W-lw,y,z,6.35/2,lw+7,(1,0,0)).intersect(b.box(W-lw-1,y-4,z-6.35/2 if a['flat_side']=='top' else z+6.35/2-5.8,lw+9,8,5.8)),COL['brass']),   # milled flat, 5.8 across
             ('lock washer',b.cyl(W,y,z,4.6,.5,(1,0,0)).cut(b.cyl(W-1,y,z,3.3,3,(1,0,0))),COL['steel']),
             ('nut',hexbar(8,2).translate((W+.5,y,z)).cut(b.cyl(W,y,z,3.2,4,(1,0,0))),COL['brass'])]
         for name,s,col in parts:

@@ -65,7 +65,8 @@ heatsink. Tighten gently; the columns are printed.
 
 ![Antenna bulkheads](docs/assembly/07-antennas.png)
 
-Push each RP-SMA pigtail through its wall hole from the inside, then fit the lock washer and nut outside. Wi-Fi goes
+Push each RP-SMA pigtail through its wall hole from the inside, with the flat on its thread at the top to match the
+hole's flat, then fit the lock washer and nut outside. The flat stops the connector turning as you tighten. Wi-Fi goes
 on the left wall, cellular on the right. Route the leads around the board edge to the radios.
 
 ### 8. Slide in the plates

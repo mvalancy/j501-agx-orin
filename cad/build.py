@@ -75,6 +75,13 @@ def teardrop_x(x0,length,y,z,r,cap=None):
     if cap is not None and z+r*math.sqrt(2)>cap:s=s.intersect(box(x0-1,y-r-1,z-r-1,length+2,2*r+2,cap-(z-r-1)))
     return s
 
+def d_hole_x(x0,length,y,z,r,across,side='top'):
+    # Horizontal round hole along X with one flat (an anti-rotation D, e.g. a bulkhead connector's milled thread).
+    # 'top': the flat is a short bridge that replaces the hole's steepest overhang, so no teardrop is needed.
+    s=cyl(x0,y,z,r,length,(1,0,0))
+    keep=box(x0-1,y-r-1,z-r,length+2,2*r+2,across) if side=='top' else box(x0-1,y-r-1,z+r-across,length+2,2*r+2,across)
+    return s.intersect(keep)
+
 def vent_positions(lo,hi,pitch=None):
     pitch=pitch or e['vent_pitch'];n=int(round((hi-lo)/pitch));return [lo+i*pitch for i in range(n+1)]
 
@@ -212,7 +219,7 @@ def antenna_cuts():
     a=e['antenna_bulkheads'];z=a['z'];cuts=[]
     for q in a['positions']:
         left=q['side']=='left';y=q['y'];lw=a['local_wall']
-        cuts.append(teardrop_x(-1 if left else W-T-1,T+2,y,z,a['hole']/2,a['cap_z']))
+        cuts.append(d_hole_x(-1 if left else W-T-1,T+2,y,z,a['hole']/2,a['across_flat'],a['flat_side']))
         # Inner spot face thins the wall locally so short bulkhead threads still leave room for nut and antenna.
         cuts.append(teardrop_x(lw if left else W-T-1,T-lw+1,y,z,a['spot_face_diameter']/2,a['cap_z']))
         cuts.append(label_x(q['label'],y+(a['label_offset'] if y<(Y0+Y1)/2 else -a['label_offset']),z,left))
@@ -416,6 +423,18 @@ def m3_coupon():
     s=box(0,0,0,90,20,14)
     return subtract(s,[cyl(x,10,14,d/2,11,(0,0,-1)) for x,d in zip((10,27.5,45,62.5,80),(3.7,3.8,3.9,4,4.1))])
 
+def rpsma_coupon():
+    # A strip of the spot-faced antenna wall, printed standing like the base wall, with the D hole at four
+    # across-flat sizes. Use the tightest one the bulkhead's flat still pushes into; set antenna_bulkheads.across_flat.
+    a=e['antenna_bulkheads'];lw=a['local_wall'];sizes=a['coupon_across_flat'];n=len(sizes);pitch=14;zc=12
+    s=combine([box(0,0,0,pitch*n+4,14,2),box(0,0,0,pitch*n+4,lw,zc+8)])
+    cuts=[]
+    for i,af in enumerate(sizes):
+        x=2+pitch*(i+.5)
+        cuts.append(d_hole_x(-1,lw+2,0,zc,a['hole']/2,af,a['flat_side']).rotate((0,0,0),(0,0,1),90).translate((x,0,0)))
+        cuts.append(label(f'{af:.1f}',x,zc-6.5,0,True,2.5))
+    return subtract(s,cuts)
+
 def countersink_coupon():
     # Floor + column section with the raised tie-down seat (nominal and +0.4 mm pocket), to test flat-head seating
     # and the M3 x 35 engagement before printing the base.
@@ -598,7 +617,7 @@ PRINT_ROTATION={'cover':((1,0,0),180),'front_no_gmsl':((1,0,0),90),'front_gmsl':
 def print_parts():
     return {'base':base(),'base_mount':base(True),'cover':cover(),'front_no_gmsl':panel(),'front_gmsl':panel(gmsl=True),
             'rear_io':panel(front=False),'side_hatch':side_hatch(),'mount_fit_template':fit_template(),'m3_insert_coupon':m3_coupon(),
-            'countersink_coupon':countersink_coupon(),'rail_coupon':rail_coupon(),'rail_key':rail_key(),
+            'countersink_coupon':countersink_coupon(),'rpsma_coupon':rpsma_coupon(),'rail_coupon':rail_coupon(),'rail_key':rail_key(),
             'storage_35':storage_module('storage_35'),'storage_25':storage_module('storage_25'),'storage_mount_plate':storage_mount_plate(),'chimney_cap':chimney_cap(),'ssd_clip':ssd_clip()}
 
 if __name__=='__main__':

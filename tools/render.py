@@ -40,7 +40,7 @@ parts=[('P1','base',base,'The base for desktop use AND for storage stacks: 4 sta
  ('P2','cover',cover,f'{len(b.hex_centers())} hex cells, 10 mm A/F (finger-safe), 6 mm deep, fan-side inlet chamfer; roof face down'),('P3','front_gmsl',front,'Audio, GMSL, 1G, 10G + LED, DC IN; debossed legends'),('P4','front_no_gmsl',b.panel(),'Audio, 1G, 10G + LED, DC IN'),
  ('P5','rear_io',rear,'I/O terminal, HDMI, USB-A x3, USB-C pair'),('P9','mount_fit_template',b.fit_template(),'Cradle jig: carrier sits on pad-sized landings, same supports and relief as P1'),
  ('P10','side_hatch',hatch,'Flush door with 45-degree V tongues; lid captures the top'),('P11','m3_insert_coupon',b.m3_coupon(),'M3 pilots: 3.7 / 3.8 / 3.9 / 4.0 / 4.1 mm'),('P12','rail_coupon',b.rail_coupon(),'Corner-post channel: 3.5 mm for the 3.0 mm plates'),('P13','rail_key',b.rail_key(),'3.0 mm sliding key'),
- ('P14','countersink_coupon',b.countersink_coupon(),'Floor + column: raised 7.0 / 7.4 mm countersink seats for the M3 x 35 flat heads'),
+ ('P14','countersink_coupon',b.countersink_coupon(),'Floor + column: raised 7.0 / 7.4 mm countersink seats for the M3 x 35 flat heads'),('P20','rpsma_coupon',b.rpsma_coupon(),'Antenna wall: D-holes 5.9 / 6.0 / 6.1 / 6.2 mm across the flat'),
  ('P15','storage_35',b.storage_module('storage_35'),'One 3.5 in drive (SFF-8301 6-32 holes, all three pairs), cable gutter, 12 V IN hole, tie anchors'),
  ('P16','storage_25',b.storage_module('storage_25'),'Two 2.5 in drives up to 15 mm (SFF-8201 M3 holes), cable gutter, tie anchors'),
  ('P17','storage_mount_plate',b.storage_mount_plate(),'Wall/robot plate under a storage stack: P1M tab and slot pattern, M3 into the standoffs'),
@@ -74,7 +74,7 @@ crop=b.box(bx[0]-14,b.Y1-30,b.F,bx[1]-bx[0]+28,40,bz+14-b.F)  # around the REC /
 sw=[(s.translate(sh),(.15,.15,.17)) for s in cq.Shape.importBrep(str(ROOT/'references/carrier.brep')).Shells() if (lambda q:q.xmin>o[0]+130 and q.xmax<o[0]+165 and q.ymin>o[1]+148 and q.ymax<o[1]+163)(s.BoundingBox())]
 render('service-buttons.png',[(rear.intersect(crop),plate),(src[5169].translate(sh).intersect(crop),(.07,.32,.16))]+sw,'REC / RST pin access (rear plate, seen from inside)',view=(-160,-260,140),note=f"Two D{sb['pin_hole']:g} pin holes with 45-degree lead-ins; guide sleeves stop {sb['sleeve_gap_to_pcb_edge']:g} mm short of the PCB edge so the plate still slides straight down.",size=(1500,1050))
 ant=[(s,col) for name,s,col in h.enclosure_hardware() if 'RP-SMA' in name]
-render('antennas.png',[(base,shell),(front,plate),(rear,plate),(hatch,plate),(cover.translate((0,0,60)),lid)]+ant+electronics,'RP-SMA bulkheads in the fixed base walls (lid lifted)',hardware_meshes(),view=(-420,-330,260),note='WIFI 1/2 on the left wall, CELL 1/2 on the right, at Z62. The lid, plates and J17 door lift off with antennas fitted. 2.5 mm spot-faced wall.')
+render('antennas.png',[(base,shell),(front,plate),(rear,plate),(hatch,plate),(cover.translate((0,0,60)),lid)]+ant+electronics,'RP-SMA bulkheads in the fixed base walls (lid lifted)',hardware_meshes(),view=(-420,-330,260),note='WIFI 1/2 on the left wall, CELL 1/2 on the right, at Z62. The lid, plates and J17 door lift off with antennas fitted. 2.5 mm spot-faced wall; D-holes with the flat on top stop the bulkheads turning.')
 # Storage: exploded stack with drives, standoffs and screws; assembled stack; underside slot envelopes.
 skinds=['storage_35','storage_25'];sm=b.stack(skinds);gap=45
 sx=[(base,shell),(front,plate),(rear,plate),(hatch,plate),(cover,lid)]+electronics

@@ -31,7 +31,7 @@ cad:
   part_ids: {base: P1, base_mount: P1M, cover: P2, front_gmsl: P3, front_no_gmsl: P4, rear_io: P5,
              mount_fit_template: P9, side_hatch: P10, m3_insert_coupon: P11, rail_coupon: P12,
              rail_key: P13, countersink_coupon: P14, storage_35: P15, storage_25: P16,
-             storage_mount_plate: P17, chimney_cap: P18, ssd_clip: P19}
+             storage_mount_plate: P17, chimney_cap: P18, ssd_clip: P19, rpsma_coupon: P20}
   checks:
     - {id: carrier, title: Carrier and hardware clearances, file: exports/carrier-clearances.json, evidence: [preview/open.png]}
     - {id: shells,  title: Open-shell clearances,           file: exports/shell-clearances.json}
@@ -55,5 +55,24 @@ cad:
   view:
     colors: {base: "#2f343c", base_mount: "#2f343c", cover: "#3b3f46", front_gmsl: "#8a9099", front_no_gmsl: "#8a9099",
              rear_io: "#8a9099", side_hatch: "#8a9099", chimney_cap: "#5aa9e6"}
-    hidden: [base_mount, front_gmsl, mount_fit_template, m3_insert_coupon, countersink_coupon, rail_coupon, rail_key,
+    hidden: [base_mount, front_gmsl, mount_fit_template, m3_insert_coupon, countersink_coupon, rpsma_coupon, rail_coupon, rail_key,
              storage_35, storage_25, storage_mount_plate, ssd_clip]
+  # project site: `cad-agent site --serve` (http://127.0.0.1:8643/site/). The top bar below is on every page it serves.
+  site:
+    title: J501 AGX enclosure
+    tagline: A printed enclosure for the Seeed reServer J501 carrier with a Jetson AGX Orin, its cooler, antennas and drives
+    milestones: docs/milestones.yaml
+    pages: [README.md, ASSEMBLY.md, "docs/README.md", "exports/README.md", "cad/README.md", "tools/README.md",
+            "preview/README.md", "references/README.md", "docs/assembly/README.md"]
+    live_reload: {watch: [preview, docs, exports, site]}
+    nav:
+      - {id: overview, title: Overview, href: site/}
+      - {id: renders, title: Renders, href: preview/index.html}
+      - {id: model, title: 3D model, href: _cadagent/kit/viewer.html}
+      - {id: simulation, title: Simulation, href: preview/simulation.html}
+      - {id: review, title: Engineering review, href: docs/engineering-review.html}
+      - {id: checks, title: Checks, href: docs/cad-agent-report.html}
+      - {id: print, title: Print files, href: site/pages/exports-readme-md.html}
+      - {id: assembly, title: Assembly, href: site/pages/assembly-md.html}
+      - {id: docs, title: Docs, href: "site/#documents"}
+      - {id: repo, title: Repository, href: "https://github.com/mvalancy/j501-agx-orin"}
