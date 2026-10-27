@@ -94,9 +94,13 @@ def section_thermal_bare(t):
         if not r:
             continue
         s = r['solids']
-        rows.append(metric(f'{w} W: SoC package (hottest)', None, s['soc']['max_c'], '°C', better=None))
+        bal = r.get('energy_balance_pct')
+        rising = '' if r.get('converged') else (f"still rising when the run stopped ({bal:+.0f} % energy balance, "
+                                                f"{len(r.get('continuation', [])) and r['continuation'][-1]['iterations'] or 1200} "
+                                                "iterations): the steady value is higher. ")
+        rows.append(metric(f'{w} W: SoC package (hottest)', None, s['soc']['max_c'], '°C', better=None, note=rising.strip()))
         rows.append(metric(f'{w} W: thermal plate (hottest)', None, s['ttp']['max_c'], '°C', better=None,
-                           note=f"limit {LIM['ttp_max_c']} °C"))
+                           note=rising + f"Limit {LIM['ttp_max_c']} °C."))
         figures += [(f'thermal/{name}-section-y.png', f'{w} W, no heatsink: temperature through the module'),
                     (f'thermal/{name}-flow.png', f'{w} W, no heatsink: air rising off the plate'),
                     (f'thermal/{name}-convergence.png', f'{w} W: convergence')]
@@ -118,7 +122,12 @@ def section_thermal_cooled(t):
             metric('Air entering the fan', fa.get('air_through_fan_c'), fb.get('air_through_fan_c'), '°C',
                    note=f"room {TH['case']['ambient_c']} °C; above it means hot air is being re-breathed"),
             metric('Fan flow', fa.get('flow_cfm'), fb.get('flow_cfm'), 'CFM', better='higher', digits=2, note='22.9 CFM free air'),
-            metric('Hottest air in the enclosure', a.get('air_max_c'), (b or {}).get('air_max_c'), '°C')]
+            metric('Hottest air in the enclosure', a.get('air_max_c'), (b or {}).get('air_max_c'), '°C'),
+            metric('Heat the fins carry at this fin temperature', a.get('block_heat_w'), (b or {}).get('block_heat_w'), 'W', better='higher',
+                   note=f"fins at {na.get('fin_temperature_c')} / {nb.get('fin_temperature_c')} °C; the module makes 40 W. "
+                        'More heat at the same fin temperature means better cooling.'),
+            metric('Fin calibration settled', 'yes' if a.get('calibrated') else 'no', 'yes' if (b or {}).get('calibrated') else 'no',
+                   better=None, note='no: the fins still carry more (or less) than 40 W, so the plate value is an upper (or lower) bound')]
     figures, videos = [], []
     for name, rv in (('cooled', 'Rev 0.7'), ('cooled-0.8', 'Rev 0.8')):
         if name in t:
@@ -134,10 +143,11 @@ def section_thermal_cooled(t):
                        'porous block whose resistance comes from the plate-fin model, which also gives the plate temperature at the CFD flow '
                        'and intake air temperature.',
             'metrics': rows, 'figures': figs(figures), 'videos': figs(videos),
-            'callouts': [{'html': f"Plate temperature = air entering the fins (CFD) + 40 W × heatsink resistance "
-                                  f"({na.get('heatsink', {}).get('total_k_per_w', 0):.3f} K/W at the CFD flow, cadagent.heatsink) + pad. "
+            'callouts': [{'html': f"Plate temperature = the fin temperature at which the fins carry 40 W in the CFD + 40 W × "
+                                  f"(spreading + base, cadagent.heatsink) + 40 W × pad. A plate-fin model alone gives "
+                                  f"{na.get('ttp_hotspot_model_only_c')} °C (Rev 0.7) / {nb.get('ttp_hotspot_model_only_c')} °C (Rev 0.8). "
                                   f"Fin geometry assumed: {hs.get('fin_thickness')} mm fins at {hs.get('pitch')} mm pitch "
-                                  "(measure your cooler)."}] if na else [],
+                                  "(measure your cooler; a tegrastats stress test settles it)."}] if na else [],
             'limits': a['limits'] + ['heat leaves the fin block evenly through its volume, so air in stagnant corners of the block runs hot '
                                      '(the mean temperatures and the fan flow are not affected)',
                                      'cooler internals (fin pitch, heat pipes, which faces exhaust) are assumed from the datasheet photo']}
@@ -221,5 +231,5 @@ if __name__ == '__main__':
     p = write_report(R / 'preview/simulation.html', 'J501 enclosure: Rev 0.7 → Rev 0.8 simulation review', sections,
                      subtitle='Less filament, still strong, better airflow. Every number below comes from a simulation or the slicer; '
                               'none of it is a physical test.',
-                     meta={'Revision': P['revision'], 'Toolkit': 'cad-agent feat/fea (cadagent.cfd, heatsink, fea, topopt, slicer, simviz)'})
+                     meta={'Revision': P['revision'], 'Toolkit': 'cad-agent v0.3.0+ (cadagent.cfd, heatsink, fea, topopt, slicer, simviz)'})
     print(p)

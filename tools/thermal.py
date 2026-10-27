@@ -187,19 +187,42 @@ if __name__ == '__main__':
     ap.add_argument('--no-calibrate', action='store_true', help='skip the fin-temperature calibration (quick tests)')
     ap.add_argument('--sim-root', type=Path, default=R / 'sim', help='where the OpenFOAM cases go')
     ap.add_argument('--exports', type=Path, default=R / 'exports/thermal', help='where the result JSON goes')
+    ap.add_argument('--recalibrate', type=int, metavar='ROUNDS',
+                    help='cooled cases: continue the fin-temperature calibration of the existing case folder for up to ROUNDS '
+                         'more rounds, starting from the fin temperature it reached')
+    ap.add_argument('--balance', type=int, metavar='MAX_ITERATIONS',
+                    help='continue the existing case folders 1000 iterations at a time until the energy balance is within 5 %% '
+                         '(or MAX_ITERATIONS in total), instead of writing and running them from scratch')
     a = ap.parse_args()
     out = a.exports
     out.mkdir(parents=True, exist_ok=True)
     for name in a.cases:
         w, cooled = CASES[name]
         case = make(name, w, cooled, a.fine, a.cell, a.iterations)
-        d = case.write(a.sim_root / (name + a.suffix), np_procs=a.np)
-        print(f'{name}: wrote {d}', flush=True)
-        if a.write_only:
-            continue
-        t = time.time()
-        rc = case.run(d)
-        res = case.calibrate_fins(d, w) if cooled and rc == 0 and not a.no_calibrate else case.results(d)
+        if a.recalibrate and cooled:               # more calibration rounds from where the last run stopped
+            d = a.sim_root / (name + a.suffix)
+            meta = json.loads((d / 'cadagent-case.json').read_text())
+            for z in case.porous:                  # the fin temperature the last round reached, not the first guess
+                z['fin_temperature_c'] = next(m['fin_temperature_c'] for m in meta['porous'] if m['name'] == z['name'])
+            earlier = json.loads((out / f'{name}{a.suffix}.json').read_text()).get('fin_calibration', [])
+            t = time.time()
+            res = case.calibrate_fins(d, w, rounds=a.recalibrate)
+            res['fin_calibration'] = earlier + [dict(h, resumed=True) for h in res['fin_calibration']]
+            rc = 0 if res.get('solver_finished') else 1
+        elif a.balance:                            # continue the finished case where it stopped
+            d = a.sim_root / (name + a.suffix)
+            t = time.time()
+            res = case.run_until_balanced(d, chunk=1000, max_iterations=a.balance)
+            rc = 0 if res.get('solver_finished') else 1
+            print(name, 'continuation', res['continuation'], flush=True)
+        else:
+            d = case.write(a.sim_root / (name + a.suffix), np_procs=a.np)
+            print(f'{name}: wrote {d}', flush=True)
+            if a.write_only:
+                continue
+            t = time.time()
+            rc = case.run(d)
+            res = case.calibrate_fins(d, w) if cooled and rc == 0 and not a.no_calibrate else case.results(d)
         res.update(exit_code=rc, run_minutes=round((time.time() - t) / 60, 1), revision=P['revision'],
                    case_setup=json.loads((d / 'cadagent-case.json').read_text()))
         if cooled and rc == 0:

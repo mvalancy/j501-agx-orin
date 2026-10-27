@@ -48,7 +48,9 @@ else:
     row('thermal plate margin', margin >= tc['ttp_margin_c'], f"{n.get('ttp_hotspot_c')} °C, {margin} K under the limit (min {tc['ttp_margin_c']})")
     row('fan operating point', f.get('fraction_of_free_air', 0) >= tc['min_fan_fraction_of_free_air'], f"{f.get('flow_cfm')} CFM, {f.get('fraction_of_free_air')} of free air")
     row('no re-breathing', intake <= tc['max_intake_rise_c'], f'air into the fan {intake:+.1f} K above the room')
-    row('CFD converged', bool(t.get('converged')) or bool(t.get('fin_calibration')), f"convergence {t.get('convergence')}")
+    row('CFD converged', bool(t.get('converged')) or bool(t.get('calibrated')),
+        f"fins calibrated: {bool(t.get('calibrated'))} (carry {t.get('block_heat_w')} W of 40); energy balance "
+        f"{t.get('energy_balance_pct')} %")
 
 # filament is reported by `cad-agent slice` (the report checks its 3MF hashes), not gated here
 out = {'revision': P['revision'], 'pass': ok, 'checks': rows,
