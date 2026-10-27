@@ -8,7 +8,7 @@ cad:
   printer: {name: Bambu Lab P1S, bed_mm: [256, 256, 256]}
   steps:
     - {name: build,             run: cad/build.py,              log: build.log}
-    - {name: clearances,        run: tools/check_clearances.py, log: carrier-clearances.log, needs: [build]}
+    - {name: clearances,        run: tools/check_clearances.py, log: carrier-clearances.log, needs: [build], timeout_s: 5400}
     - {name: shells,            run: tools/check_shells.py,     log: shell-clearances.log, needs: [build]}
     - {name: ports,             run: tools/check_ports.py,      log: port-checks.log, needs: [build]}
     - {name: assembly-paths,    run: tools/assembly_paths.py,   log: assembly-paths.log, needs: [build]}
@@ -23,7 +23,7 @@ cad:
     - {name: render,            run: tools/render.py,           log: render.log}
     - {name: assembly-steps,    run: tools/render_steps.py,     needs: [build]}
     - {name: readmes,           run: tools/write_readmes.py,    needs: [print-review]}
-    - {name: structure,         run: tools/structure.py,        log: structure.log, needs: [build]}
+    - {name: structure,         run: tools/structure.py,        log: structure.log, needs: [build], timeout_s: 5400}
     - {name: heatsink-study,    run: tools/heatsink_study.py}
     - {name: simulation,        run: tools/check_sim.py,        log: simulation-checks.log}
     - {name: sim-report,        run: tools/sim_report.py}

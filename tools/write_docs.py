@@ -140,7 +140,7 @@ for a in [('P1','base','1 (desktop, and always with storage trays)','Printed','2
 ('H3','M3 x 16 ISO 4762 socket head','4','Purchase','Lid screws','2.5 mm hex, 40 mm reach'),
 ('H5','M3 x 10 ISO 7380 button head','4','Purchase','Board screws','8.4 mm engagement'),
 ('H7','M3 x 35 flat head, DIN 7991 / ISO 10642, A2','4','Purchase','Up through the floor pocket into the female standoffs between the AGX module and the heatsink','Raised countersink seat at Z9.76 gives exactly 4 mm (8 threads) of engagement; thermal pad does not change it'),
-('H10','RP-SMA female bulkhead pigtail (1/4-36 thread) to U.FL/MHF4 as the radio needs','4 (2 Wi-Fi + 2 cellular)','Purchase','D6.6 hole with a 6.0 mm flat (the thread's milled flat stops it turning); 2.5 mm local wall; 8 mm nut + lock washer outside','Insert from inside; thread must cover 2.5 mm wall + washer + nut + about 4 mm for the antenna'),
+('H10','RP-SMA female bulkhead pigtail (1/4-36 thread) to U.FL/MHF4 as the radio needs','4 (2 Wi-Fi + 2 cellular)','Purchase','D6.6 hole with a 6.0 mm flat (the thread milled flat stops it turning); 2.5 mm local wall; 8 mm nut + lock washer outside','Insert from inside; thread must cover 2.5 mm wall + washer + nut + about 4 mm for the antenna'),
 ('P15','storage_35 (3.5 in tray)','0-2','Printed','206x181x32; one SFF-8301 drive; 12V IN D8 hole','Print floor down; stack in any order'),
 ('P16','storage_25 (2.5 in tray)','0-2','Printed','206x181x22; two SFF-8201 drives up to 15 mm','Print floor down'),
 ('P17','storage_mount_plate','1 for wall/robot with storage','Printed','206x233x8 frame with P1M tabs','Replaces P1M when trays are fitted'),
