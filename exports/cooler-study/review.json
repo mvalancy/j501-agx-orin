@@ -1,0 +1,78 @@
+{
+  "groups": [
+    {
+      "title": "Cooler study",
+      "summary": "Mini J501 G48R reference assembly. Current lid collision reproduced; mount axes and thermal seating remain provisional. Existing print checks and CFD describe the older cooler.",
+      "views": [
+        {
+          "title": "Assembly",
+          "kind": "image",
+          "file": "preview/cooler-study-assembly.png",
+          "caption": "Reference study. Approximate mount and pipe geometry; not a released enclosure."
+        },
+        {
+          "title": "Clearances",
+          "kind": "image",
+          "file": "preview/cooler-study-clearance.png",
+          "caption": "Reference study. Approximate mount and pipe geometry; not a released enclosure."
+        },
+        {
+          "title": "Installed",
+          "kind": "image",
+          "file": "preview/cooler-study-installed.png",
+          "caption": "Reference study. Approximate mount and pipe geometry; not a released enclosure."
+        },
+        {
+          "title": "Exploded",
+          "kind": "image",
+          "file": "preview/cooler-study-exploded.png",
+          "caption": "Reference study. Approximate mount and pipe geometry; not a released enclosure."
+        },
+        {
+          "title": "Top",
+          "kind": "image",
+          "file": "preview/cooler-study-top.png",
+          "caption": "Reference study. Approximate mount and pipe geometry; not a released enclosure."
+        },
+        {
+          "title": "Side",
+          "kind": "image",
+          "file": "preview/cooler-study-side.png",
+          "caption": "Reference study. Approximate mount and pipe geometry; not a released enclosure."
+        },
+        {
+          "title": "Interactive 3D",
+          "kind": "model",
+          "file": "exports/cooler-study/view/view.json",
+          "caption": "Shared cad-agent viewer. Enable the optional PCB, module and mounting axes in the parts list."
+        }
+      ],
+      "reports": [
+        {
+          "title": "Native reference solids",
+          "file": "exports/cooler-study/fit-review.json",
+          "pass_key": "study_valid"
+        },
+        {
+          "title": "Existing lid fits G48R",
+          "file": "exports/cooler-study/fit-review.json",
+          "pass_key": "current_cover_fit_pass"
+        }
+      ],
+      "downloads": [
+        {
+          "title": "Assembly STEP",
+          "file": "exports/cooler-study/g48r-reference.step"
+        },
+        {
+          "title": "Fit report",
+          "file": "exports/cooler-study/fit-review.json"
+        },
+        {
+          "title": "Dimensions and assumptions",
+          "file": "cad/cooler-profiles.json"
+        }
+      ]
+    }
+  ]
+}
