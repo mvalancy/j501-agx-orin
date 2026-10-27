@@ -10,7 +10,7 @@ committed exports are the ones the local pipeline built and checked:
 4. Every local link in ASSEMBLY.md and every README.md resolves.
 5. With --tag, the tag matches the revision in cad/parameters.json.
 
-    python tools/ci_check.py [--tag rev0.7]
+    python tools/ci_check.py [--tag rev0.8]
 """
 from pathlib import Path
 import argparse, hashlib, json, re, subprocess, sys

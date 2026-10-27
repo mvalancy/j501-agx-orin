@@ -3,11 +3,11 @@
 <p align="center">
   A 3D-printable housing for the <a href="https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html">Seeed reServer Industrial J501 carrier board</a>
   with an NVIDIA Jetson AGX Orin module.<br>
-  <b>Rev 0.7 · fit-check prototype</b> · fits a 256 mm printer bed · MIT licensed
+  <b>Rev 0.8 · fit-check prototype</b> · fits a 256 mm printer bed · MIT licensed
 </p>
 
 <p align="center">
-  <img src="preview/assembled.png" alt="Rev 0.7 enclosure, assembled" width="820">
+  <img src="preview/assembled.png" alt="Rev 0.8 enclosure, assembled" width="820">
 </p>
 
 ```mermaid
@@ -20,7 +20,7 @@ flowchart LR
     F -.-> G[Drive trays, optional]
 ```
 
-**Download:** [Rev 0.7 print package](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.7): all STL files, assembly instructions and renders in one zip.
+**Download:** [Rev 0.8 print package](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.8): all STL files, assembly instructions and renders in one zip.
 
 **Browse the parts:** the [print index](exports/README.md) shows every part with a picture, its size, a 3D view and download links. Every folder has a README with pictures.
 
@@ -259,9 +259,13 @@ listed under `steps:` in that file in order with `.venv/bin/python`.
 
 ### Making a release
 
-1. Change the design, set `revision` in `cad/parameters.json` (for example `0.7-...`), and run `cad-agent all`.
-2. Commit everything, including `exports/`, and push. CI checks the committed print files match that build and pass every check.
-3. Tag and push: `git tag rev0.7 && git push origin rev0.7`. CI builds the print zip (STLs, instructions, renders) and publishes the release.
+`main` is protected: changes go to the `dev` branch, then a pull request from `dev` into `main` (CI's `check` must
+pass and every review comment must be resolved).
+
+1. Change the design, set `revision` in `cad/parameters.json` (for example `0.8-...`), and run `cad-agent all`.
+2. Commit everything, including `exports/`, push to `dev`, and open a pull request into `main`. CI checks the committed
+   print files match that build and pass every check. Merge it once it is reviewed.
+3. Tag and push: `git tag rev0.8 && git push origin rev0.8`. CI builds the print zip (STLs, instructions, renders) and publishes the release.
 
 Releases stay marked pre-release until `physical_fit_verified` is true in `exports/review-validation.json`. Every push also leaves the print zip as a downloadable CI artifact for 30 days.
 
