@@ -48,3 +48,4 @@ result.json
 # Airflow videos are tens of MB each: attached to the GitHub release instead of the repository. Debug runs stay local.
 preview/thermal/*.mp4
 preview/thermal/*-debug-*
+exports/thermal/*-debug*

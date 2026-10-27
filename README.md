@@ -66,6 +66,7 @@ Every printed part has a [3MF](exports/) (opens in Bambu Studio), STL and STEP f
 | P11 Insert coupon | [m3_insert_coupon.3mf](exports/m3_insert_coupon.3mf) | Which pilot hole (3.7–4.1 mm) holds an M3 insert |
 | P12 / P13 Rail coupon and key | [rail_coupon.3mf](exports/rail_coupon.3mf), [rail_key.3mf](exports/rail_key.3mf) | Plates slide in their channels without rattling |
 | P14 Countersink coupon | [countersink_coupon.3mf](exports/countersink_coupon.3mf) | The M3 × 35 flat head seats on its cone |
+| P20 Antenna hole coupon | [rpsma_coupon.3mf](exports/rpsma_coupon.3mf) | Which D-hole flat (5.9–6.2 mm) holds an RP-SMA bulkhead without turning |
 
 Filament is not specified yet, so fits, heat resistance and insert retention are untested.
 
@@ -105,7 +106,7 @@ Filament is not specified yet, so fits, heat resistance and insert retention are
 
 [![Step 3: heat-set inserts](docs/assembly/03-inserts.png)](ASSEMBLY.md#3-heat-set-the-inserts)
 
-1. Print the test parts (P9, P11–P14) and test-fit the bare board on P9.
+1. Print the test parts (P9, P11–P14, P20) and test-fit the bare board on P9.
 2. Heat-set 8 × M3 inserts: 4 board supports, 4 lid columns.
 3. Fit the board (4 × M3 × 10). Without drive trays, plug the floor opening with P18.
 4. Fit the module and cooler, then tie the cooler down with 4 × M3 × 35 flat heads from below.

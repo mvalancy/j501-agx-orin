@@ -3,7 +3,7 @@
 Cases (pick with arguments, default all):
   bare40   AGX module with no heatsink at 40 W (MAXN on the 32 GB module): the starting point
   bare15   the same at 15 W (the lowest power mode)
-  cooled   the J501 cooler (heat-pipe base, fins, 92 mm fan blowing down) at 40 W
+  cooled   the J501 cooler (heat-pipe base, fins, 80 mm fan (8015) blowing down) at 40 W
 
 Geometry comes from the build (base, lid, plates, hatch) and the carrier references (board outline and connector
 meshes). The cooler and the fan are the provisional envelope from cad/parameters.json; their real fin count, heat
@@ -198,8 +198,13 @@ if __name__ == '__main__':
     out.mkdir(parents=True, exist_ok=True)
     for name in a.cases:
         w, cooled = CASES[name]
+        if (a.recalibrate and not cooled) or (a.balance and cooled):
+            # never fall through to writing (which wipes the case folder): --recalibrate is for cooled cases, --balance for
+            # the others (a cooled case is balanced by its calibration)
+            print(f'{name}: skipped ({"--recalibrate needs a cooled case" if a.recalibrate else "--balance is for cases without fins"})', flush=True)
+            continue
         case = make(name, w, cooled, a.fine, a.cell, a.iterations)
-        if a.recalibrate and cooled:               # more calibration rounds from where the last run stopped
+        if a.recalibrate:               # more calibration rounds from where the last run stopped
             d = a.sim_root / (name + a.suffix)
             meta = json.loads((d / 'cadagent-case.json').read_text())
             for z in case.porous:                  # the fin temperature the last round reached, not the first guess

@@ -5,12 +5,24 @@
     {
       "check": "structure lid_press",
       "pass": true,
-      "detail": "SF 2.53 (min 2.0), deflection 0.7631 mm (max 1.19), revision 0.8-thermal"
+      "detail": "SF 2.99 (min 2.0), deflection 0.7218 mm (max 1.19), revision 0.8-thermal"
+    },
+    {
+      "check": "structure lid_press: peak",
+      "pass": true,
+      "detail": "single-element peak 22.72 MPa, SF 1.1 at [114.6, 66.7, 87.7] mm; advisory: a sharp inside corner, mesh-dependent",
+      "advisory": true
     },
     {
       "check": "structure base_mount",
       "pass": true,
       "detail": "SF 3.71 (min 2.0), deflection 0.9068 mm, revision 0.8-thermal"
+    },
+    {
+      "check": "structure base_mount: peak",
+      "pass": false,
+      "detail": "single-element peak 26.99 MPa, SF 0.93 at [205.5, 76.2, 11.7] mm; advisory: a sharp inside corner, mesh-dependent",
+      "advisory": true
     },
     {
       "check": "CFD on this revision",

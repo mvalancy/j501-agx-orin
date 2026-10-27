@@ -12,10 +12,11 @@ everything already assembled is grey. Part numbers (P1, P2, …) and hardware ar
 
 ![Test parts](docs/assembly/01-test-prints.png)
 
-Print P9, P11, P12, P13 and P14 in the filament you will use for the enclosure.
+Print P9, P11, P12, P13, P14 and P20 in the filament you will use for the enclosure.
 - **P11:** heat-set an insert into each pilot hole; use the size that holds best.
 - **P12 / P13:** the key should slide in the channel without rattling.
 - **P14:** an M3 × 35 flat head should sit flush on its cone.
+- **P20:** an RP-SMA bulkhead should push into the tightest D-hole whose flat stops it turning; set `antenna_bulkheads.across_flat` to that size.
 
 ### 2. Test-fit the board on P9
 

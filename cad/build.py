@@ -295,12 +295,19 @@ def cover():
     hz=e['lid_screw_head_z']
     for x,y in e['lid_screw_centers']:
         cuts+=[cyl(x,y,hz,e['lid_counterbore_diameter']/2,H-hz+1),cyl(x,y,BH-1,e['lid_screw_clearance']/2,hz-BH+1.01)]
-    if e.get('lid_vent_z'):  # Rev 0.8 drops them: the short lid's walls carry the roof load, and the roof cells vent
+    if e.get('lid_vent_z'):
         vz0,vz1=e['lid_vent_z']
+        # A roof rib that ends on a wall must land on solid wall: a vent slot under its end left the rib floating with
+        # 0.5 mm of air each side, the lid's peak stress (local safety factor 1.0 under 300 N). Skip those slots.
+        rr=e.get('roof_ribs') or {};keep=rr.get('width',0)/2+e['vent_width']/2+2.0
+        ends=[(x,y) for s_ in rr.get('segments',[]) for x,y in (s_[:2],s_[2:])]
+        def clear(wall,pos):
+            near={'x0':lambda x,y:x<T+3,'x1':lambda x,y:x>W-T-3,'y0':lambda x,y:y<Y0+T+3,'y1':lambda x,y:y>Y1-T-3}[wall]
+            return all(abs(pos-(y if wall[0]=='x' else x))>keep for x,y in ends if near(x,y))
         for y in vent_positions(*e['side_vent_y']):
-            cuts+=[slot('x',-1,T+2,y,vz0,vz1,e['vent_width']),slot('x',W-T-1,T+2,y,vz0,vz1,e['vent_width'])]
+            cuts+=[slot('x',-1,T+2,y,vz0,vz1,e['vent_width'])]*clear('x0',y)+[slot('x',W-T-1,T+2,y,vz0,vz1,e['vent_width'])]*clear('x1',y)
         for x in vent_positions(*e['panel_vent_x']):
-            cuts+=[slot('y',Y0-1,T+2,x,vz0,vz1,e['vent_width']),slot('y',Y1-T-1,T+2,x,vz0,vz1,e['vent_width'])]
+            cuts+=[slot('y',Y0-1,T+2,x,vz0,vz1,e['vent_width'])]*clear('y0',x)+[slot('y',Y1-T-1,T+2,x,vz0,vz1,e['vent_width'])]*clear('y1',x)
     s_af=e['hex_across_flats'];hexes=cq.Workplane('XY').pushPoints(hex_centers()).polygon(6,2*s_af/math.sqrt(3)).extrude(RT+2).val().translate((0,0,roof_z-1))
     # Fan-side inlet chamfer: each cell widens toward the cooler so the webs meet the airflow with a tapered edge.
     # The exterior face keeps the 10 mm A/F finger limit; in roof-down print orientation the chamfer is not an overhang.
