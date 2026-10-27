@@ -49,3 +49,5 @@ result.json
 preview/thermal/*.mp4
 preview/thermal/*-debug-*
 exports/thermal/*-debug*
+exports/thermal/*-dbg-*
+exports/thermal/cooled-uniform-heat.json
