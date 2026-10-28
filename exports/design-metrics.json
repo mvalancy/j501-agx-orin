@@ -40,7 +40,7 @@
       "fan_side_web_land_mm": 0.6,
       "fan_side_open_area_mm2": 11515.2,
       "full_web_depth_mm": 2.5,
-      "note": "Tapered entry on the fan side reduces the sharp-edge inlet loss; the 10 mm A/F exterior opening still sets the finger limit and the minimum flow area. Not tested in airflow."
+      "note": "Chamfer on the inside face of each cell. Rev 0.9 draws room air in through these cells (the fan blows up and out through the grille), so the chamfer is on the outlet side and does little for the flow; the sharp outer edge is the entry, and the 10 mm A/F exterior opening sets the finger limit and the minimum flow area. Kept because it prints roof-down with no overhang. Not tested in airflow on its own."
     },
     "roof_underside_z": 93.5,
     "grille_underside_z": 94.0,

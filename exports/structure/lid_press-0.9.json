@@ -32,7 +32,7 @@
   "stiffness_n_per_mm": 909.6,
   "case": "lid_press",
   "revision": "0.9-g48r",
-  "solve_minutes": 0.9,
+  "solve_minutes": 1.0,
   "von_mises_p99_mpa": 6.2,
   "von_mises_p999_mpa": 11.87,
   "peak_at_mm": [

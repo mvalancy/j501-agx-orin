@@ -490,16 +490,16 @@
   "header_meta": {
     "project": "j501-agx",
     "revision": "rev 0.9-g48r",
-    "generated": "2026-10-28 06:41 UTC"
+    "generated": "2026-10-28 07:42 UTC"
   },
   "footer_meta": {
     "checks": "48 pass / 0 fail / 0 skip",
     "physical_fit": "physical fit NOT verified (CAD only)",
-    "slicer": "slicer not run"
+    "slicer": "sliced (Bambu Studio (command line)): 375.7 g, 11.75 h for 5 part(s), 0.20mm Standard @BBL X1C, Bambu PLA Basic @BBL P1S 0.4 nozzle"
   },
   "project": "j501-agx",
   "revision": "0.9-g48r",
   "physical_fit_verified": false,
-  "slicer_run": false,
+  "slicer_run": true,
   "pass": true
 }
