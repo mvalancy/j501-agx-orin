@@ -126,8 +126,10 @@ def section_thermal_cooled(t):
     na, nb = a.get('network', {}), (b or {}).get('network', {})
     fa, fb = a.get('fans', {}).get('fan', {}), (b or {}).get('fans', {}).get('fan', {})
     rows = [metric('Thermal plate hot spot', na.get('ttp_hotspot_c'), nb.get('ttp_hotspot_c'), '°C', note=f"limit {LIM['ttp_max_c']} °C"),
-            metric('Air entering the fan', fa.get('air_through_fan_c'), fb.get('air_through_fan_c'), '°C',
-                   note=f"room {TH['case']['ambient_c']} °C; above it means hot air is being re-breathed"),
+            metric('Air entering the fins', na.get('air_into_fins_c', fa.get('air_through_fan_c')),
+                   nb.get('air_into_fins_c', fb.get('air_through_fan_c')), '°C',
+                   note=f"room {TH['case']['ambient_c']} °C; above it means hot air is being re-breathed. Rev {PREV}: fan assumed to blow down "
+                        f"(air into the fan); Rev {CUR}: the fan blows up, so this is the fan's exhaust minus the fins' heat"),
             metric('Fan flow', fa.get('flow_cfm'), fb.get('flow_cfm'), 'CFM', better='higher', digits=2,
                    note='free air: 22.9 CFM (Rev 0.8 cooler, 80 mm 5 V fan) / 55.3 CFM (Rev 0.9 cooler, 92 mm 12 V fan)'),
             metric('Hottest air in the enclosure', a.get('air_max_c'), (b or {}).get('air_max_c'), '°C'),
@@ -231,9 +233,9 @@ def section_changes():
                        f"<li><b>Enclosure {e['height']:g} mm tall</b> (Rev 0.8: 92 mm, Rev 0.7: 112 mm). The lid is cut away over the fan down to a "
                        f"flush {g['thickness']:g} mm grille ({g['spokes']} spokes, {g['rings']} rings): the fan top is 2.4 mm under it, so the "
                        "enclosure is only as tall as the cooler needs.</li>"
-                       f"<li><b>Skirt around the fan frame</b> ({g['skirt_wall']:g} mm wall, {g['clearance']:g} mm clear): the fan breathes only "
-                       "through its grille, the exhaust leaves through the hex cells further out and the wall vents, and the cut-out is "
-                       "stiffened; the star ribs start on it, with round bosses at the joints.</li>"
+                       f"<li><b>Skirt around the fan frame</b> ({g['skirt_wall']:g} mm wall, {g['clearance']:g} mm clear): the fan blows "
+                       "straight out through its grille, cool air comes in through the wall vents and the hex cells further out (the "
+                       "blind band next to the skirt keeps them away from the plume), and the cut-out is stiffened; the star ribs start on it, with round bosses at the joints.</li>"
                        "<li><b>Recovery riser</b> for a printed Rev 0.8 lid (tools/lid_riser.py, 18 mm, 4 × M3 × 30): not a release part.</li>"
                        '</ul>'}
 

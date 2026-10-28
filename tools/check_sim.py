@@ -57,12 +57,13 @@ if not t:
 else:
     n, f = t.get('network', {}), t['fans'].get('fan', {})
     margin = n.get('margin_c', -1)
-    intake = f.get('air_through_fan_c', 99) - P['thermal']['case']['ambient_c']
+    # air into the fins (thermal.py works it out for either fan direction; older results: the air through the fan)
+    intake = n.get('air_into_fins_c', f.get('air_through_fan_c', 99)) - P['thermal']['case']['ambient_c']
     row('CFD on this revision', t.get('revision', P['revision']) == P['revision'], f"result revision {t.get('revision', 'not recorded')}")
     row('thermal plate margin', margin >= tc['ttp_margin_c'], f"{n.get('ttp_hotspot_c')} °C, {margin} K under the limit (min {tc['ttp_margin_c']})")
     row('fan operating point', f.get('fraction_of_free_air', 0) >= tc['min_fan_fraction_of_free_air'], f"{f.get('flow_cfm')} CFM, {f.get('fraction_of_free_air')} of free air")
     row('no re-breathing', intake <= tc['max_intake_rise_c'],
-        f"air into the fan {intake:+.1f} K above the room (target {tc['max_intake_rise_c']} K); advisory: its effect is in "
+        f"air into the fins {intake:+.1f} K above the room (target {tc['max_intake_rise_c']} K); advisory: its effect is in "
         "the plate temperature, which is gated above", advisory=True)
     row('CFD converged', bool(t.get('converged')) and bool(t.get('calibrated')),
         f"fins calibrated: {bool(t.get('calibrated'))} (carry {t.get('block_heat_w')} W of 40); energy balance "

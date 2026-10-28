@@ -4,7 +4,7 @@ Cases (pick with arguments, default all):
   bare40   AGX module with no heatsink at 40 W (MAXN on the 32 GB module): the starting point
   bare15   the same at 15 W (the lowest power mode)
   cooled   the reComputer mini J501 heatsink (2 mm copper spreader, G48R heat-pipe tower, 92 mm 9215 fan blowing
-           down) at 40 W
+           up: air in through the fin block's open sides, out through the lid grille) at 40 W
 
 Geometry comes from the build (base, lid, plates, hatch) and the carrier references (board outline and connector
 meshes). The cooler is the G48R from its drawings (S06) and the user's photos; the plate thickness and the exact fan
@@ -164,17 +164,26 @@ def plate_temperature(res, power_w):
     m = TH['module']
     a = (m['soc_size'] + 2 * m['ttp_thickness']) ** 2 * 1e-6
     r_pad = P['cooler']['tim_thickness'] / 1000 / (m['tim_k'] * a)
-    t_in = fan['air_through_fan_c']
+    # Fan direction (TH fan axis): blowing down, the fan breathes enclosure air and pushes it into the fins; blowing up
+    # (the fitted cooler), the fan exhausts the air the fins heated, so the air into the fins is the fan air minus the
+    # fins' heat: T_in = T_fan - Q / (rho q cp), the mixed temperature of everything the fins draw in.
+    blows_up = TH['fan']['axis'][2] > 0
+    t_fan = fan['air_through_fan_c']
+    q_fins = res.get('block_heat_w') or power_w
+    rho = 101325 / (287.05 * (t_fan + 273.15))
+    t_in = round(t_fan - q_fins / (rho * q * 1007), 2) if blows_up else t_fan
     fins = res['case_setup']['porous'][0]
     t_fin = fins.get('fin_temperature_c')
     t_plate = t_fin + power_w * (r['spreading'] + r['base'] + r_pad)
     t_model = t_in + power_w * (r['total_k_per_w'] + r_pad)
-    return {'air_into_fins_c': t_in, 'fan_flow_m3h': fan['flow_m3h'], 'fin_temperature_c': round(t_fin, 2),
+    return {'air_into_fins_c': t_in, 'fan_air_c': t_fan, 'fan_role': 'exhaust' if blows_up else 'intake',
+            'fan_flow_m3h': fan['flow_m3h'], 'fin_temperature_c': round(t_fin, 2),
             'heat_out_w': res.get('heat_out_w'), 'heatsink': {k: (round(v, 4) if isinstance(v, float) else v) for k, v in r.items()},
             'pad_k_per_w': round(r_pad, 4), 'ttp_hotspot_c': round(t_plate, 1), 'ttp_hotspot_model_only_c': round(t_model, 1),
             'ttp_limit_c': TH['limits']['ttp_max_c'], 'margin_c': round(TH['limits']['ttp_max_c'] - t_plate, 1), 'heatsink_model': hs.describe(),
             'method': 'T_plate = T_fin (CFD, calibrated so the fins deliver the module power) + P x (spreading + base, cadagent.heatsink) + P x pad; '
-                      'ttp_hotspot_model_only_c is the plate-fin model alone at the CFD fan flow and intake air'}
+                      'ttp_hotspot_model_only_c is the plate-fin model alone at the CFD fan flow and the air into the fins '
+                      '(blowing up: the fan air minus the fins\' heat over the fan flow)'}
 
 
 CASES = {'bare40': (40, False), 'bare15': (15, False), 'cooled': (40, True)}

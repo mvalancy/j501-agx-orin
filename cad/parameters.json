@@ -312,7 +312,7 @@
       "ring_width": 1.4,
       "spokes": 12,
       "spoke_width": 2.0,
-      "note": "Rev 0.9: the roof is cut away over the fan down to a flush 3 mm grille (hub disc, 2 rings, 12 spokes); the fan top sits 2.44 mm under it. A skirt wall around the fan frame (6 mm clear, so a 3 mm fan-position error still clears; down to 3.5 mm below the fan top) keeps the hot exhaust out of the intake and stiffens the cut-out; the roof ribs start on it. Spokes, hub and thickness from the lid sweep (300 N): 12 spokes and a D20 hub flex least.",
+      "note": "Rev 0.9: the roof is cut away over the fan down to a flush 3 mm grille (hub disc, 2 rings, 12 spokes); the fan top sits 2.44 mm under it. A skirt wall around the fan frame (6 mm clear, so a 3 mm fan-position error still clears; down to 3.5 mm below the fan top) keeps the fan's exhaust (it blows up) going straight out through the grille and stiffens the cut-out; the roof ribs start on it. Spokes, hub and thickness from the lid sweep (300 N): 12 spokes and a D20 hub flex least.",
       "band_skin": 1.2
     }
   },
@@ -1322,7 +1322,7 @@
       "k_fin": 200.0,
       "exhaust_axis": "y",
       "heat_pipes": 5,
-      "basis": "S06: fins 84 (stack) x 93 x 28.3 mm above a 5 mm gap, 5 x D6 copper heat pipes, 9215 fan on top blowing down (down-draft tower). Base 7 mm = 2 mm copper spreader + 5 mm heatsink base. Assumed: fin thickness 0.35 mm, effective base conductivity 1500 W/mK.",
+      "basis": "S06: fins 84 (stack) x 93 x 28.3 mm above a 5 mm gap, 5 x D6 copper heat pipes, 9215 fan on top blowing up (exhaust through the lid grille; air enters the fin block from its open sides; user, 2026-10-27). Base 7 mm = 2 mm copper spreader + 5 mm heatsink base. Assumed: fin thickness 0.35 mm, effective base conductivity 1500 W/mK.",
       "block_effectiveness_guess": 0.25,
       "block_effectiveness_note": "Starting point for the fin-temperature calibration only: a coarse J501 run delivered about 8.6 W at 43.5 C fins with 33 C intake air, i.e. the CFD fin block works at roughly a quarter of the uniform-flow conductance, because air from the fan turns straight out along the upper channels."
     },
@@ -1330,7 +1330,7 @@
       "axis": [
         0,
         0,
-        -1
+        1
       ],
       "d_outer": 88.24,
       "d_hub": 32.8,
@@ -1338,7 +1338,7 @@
       "thickness": 15.0,
       "dp0_pa": 28.1,
       "q_free_m3h": 93.9,
-      "note": "9215-Y at full speed (12 V, 4000 rpm): 55.26 CFM free air, 2.87 mmH2O at zero flow (S06 p.2); straight-line curve between the two; blowing down into the fins."
+      "note": "9215-Y at full speed (12 V, 4000 rpm): 55.26 CFM free air, 2.87 mmH2O at zero flow (S06 p.2); straight-line curve between the two. Blows up: it pulls air in through the fin block's open sides and out through the lid grille (user, 2026-10-27, on the fitted cooler)."
     },
     "case": {
       "cell_mm": 8.0,
@@ -1352,7 +1352,7 @@
       "ttp_margin_c": 10.0,
       "min_fan_fraction_of_free_air": 0.1,
       "max_intake_rise_c": 3.0,
-      "note": "Thermal plate at least 10 C under its 80 C limit at 40 W in 25 C air; fan at least 10 % of free air; air into the fan within 3 C of the room (no re-breathing)."
+      "note": "Thermal plate at least 10 C under its 80 C limit at 40 W in 25 C air; fan at least 10 % of free air; air into the fins within 3 C of the room (no re-breathing of the fan's exhaust)."
     }
   },
   "structure": {

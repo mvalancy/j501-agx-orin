@@ -351,7 +351,7 @@ def cover():
     # Over the fan the roof is cut away to a flush grille: the fan top sits just under it.
     pocket=prism_z(fan_outline(g['clearance']),roof_z-1,H-g['thickness']-roof_z+1)
     cuts+=[hexes]+inlet+[pocket,fan_grille_openings()]
-    # The band of cells next to the skirt stays closed on top (no hot exhaust right beside the intake) but is hollow
+    # The band of cells next to the skirt stays closed on top (no intake right beside the fan's hot plume) but is hollow
     # underneath, under a thin skin: light, and printed roof-down the skin is the first layers on the bed.
     band=[(x,y) for x,y in hex_centers() if (x,y) not in set(cells) and not inside_outline(x,y,g['clearance']+s_af/math.sqrt(3)+.3)]
     if band:cuts.append(cq.Workplane('XY').pushPoints(band).polygon(6,2*s_af/math.sqrt(3)).extrude(RT-g['band_skin']+1).val().translate((0,0,roof_z-1)))
@@ -381,7 +381,8 @@ def fan_grille_openings():
     return open_.cut(*keep).clean()
 
 def fan_skirt():
-    # Wall around the fan frame from the roof down past the fan top: seals the intake from the exhaust and frames the cut-out.
+    # Wall around the fan frame from the roof down past the fan top: the fan blows up, and the skirt keeps its exhaust going
+    # out through the grille instead of back into the enclosure; it also frames the cut-out.
     g=e['fan_grille'];z0=FAN_TOP-g['skirt_below_fan_top'];top=H-e['roof_edge_chamfer']
     return prism_z(fan_outline(g['clearance']+g['skirt_wall']),z0,top-z0).cut(prism_z(fan_outline(g['clearance']),z0-1,top-z0+2))
 
