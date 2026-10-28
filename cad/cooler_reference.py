@@ -53,7 +53,10 @@ def parts():
     for x, y in B['mount_holes'] + B['module_mount_centers']:
         pcb = pcb.cut(b.cyl(M + x, M + y, b.Z - 1, 1.75, 4))
     out['pcb_reference'] = pcb
-    out['agx_reference'] = compound([s for label, s, _ in items if label.startswith('E2')])
+    # the module's bounding box, not NVIDIA's model (vendor geometry is not redistributed; the 3D viewer shows the
+    # real module from the local reference copy)
+    bb = compound([s for label, s, _ in items if label.startswith('E2')]).BoundingBox()
+    out['agx_reference'] = b.box(bb.xmin, bb.ymin, bb.zmin, bb.xlen, bb.ylen, bb.zlen)
     return out
 
 

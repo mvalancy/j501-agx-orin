@@ -8,7 +8,7 @@ The reComputer mini J501 heatsink with fan (G48R tower, 92 × 15 mm fan) as the 
 |---|---|
 | [Assembly STEP](g48r-reference.step) | The cooler without board context |
 | [Fit report](fit-review.json) | STEP readback, exact lid-versus-cooler intersections with the fan moved ±3 mm, the Rev 0.8 collision control and the riser; source and artifact hashes |
-| [Interactive viewer data](view/README.md) | Shared cad-agent viewer meshes; board context hidden at first |
+| 3D viewer | The site's **3D model** page: the cooler is one section of the project viewer, next to the printed parts, the carrier board and the screws |
 | [Low-profile envelope](ws-rdn-601-envelope.step) | The 34 mm WS-RDN-601 alternative |
 | [Fit review](../../docs/cooler-fit-review.md) | Sources, assumptions, results and open measurements |
 

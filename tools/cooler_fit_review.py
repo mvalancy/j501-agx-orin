@@ -10,11 +10,11 @@ them back, then intersects exact lid solids with the cooler keep-outs:
   15 mm and the riser height (tools/lid_riser.py), the recovery path for an already printed Rev 0.8 lid.
 
 Writes exports/cooler-study/fit-review.json (bound to source and artifact hashes; checked in CI by
-tools/check_cooler_study.py), component STEPs, the shared viewer meshes and preview/cooler-study-*.png.
+tools/check_cooler_study.py), component STEPs and preview/cooler-study-*.png (the components also show in the project's 3D viewer:
+tools/view_model.py).
 """
 from pathlib import Path
 import sys, json, hashlib, subprocess, tempfile
-from types import SimpleNamespace
 import cadquery as cq
 R = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(R / 'cad'))
@@ -22,7 +22,6 @@ sys.path.insert(0, str(R / 'tools'))
 import cooler_reference as c  # noqa: E402
 import build as b  # noqa: E402
 from lid_riser import screw as riser_screw  # noqa: E402
-from cadagent.view import export_view  # noqa: E402
 from cadagent.render import Renderer  # noqa: E402
 
 OUT = R / 'exports/cooler-study'
@@ -151,12 +150,8 @@ def main():
                 for k, s in loaded.items() if k not in c.CONTEXT]
     renderer.render('cooler-study-exploded.png', exploded, caption='Cooler stack / separated components',
                     note='Standoffs carry the heatsink ears; the cooler contact sits directly on the copper spreader (no 6.8 mm gap)')
-    export_view(SimpleNamespace(root=R, exports_dir=OUT, title='J501 cooler / reComputer mini J501 (G48R)', part_ids={},
-                                view={'parts': False, 'hidden': list(c.CONTEXT), 'colors': c.COLORS,
-                                      'extra': [{'name': k, 'file': str((OUT / f'{k}.step').relative_to(R))} for k in pieces]}))
     draw(report)
-    artifacts = (sorted(OUT.glob('*.step')) + sorted((OUT / 'view').glob('*.stl')) + [OUT / 'view/view.json']
-                 + sorted((R / 'preview').glob('cooler-study-*.png')))
+    artifacts = sorted(OUT.glob('*.step')) + sorted((R / 'preview').glob('cooler-study-*.png'))
     report['artifact_sha256'] = {str(p.relative_to(R)): sha(p) for p in artifacts}
     (OUT / 'fit-review.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({'release_cover_fit_pass': release_pass, 'fan_worst_gap_mm': f['fan']['worst_shift']['minimum_gap_mm'],

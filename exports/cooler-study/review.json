@@ -43,8 +43,8 @@
         {
           "title": "Interactive 3D",
           "kind": "model",
-          "file": "exports/cooler-study/view/view.json",
-          "caption": "Shared cad-agent viewer. Enable the optional PCB, module and mounting axes in the parts list."
+          "file": "exports/view/view.json",
+          "caption": "The project 3D viewer. The cooler is its own section in the parts list, next to the printed parts, the carrier board and module, and the screws."
         }
       ],
       "reports": [

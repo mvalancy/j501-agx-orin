@@ -6,7 +6,7 @@ The cooler in the October 27 photographs is Seeed's [reComputer mini J501 heatsi
 
 ## One model
 
-`cooler_and_module()` in [cad/hardware.py](../cad/hardware.py) is the only cooler geometry. Renders, the carrier clearance checks, the CFD shell (`tools/thermal.py`) and this study all use it. Its dimensions are in the `cooler` section of [cad/parameters.json](../cad/parameters.json). [cad/cooler_reference.py](../cad/cooler_reference.py) only groups it into components for the study. The study began as a separate model ([PR #2](https://github.com/mvalancy/j501-agx-orin/pull/2)) and was merged into this one.
+`cooler_and_module()` in [cad/hardware.py](../cad/hardware.py) is the only cooler geometry. Renders, the carrier clearance checks, the CFD shell (`tools/thermal.py`), the project 3D viewer and this study all use it. Its dimensions are in the `cooler` section of [cad/parameters.json](../cad/parameters.json). [cad/cooler_reference.py](../cad/cooler_reference.py) only groups it into components for the study. The study began as a separate model ([PR #2](https://github.com/mvalancy/j501-agx-orin/pull/2)) and was merged into this one.
 
 ## Placement: centred on the module
 
@@ -79,11 +79,11 @@ These shapes are original approximations: the pipe U-bends, the base block, the 
 ```bash
 .venv/bin/python tools/cooler_fit_review.py     # also a cad-agent all step: cooler-study
 .venv/bin/python tools/check_cooler_study.py    # CI
-cad-agent site --serve                          # top bar: Cooler fit, Cooler 3D
+cad-agent site --serve                          # top bar: Cooler fit; 3D model (cooler section)
 ```
 
 - [Assembly STEP](../exports/cooler-study/g48r-reference.step)
-- [Components and viewer files](../exports/cooler-study/README.md)
+- [Component STEP files](../exports/cooler-study/README.md)
 - [Fit report (JSON)](../exports/cooler-study/fit-review.json)
 
 ![Installed](../preview/cooler-study-installed.png)
