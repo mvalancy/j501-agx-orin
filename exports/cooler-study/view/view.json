@@ -1,0 +1,184 @@
+{
+ "title": "J501 G48R cooler / reference study",
+ "units": "mm",
+ "up": "z",
+ "parts": [
+  {
+   "name": "spreader",
+   "id": "",
+   "file": "spreader.stl",
+   "color": "#bb743e",
+   "visible": true,
+   "explode": null,
+   "bounds_mm": [
+    55.0,
+    42.0,
+    41.25,
+    155.0,
+    152.0,
+    43.26
+   ]
+  },
+  {
+   "name": "cold_plate",
+   "id": "",
+   "file": "cold_plate.stl",
+   "color": "#aebbc1",
+   "visible": true,
+   "explode": null,
+   "bounds_mm": [
+    80.0,
+    67.0,
+    43.26,
+    120.0,
+    105.0,
+    48.26
+   ]
+  },
+  {
+   "name": "heat_pipes",
+   "id": "",
+   "file": "heat_pipes.stl",
+   "color": "#d4b896",
+   "visible": true,
+   "explode": null,
+   "bounds_mm": [
+    48.98,
+    58.98,
+    43.24,
+    151.02,
+    113.02,
+    72.58
+   ]
+  },
+  {
+   "name": "fins",
+   "id": "",
+   "file": "fins.stl",
+   "color": "#929ca3",
+   "visible": true,
+   "explode": null,
+   "bounds_mm": [
+    58.0,
+    39.75,
+    49.56,
+    141.65,
+    132.25,
+    76.56
+   ]
+  },
+  {
+   "name": "fan_frame",
+   "id": "",
+   "file": "fan_frame.stl",
+   "color": "#303b46",
+   "visible": true,
+   "explode": null,
+   "bounds_mm": [
+    54.39,
+    39.89,
+    76.5,
+    145.61,
+    132.11,
+    91.61
+   ]
+  },
+  {
+   "name": "fan_rotor",
+   "id": "",
+   "file": "fan_rotor.stl",
+   "color": "#111a23",
+   "visible": true,
+   "explode": null,
+   "bounds_mm": [
+    56.21,
+    42.21,
+    79.54,
+    143.79,
+    129.79,
+    88.58
+   ]
+  },
+  {
+   "name": "spacers_provisional",
+   "id": "",
+   "file": "spacers_provisional.stl",
+   "color": "#d9b062",
+   "visible": true,
+   "explode": null,
+   "bounds_mm": [
+    57.0,
+    43.5,
+    43.26,
+    153.0,
+    126.5,
+    50.06
+   ]
+  },
+  {
+   "name": "mount_brackets_provisional",
+   "id": "",
+   "file": "mount_brackets_provisional.stl",
+   "color": "#ac9e8b",
+   "visible": true,
+   "explode": null,
+   "bounds_mm": [
+    55.0,
+    41.5,
+    50.05,
+    155.0,
+    128.5,
+    51.56
+   ]
+  },
+  {
+   "name": "module_axes_reference",
+   "id": "",
+   "file": "module_axes_reference.stl",
+   "color": "#bd55bb",
+   "visible": false,
+   "explode": null,
+   "bounds_mm": [
+    58.45,
+    65.45,
+    36.76,
+    151.55,
+    145.55,
+    54.76
+   ]
+  },
+  {
+   "name": "pcb_reference",
+   "id": "",
+   "file": "pcb_reference.stl",
+   "color": "#347857",
+   "visible": false,
+   "explode": null,
+   "bounds_mm": [
+    15.0,
+    15.0,
+    20.0,
+    191.0,
+    178.0,
+    21.58
+   ]
+  },
+  {
+   "name": "agx_reference",
+   "id": "",
+   "file": "agx_reference.stl",
+   "color": "#5d6970",
+   "visible": false,
+   "explode": null,
+   "bounds_mm": [
+    55.0,
+    62.0,
+    29.58,
+    155.0,
+    149.0,
+    40.76
+   ]
+  }
+ ],
+ "skipped": []
+}

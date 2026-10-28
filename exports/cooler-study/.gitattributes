@@ -1,0 +1,4 @@
+# Review generated CAD through the native model, source and bound fit report.
+# OpenCascade STEP formatting includes insignificant trailing spaces.
+*.step -diff linguist-generated=true
+view/*.stl -diff linguist-generated=true

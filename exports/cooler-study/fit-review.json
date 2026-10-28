@@ -1,0 +1,288 @@
+{
+  "study_valid": true,
+  "current_cover_fit_pass": false,
+  "scope": "Reference CAD and exact committed-cover versus conservative envelope intersections; not manufacturing geometry, a selected airflow option or a release.",
+  "source_sha256": {
+    "cad/cooler-profiles.json": "c7fa8b45c91241ad4c8e4c9f56d9656a6f9560ad8e827bc56e8013bdcfe288bc",
+    "cad/cooler_reference.py": "08affb3f3f6dad2bb3a3db7b5e08a118abff61c6f2e553769cdfc47d2b760aa3",
+    "cad/parameters.json": "be4b38c6cb3d26790ae657c6ffe90e9545318d44f937d121140963403a4d4fdd",
+    "tools/cooler_fit_review.py": "fa3630092b6d6a62eeb7e452e2e4d175f93bffb55b195eba0513411f21567209",
+    "exports/cover.step": "f4ace5f2bd37743b30e68dec86b540fa3d7cac8d12586ed814f22116ade9b5b7"
+  },
+  "parts": {
+    "spreader": {
+      "valid": true,
+      "solid_count": 1,
+      "volume_mm3": 21911.915,
+      "bounds_mm": [
+        55.0,
+        42.0,
+        41.258,
+        155.0,
+        152.0,
+        43.258
+      ]
+    },
+    "cold_plate": {
+      "valid": true,
+      "solid_count": 1,
+      "volume_mm3": 7582.8319,
+      "bounds_mm": [
+        80.0,
+        67.0,
+        43.258,
+        120.0,
+        105.0,
+        48.258
+      ]
+    },
+    "heat_pipes": {
+      "valid": true,
+      "solid_count": 5,
+      "volume_mm3": 25771.9923,
+      "bounds_mm": [
+        49.0,
+        59.0,
+        43.258,
+        151.0,
+        113.0,
+        72.558
+      ]
+    },
+    "fins": {
+      "valid": true,
+      "solid_count": 50,
+      "volume_mm3": 43706.25,
+      "bounds_mm": [
+        58.0,
+        39.75,
+        49.558,
+        141.65,
+        132.25,
+        76.558
+      ]
+    },
+    "fan_frame": {
+      "valid": true,
+      "solid_count": 1,
+      "volume_mm3": 32181.5878,
+      "bounds_mm": [
+        54.4,
+        39.9,
+        76.558,
+        145.6,
+        132.1,
+        91.558
+      ]
+    },
+    "fan_rotor": {
+      "valid": true,
+      "solid_count": 13,
+      "volume_mm3": 12496.57,
+      "bounds_mm": [
+        56.2609,
+        42.2609,
+        79.558,
+        143.7391,
+        129.7391,
+        88.558
+      ]
+    },
+    "spacers_provisional": {
+      "valid": true,
+      "solid_count": 4,
+      "volume_mm3": 208.2876,
+      "bounds_mm": [
+        57.0,
+        43.5,
+        43.258,
+        153.0,
+        126.5,
+        50.058
+      ]
+    },
+    "mount_brackets_provisional": {
+      "valid": true,
+      "solid_count": 4,
+      "volume_mm3": 1921.7269,
+      "bounds_mm": [
+        55.0,
+        41.5,
+        50.058,
+        155.0,
+        128.5,
+        51.558
+      ]
+    },
+    "module_axes_reference": {
+      "valid": true,
+      "solid_count": 4,
+      "volume_mm3": 68.4239,
+      "bounds_mm": [
+        58.45,
+        65.45,
+        36.758,
+        151.55,
+        145.55,
+        54.758
+      ]
+    },
+    "pcb_reference": {
+      "valid": true,
+      "solid_count": 1,
+      "volume_mm3": 45148.2069,
+      "bounds_mm": [
+        15.0,
+        15.0,
+        20.0,
+        191.0,
+        178.0,
+        21.578
+      ]
+    },
+    "agx_reference": {
+      "valid": true,
+      "solid_count": 1,
+      "volume_mm3": 97266.0,
+      "bounds_mm": [
+        55.0,
+        62.0,
+        29.578,
+        155.0,
+        149.0,
+        40.758
+      ]
+    }
+  },
+  "stack_z_mm": {
+    "pcb_underside": 20.0,
+    "agx_thermal_plate_top": 40.757999999999996,
+    "copper_spreader_bottom": 41.257999999999996,
+    "cooler_contact": 43.257999999999996,
+    "fin_top_fan_bottom": 76.55799999999999,
+    "fan_top": 91.55799999999999,
+    "current_roof_underside": 87.5,
+    "current_rib_bottom": 81.5,
+    "current_ring_bottom": 77.258
+  },
+  "fan_offset_from_existing_inlet_mm": 20.131,
+  "current_cover_trials": [
+    {
+      "lid_lift_mm": 0,
+      "nominal": {
+        "heat_sink": {
+          "intersection_mm3": 0.0,
+          "minimum_gap_mm": 0.7
+        },
+        "fan": {
+          "intersection_mm3": 14860.9197,
+          "minimum_gap_mm": 0.0
+        }
+      },
+      "uncertainty_envelope": {
+        "heat_sink": {
+          "intersection_mm3": 405.3066,
+          "minimum_gap_mm": 0.0
+        },
+        "fan": {
+          "intersection_mm3": 18030.3855,
+          "minimum_gap_mm": 0.0
+        }
+      }
+    },
+    {
+      "lid_lift_mm": 15,
+      "nominal": {
+        "heat_sink": {
+          "intersection_mm3": 0.0,
+          "minimum_gap_mm": 15.7
+        },
+        "fan": {
+          "intersection_mm3": 0.0,
+          "minimum_gap_mm": 0.7
+        }
+      },
+      "uncertainty_envelope": {
+        "heat_sink": {
+          "intersection_mm3": 0.0,
+          "minimum_gap_mm": 13.7
+        },
+        "fan": {
+          "intersection_mm3": 413.1027,
+          "minimum_gap_mm": 0.0
+        }
+      }
+    },
+    {
+      "lid_lift_mm": 19,
+      "nominal": {
+        "heat_sink": {
+          "intersection_mm3": 0.0,
+          "minimum_gap_mm": 19.7
+        },
+        "fan": {
+          "intersection_mm3": 0.0,
+          "minimum_gap_mm": 4.7
+        }
+      },
+      "uncertainty_envelope": {
+        "heat_sink": {
+          "intersection_mm3": 0.0,
+          "minimum_gap_mm": 17.7
+        },
+        "fan": {
+          "intersection_mm3": 0.0,
+          "minimum_gap_mm": 2.7
+        }
+      }
+    }
+  ],
+  "same_lid_recovery_lift_floor_mm": 18.3,
+  "same_lid_study_lift_mm": 19,
+  "replacement_roof_height_floor_mm": 100.058,
+  "replacement_roof_height_candidate_mm": 101,
+  "unresolved": [
+    "Spreader/fan seating datum and secondary TIM",
+    "Spacer pattern versus long tie-down axes",
+    "Effective female thread depth and short-screw length",
+    "Actual fan offset and top height",
+    "Fin pitch and pipe bend path",
+    "Replacement roof structural stiffness and airflow"
+  ],
+  "production_ready": false,
+  "physical_fit_verified": false,
+  "cfd_reused_for_g48r": false,
+  "artifact_sha256": {
+    "exports/cooler-study/agx_reference.step": "0699b3239a91c800141a92b5ecd5694fa7ba1069efc7602a02fc2cc72ea886b8",
+    "exports/cooler-study/cold_plate.step": "b79d3326fa5053a344e1a00dbd9659ff7c238940baa7378ba0db24e75436e124",
+    "exports/cooler-study/fan_frame.step": "f5cc24bb4e78f3b4238370d59c42705019b2ebc1085f2e94ab91682964369680",
+    "exports/cooler-study/fan_rotor.step": "5e79e5bc659cad056f4a86111cae422de78b256c9fd84f114a95fd77f8c09bb6",
+    "exports/cooler-study/fins.step": "b36be12c73e51a55ee42c986bb118f574dc888fa8aa025b84b5cfb90098f6540",
+    "exports/cooler-study/g48r-reference.step": "2ec85ac03ffa34c46279e7e585c6afdbb62d948c9e714055a3cb2bd3f61819d9",
+    "exports/cooler-study/heat_pipes.step": "859b9d744711d22f9c0dd726a17ca20a4fae9f510b207fc6b110c04375f37713",
+    "exports/cooler-study/module_axes_reference.step": "5ac805f9d6c8fea26a46eb69dd7abdc5c2b8be946381d2f317c33f987024efd3",
+    "exports/cooler-study/mount_brackets_provisional.step": "91760ee792b46c82a5483ac1006b2076a6c705189f3f5b44e82b30ca318cdee1",
+    "exports/cooler-study/pcb_reference.step": "ff5f7c29fb24f6ffb999ccc1fff050e12e612ed95b69cfd389ea2a35a1adc04a",
+    "exports/cooler-study/spacers_provisional.step": "09805f8300aa8d62b3c5af1010e6c103b20ed244068c82574096e5d0bda58020",
+    "exports/cooler-study/spreader.step": "94f13b7cb4b00cb373b79fc65956a1e29eeab70a6b0dc49978d1a5b7f2dcf3ec",
+    "exports/cooler-study/view/agx_reference.stl": "3e99906629cf289835837148df669e30881c5a013bfef6cbc6286b4b35e80157",
+    "exports/cooler-study/view/cold_plate.stl": "6d8ca29997e4149062e3e1427e799c0aaefa68d702b0300c970dbff221da8286",
+    "exports/cooler-study/view/fan_frame.stl": "a22b630fd01674b0ab30b7e4cda5ccb377d422b2213e46276907edebaac375ce",
+    "exports/cooler-study/view/fan_rotor.stl": "3bf58559e24b531456f965adf554eb3d76b6df20437d0eb7064390f3c3112364",
+    "exports/cooler-study/view/fins.stl": "48c259c7bc1a15941784372b75888b388d9d1a636a60ccba3ae655b50064b0d7",
+    "exports/cooler-study/view/heat_pipes.stl": "972e7a965c44d8353994525ce47224a10e8064a3c4db84c64f9dd63531264cf3",
+    "exports/cooler-study/view/module_axes_reference.stl": "b6328cf21807e627e63e9a2419f12a991377e47d71441d34cacaa7ed8dcef06b",
+    "exports/cooler-study/view/mount_brackets_provisional.stl": "7ba9837da7da40288606057081073b98926b9476000372c660fb6dacc538e791",
+    "exports/cooler-study/view/pcb_reference.stl": "d746890df38aa277f0c7e2e5a582cad4b1ad594e70ba634805efd62712cc0a08",
+    "exports/cooler-study/view/spacers_provisional.stl": "e78b9113ca942cb2be3fef2261106eadfa0b2130ef1a92c8a7bf6c90325efdf2",
+    "exports/cooler-study/view/spreader.stl": "0fbe126338eb8e7e8afb50a0acced655769302e3ce4ebf2d7d44e849a2282680",
+    "exports/cooler-study/view/view.json": "4bd80fa6963e81013b28b2de4c3b9b814bbdc7e30a1b23693ee3e5ba36c0d8f3",
+    "exports/cooler-study/ws-rdn-601-envelope.step": "693e2e3d8eb34abee5b850e821ce1f960a844bde9589648df6fb99b4ea05879e",
+    "preview/cooler-study-assembly.png": "34625636888cb2a295ec5a94970b787fc903e6360a52a2d8fb6b5268d89e3e42",
+    "preview/cooler-study-clearance.png": "aad1353b4cdc14971c170305027a55f2083ed54c511b14b66147d05b5c2516e2",
+    "preview/cooler-study-exploded.png": "9e10d89dd4b52603a6cd63426310b56b0758d23d70fb2cfab83da06613c5330e",
+    "preview/cooler-study-installed.png": "8e7d0bf17453d0d552baf39c9b08dc3a8e6cb5cf32424df9e8313144e27280d2",
+    "preview/cooler-study-side.png": "0f2148012a2a0d212887159a73b14439a13e6685ed1af69980f1a7efc5d3d4a0",
+    "preview/cooler-study-top.png": "33a58265653ea512f6986922c7995dc141135730f6cf79037b2140ad35f8157f"
+  }
+}

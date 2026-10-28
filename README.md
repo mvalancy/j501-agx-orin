@@ -1,5 +1,9 @@
 <h1 align="center">J501 AGX Orin Enclosure</h1>
 
+> **G48R cooler fit study — October 27:** the photographed Mini J501 cooler collides with the existing lid. See the [dimensioned reference assembly and fit review](docs/cooler-fit-review.md), including heat pipes, copper plate, fan placement and actual-cover intersection checks. This development study does not select a Rev 0.9 airflow option or replace the print release below.
+
+![Mini J501 G48R reference study](preview/cooler-study-assembly.png)
+
 <p align="center">
   A 3D-printable housing for the <a href="https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html">Seeed reServer Industrial J501 carrier board</a>
   with an NVIDIA Jetson AGX Orin module.<br>

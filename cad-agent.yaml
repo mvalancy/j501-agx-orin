@@ -61,14 +61,18 @@ cad:
   site:
     title: J501 AGX enclosure
     tagline: A printed enclosure for the Seeed reServer J501 carrier with a Jetson AGX Orin, its cooler, antennas and drives
+    notice: "G48R study branch: reference model and fit evidence only. Existing print files and thermal results describe the previous cooler. Rev 0.9 airflow selection remains pending."
+    review: exports/cooler-study/review.json
     milestones: docs/milestones.yaml
     pages: [README.md, ASSEMBLY.md, "docs/README.md", "exports/README.md", "cad/README.md", "tools/README.md",
-            "preview/README.md", "references/README.md", "docs/assembly/README.md"]
+            "preview/README.md", "references/README.md", "docs/assembly/README.md", "docs/cooler-fit-review.md",
+            "exports/cooler-study/README.md", "exports/cooler-study/view/README.md"]
     live_reload: {watch: [preview, docs, exports, site]}
     nav:
       - {id: overview, title: Overview, href: site/}
+      - {id: cooler, title: Cooler study, href: site/pages/docs-cooler-fit-review-md.html}
       - {id: renders, title: Renders, href: preview/index.html}
-      - {id: model, title: 3D model, href: _cadagent/kit/viewer.html}
+      - {id: model, title: 3D model, href: "_cadagent/kit/viewer.html?manifest=/exports/cooler-study/view/view.json"}
       - {id: simulation, title: Simulation, href: preview/simulation.html}
       - {id: review, title: Engineering review, href: docs/engineering-review.html}
       - {id: checks, title: Checks, href: docs/cad-agent-report.html}
