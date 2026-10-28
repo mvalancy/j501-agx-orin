@@ -121,7 +121,7 @@ on the Rev 0.9 cover, with screws 10 mm longer.
 
 ## Design notes
 
-**Size:** 206 × 181 × 97 mm. With two of each tray the stack is 220 mm tall. The largest print, P1M, is 206 × 233 × 76.5 mm.
+**Size:** 206 × 181 × 97 mm. With two of each tray the stack is 205 mm tall. The largest print, P1M, is 206 × 233 × 76.5 mm.
 
 **Review material:** `python tools/serve_preview.py` serves the local review site. The engineering tables are in [docs/engineering-review.html](docs/engineering-review.html); the dimensioned paper review is [docs/check-sheet.pdf](docs/check-sheet.pdf).
 
@@ -147,7 +147,7 @@ Stack any mix, in any order:
 - Each standoff's male end clamps the tray's 2 mm ledge to the part above, and its female end receives the next tray.
 - Drive connectors face a cable gutter on the left side that runs the full depth of the tray. A chimney lines up through every tray floor.
 - P17 replaces P1M for wall or robot mounting under a stack.
-- Two of each tray adds 108 mm, for 220 mm overall.
+- Two of each tray adds 108 mm, for 205 mm overall.
 - The board has two SATA ports; more drives need an M.2 Key M SATA adapter or USB.
 
 **Drive mounting.**

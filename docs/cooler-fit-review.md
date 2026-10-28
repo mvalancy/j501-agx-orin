@@ -6,13 +6,13 @@ The cooler in the October 27 photographs is Seeed's [reComputer mini J501 heatsi
 
 ## One model
 
-`cooler_and_module()` in [cad/hardware.py](../cad/hardware.py) is the only cooler geometry. Renders, the carrier clearance checks, the CFD shell (`tools/thermal.py`), the project 3D viewer and this study all use it. Its dimensions are in the `cooler` section of [cad/parameters.json](../cad/parameters.json). [cad/cooler_reference.py](../cad/cooler_reference.py) only groups it into components for the study. The study began as a separate model ([PR #2](https://github.com/mvalancy/j501-agx-orin/pull/2)) and was merged into this one.
+`cooler_and_module()` in [cad/hardware.py](../cad/hardware.py) is the only cooler geometry. Renders, the carrier clearance checks, the project 3D viewer and this study all use it. The CFD (`tools/thermal.py`) builds a simplified version from the same parameters: a shell, a porous fin block and an actuator-disc fan. Its dimensions are in the `cooler` section of [cad/parameters.json](../cad/parameters.json). [cad/cooler_reference.py](../cad/cooler_reference.py) only groups it into components for the study. The study began as a separate model ([PR #2](https://github.com/mvalancy/j501-agx-orin/pull/2)) and was merged into this one.
 
 ## Placement: centred on the module
 
 The cooler sits **centred on the AGX module** (PCB 90, 90.5). Its four ears sit on the module's four mounting holes, where the long tie-down screws pass.
 
-This comes from a two-plane photo fit of IMG_1852: one plane on the base wall top (Z72), one on the board screw heads (Z24), joined by the straight camera ray. The fit puts the fan hub at PCB (90.4, 90.5). The four ears land within 2 mm of the module holes at (44 | 136, 51 | 130).
+This comes from a two-plane photo fit of IMG_1852: one plane on the base wall top (Z72), one on the board screw heads (Z24), joined by the straight camera ray. The fit puts the fan hub at PCB (90.4, 90.5). The four ears land within 2.6 mm of the module holes at (44 | 136, 51 | 130).
 
 An earlier fit had the photo **rotated 180°** and put the fan 20 mm toward the front I/O. The front I/O (DC IN, both RJ45, audio) is on the photo's right-hand wall, with DC IN at the top. The mistake showed up because the ears matched the module-hole pitch exactly but landed 20 mm away from the holes.
 

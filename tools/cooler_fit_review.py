@@ -126,7 +126,7 @@ def main():
         'rev08_cover_trials': trials,
         'riser': {'rise_mm': RISER, **riser_screw(RISER)},
         'unresolved': [
-            'Fan centre: two photo fits differ by about 3.5 mm in X (covered by the uncertainty)',
+            'Fan centre: from one photo (two-plane fit, hub within 0.1 mm of the module centre); not measured on the board (covered by the 3 mm uncertainty)',
             'Spacer pattern versus the long tie-down axes, and the heatsink ear outline',
             'Effective female thread depth and short-screw length',
             'Heat-pipe bend path, plate count and the base block outline',

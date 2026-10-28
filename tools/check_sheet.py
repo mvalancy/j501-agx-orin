@@ -82,11 +82,12 @@ with PdfPages(R/'docs/check-sheet.pdf') as pdf:
  fig=page('08 — Lid: finger-safe honeycomb');ax=fig.add_axes([.07,.13,.6,.73]);ax.set_aspect('equal')
  rr(ax,0,b.Y0,b.W,b.Y1,e['outer_corner_radius'],facecolor='#2c323a',edgecolor='black')
  s=e['hex_across_flats']
- for x,y in b.hex_centers():ax.add_patch(RegularPolygon((x,y),6,radius=s/math.sqrt(3),orientation=math.pi/6,facecolor='white',edgecolor='none'))
+ opened=set(b.roof_cells())   # open cells white; the blind band by the fan skirt and the cells cut by the fan pocket grey
+ for x,y in b.hex_centers():ax.add_patch(RegularPolygon((x,y),6,radius=s/math.sqrt(3),orientation=math.pi/6,facecolor='white' if (x,y) in opened else '#b8c4ca',edgecolor='none'))
  for x,y in e['lid_screw_centers']:ax.add_patch(Circle((x,y),e['lid_counterbore_diameter']/2,facecolor='#888'))
  ax.set(xlim=(-10,216),ylim=(-5,195),xlabel='Enclosure X',ylabel='Enclosure Y');ax.grid(alpha=.1)
  m=json.loads((R/'exports/design-metrics.json').read_text())['roof']
- notes(fig,f'{m["hex_cells"]} cells, {s:g} mm across flats\n{e["hex_web"]} mm webs, {e["roof_thickness"]:g} mm deep\nFan-side inlet chamfer {e["hex_inlet_flare"]:g} × {e["hex_inlet_depth"]:g}\n({s+2*e["hex_inlet_flare"]:g} A/F at the underside)\nOpen area {m["open_area_mm2"]:.0f} mm² ({m["open_percent_of_lid_plan"]}% of plan)\n+ 60 wall slots on the lid\n\n12 mm test finger cannot pass\n(Rev 0.4: 25 × 29 mm cells)\n\nRoof underside Z{b.H-b.RT:g}\nCooler gap {m["nominal_cooler_clearance_mm"]}\n\nGrey: M3 counterbores D6.4')
+ notes(fig,f'{m["hex_cells"]} open cells (grey: blind or under the fan grille), {s:g} mm across flats\n{e["hex_web"]} mm webs, {e["roof_thickness"]:g} mm deep\nFan-side inlet chamfer {e["hex_inlet_flare"]:g} × {e["hex_inlet_depth"]:g}\n({s+2*e["hex_inlet_flare"]:g} A/F at the underside)\nOpen area {m["open_area_mm2"]:.0f} mm² ({m["open_percent_of_lid_plan"]}% of plan)\n+ 60 wall slots on the lid\n\n12 mm test finger cannot pass\n(Rev 0.4: 25 × 29 mm cells)\n\nRoof underside Z{b.H-b.RT:g}\nCooler gap {m["nominal_cooler_clearance_mm"]}\n\nGrey: M3 counterbores D6.4')
  pdf.savefig(fig);plt.close(fig)
  fig=page('09 — Mounting tabs (P1M): screw, washer and driver access');ax=fig.add_axes([.06,.12,.6,.75]);ax.set_aspect('equal')
  rr(ax,0,b.Y0,b.W,b.Y1,e['outer_corner_radius'],facecolor='#d5e1e7',edgecolor='#264552')
