@@ -87,7 +87,7 @@ cad:
   site:
     title: J501 AGX enclosure
     tagline: A printed enclosure for the Seeed reServer J501 carrier with a Jetson AGX Orin, its cooler, antennas and drives
-    notice: "Rev 0.9 candidate: lid for the reComputer mini J501 (G48R) cooler. CAD, FEA and CFD checked; not yet test-printed."
+    notice: "Rev 0.9 candidate: lid for the reComputer mini J501 (G48R) cooler. CAD fit (±3 mm fan position), lid FEA (300 N) and CFD with the fan blowing up (40 W, converged) checked; not yet test-printed."
     review: exports/cooler-study/review.json
     milestones: docs/milestones.yaml
     pages: [README.md, ASSEMBLY.md, "docs/README.md", "exports/README.md", "cad/README.md", "tools/README.md",
