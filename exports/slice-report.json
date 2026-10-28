@@ -7,43 +7,43 @@
   "slicer_executable": "/usr/bin/snap",
   "parts": {
     "base": {
-      "grams": 188.31,
-      "minutes": 336.5,
+      "grams": 188.33,
+      "minutes": 337.5,
       "filament_m": 62.14,
       "error": "Success.",
-      "sha256": "a9c956dcd3c950b5f63b9738782584b869ceabac7bd422b58d8c5394176654e8"
+      "sha256": "6761bac52bd7603e3435fa0a37919603d755636a3002b50845fe02e3ed36d2d3"
     },
     "cover": {
-      "grams": 121.15,
-      "minutes": 269.9,
-      "filament_m": 39.98,
+      "grams": 129.23,
+      "minutes": 266.2,
+      "filament_m": 42.64,
       "error": "Success.",
-      "sha256": "736a1fe67e07315c06b955890653ad32b7646420f7c217d2f38262081b1fd089"
+      "sha256": "0ff6e2256db94d192b590573de1be97dfedd278f9b934a5c712093d4fa81e87e"
     },
     "front_no_gmsl": {
       "grams": 26.26,
-      "minutes": 45.3,
+      "minutes": 45.2,
       "filament_m": 8.66,
       "error": "Success.",
-      "sha256": "4401910b371ade5cb8b7fe12c078dcbcdd95d1972b7273105105a5b465ad4e72"
+      "sha256": "05b4c43be8b63043d9e0077341f261a8685da4c08e03a7c9cefe57d6aa972d42"
     },
     "rear_io": {
       "grams": 25.35,
       "minutes": 45.0,
       "filament_m": 8.36,
       "error": "Success.",
-      "sha256": "e5cc634894c1b825ea78cec35347286fb1521c8f282b956ad9e6473203b89892"
+      "sha256": "ad96de2cf7db57d780d5f50e1625fa71e56a3367a00394766c58fce3b08ef7e8"
     },
     "side_hatch": {
       "grams": 6.56,
       "minutes": 11.2,
       "filament_m": 2.16,
       "error": "Success.",
-      "sha256": "1606d8799009b1fbb78c3adf8cec21e47771862fa2d2149f4b10c67904371a5f"
+      "sha256": "6893c4d1d3c59156da1befe9c8d4dca284304b4e171b2ef61802510876955cee"
     }
   },
-  "total_grams": 367.6,
-  "total_hours": 11.8,
+  "total_grams": 375.7,
+  "total_hours": 11.75,
   "pass": true,
   "note": "Slicer estimates for one copy of each part with the stated profile; supports off unless the profile turns them on."
 }

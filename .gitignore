@@ -43,6 +43,7 @@ build/
 # Generated locally: the review site, the 3D viewer meshes (cad-agent site / cad-agent view), slicer scratch output
 site/
 exports/view/
+exports/view-context/
 preview/site-url.txt
 result.json
 # Airflow videos are tens of MB each: attached to the GitHub release instead of the repository. Debug runs stay local.

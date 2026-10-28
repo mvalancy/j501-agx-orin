@@ -5,5 +5,6 @@
 - {id: R0.5, title: Antennas and service access, status: done, done_when: "4 RP-SMA bulkheads in the fixed base walls; pin holes reach reset and recovery"}
 - {id: R0.6, title: Flush shell, cooler tie-down and drive trays, status: done, done_when: "the cooler is screwed down through the floor; trays stack"}
 - {id: R0.7, title: Port windows from modelled mating plugs, status: done, done_when: "every plug sweeps in clear; released as rev0.7"}
-- {id: R0.8, title: Less filament, a stronger lid and better airflow, status: active, done_when: "lighter by slicer grams, lid deflection no worse than Rev 0.7, airflow and plate temperature checked in CFD, D-flat antenna holes"}
-- {id: T1, title: Measure the cooler and the module under load, status: next, done_when: "cooler height measured; tegrastats stress test logged against the CFD prediction"}
+- {id: R0.8, title: Less filament, a stronger lid and better airflow, status: done, done_when: "lighter by slicer grams, lid deflection no worse than Rev 0.7, airflow and plate temperature checked in CFD, D-flat antenna holes"}
+- {id: R0.9, title: The fitted cooler under the lowest lid, status: active, done_when: "the printed Rev 0.8 lid hit the reComputer mini J501 cooler by 15 mm; Rev 0.9 models that cooler and puts its fan 2.4 mm under a flush grille; lid FEA and CFD pass"}
+- {id: T1, title: Measure the cooler and the module under load, status: next, done_when: "PCB top to fan top and the fan centre measured; tegrastats stress test logged against the CFD prediction"}

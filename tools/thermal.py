@@ -3,11 +3,12 @@
 Cases (pick with arguments, default all):
   bare40   AGX module with no heatsink at 40 W (MAXN on the 32 GB module): the starting point
   bare15   the same at 15 W (the lowest power mode)
-  cooled   the J501 cooler (heat-pipe base, fins, 80 mm fan (8015) blowing down) at 40 W
+  cooled   the reComputer mini J501 heatsink (2 mm copper spreader, G48R heat-pipe tower, 92 mm 9215 fan blowing
+           up: air in through the fin block's open sides, out through the lid grille) at 40 W
 
 Geometry comes from the build (base, lid, plates, hatch) and the carrier references (board outline and connector
-meshes). The cooler and the fan are the provisional envelope from cad/parameters.json; their real fin count, heat
-pipes and fan curve are not measured yet, so the cooled case is a model of a typical cooler of that size.
+meshes). The cooler is the G48R from its drawings (S06) and the user's photos; the plate thickness and the exact fan
+centre are not measured, and the fan runs its datasheet curve at full speed.
 Writes sim/<case>/ (the OpenFOAM case, not tracked) and exports/thermal/<case>.json.
 """
 from pathlib import Path
@@ -59,38 +60,40 @@ def module_parts():
 
 
 def cooler_geometry():
-    """The datasheet cooler as a compact model: a closed shell (base, side plates, fan housing, top cover) with a
-    porous fin block open at the two exhaust faces, the fan bore and its hub."""
-    c, f = TH['cooler'], TH['fan']
-    sx, sy, sz = c['size']
-    cx, cy = b.c['center_in_pcb'][0] + b.M, b.c['center_in_pcb'][1] + b.M
+    """The reComputer mini J501 heatsink as a compact model: copper spreader, heatsink base and the finned bar on the
+    spreader as solid obstacles, a porous fin block (open at the front and rear faces and underneath), the octagonal
+    fan frame with its bore, and the fan hub."""
+    c, f, cc = TH['cooler'], TH['fan'], b.c
+    fx, fy, sz = c['size']
+    cx, cy = b.fan_centre()
+    sp = cc['spreader']
     z0 = b.AGX_TOP                                    # the pad is a contact resistance in the network, not a gap
-    zb = b.COOLER_SEAT + c['base_thickness']          # top of the base
-    zt = b.COOLER_SEAT + sz                           # top of the cooler
-    zf = zt - c['cover_thickness'] - 15.5             # bottom of the fan = top of the fins
-    side = 0.8
-    x0, x1, y0, y1 = cx - sx / 2, cx + sx / 2, cy - sy / 2, cy + sy / 2
-    if c['exhaust_axis'] == 'x':
-        fins_lo, fins_hi = (x0 - 1, y0 + side, zb), (x1 + 1, y1 - side, zf)
-    else:
-        fins_lo, fins_hi = (x0 + side, y0 - 1, zb), (x1 - side, y1 + 1, zf)
-    shell = box((x0, y0, z0), (x1, y1, zt))
-    bore = trimesh.creation.cylinder(radius=f['bore'] / 2, height=zt - zf + 2, transform=trimesh.transformations.translation_matrix((cx, cy, (zf + zt) / 2 + 1)))
-    shell = shell.difference(box(fins_lo, fins_hi)).difference(bore)
+    zs = b.COOLER_SEAT + sp['thickness']              # spreader top = heatsink base underside
+    zb, zf, zt = zs + c['fin_bottom'], zs + sz - c['fan_thickness'], zs + sz   # fins bottom, fins top = fan bottom, fan top
+    sx, sy = sp['size']; scx, scy = sp['center_in_pcb'][0] + b.M, sp['center_in_pcb'][1] + b.M
+    ax0, ay0, ax1, ay1 = cc['aux_fins']['box_in_pcb']
+    octagon = np.array(b.fan_outline())
+    frame = trimesh.convex.convex_hull(np.vstack([np.c_[octagon, np.full(8, zf)], np.c_[octagon, np.full(8, zt)]]))
+    bore = trimesh.creation.cylinder(radius=f['bore'] / 2, height=zt - zf + 2, transform=trimesh.transformations.translation_matrix((cx, cy, (zf + zt) / 2)))
+    parts = [box((scx - sx / 2, scy - sy / 2, z0), (scx + sx / 2, scy + sy / 2, zs)),
+             box((cx - 22, cy - 22, zs - .01), (cx + 22, cy + 22, zb)),
+             box((ax0 + b.M, ay0 + b.M, zs - .01), (ax1 + b.M, ay1 + b.M, zs + cc['aux_fins']['height'])),
+             frame.difference(bore)]
+    shell = trimesh.boolean.union(parts)
     hub = trimesh.creation.cylinder(radius=f['d_hub'] / 2, height=zt - zf, transform=trimesh.transformations.translation_matrix((cx, cy, (zf + zt) / 2)))
-    fins = (np.maximum(fins_lo, (x0, y0, zb)), np.minimum(fins_hi, (x1, y1, zf)))
+    fins = (np.array((cx - fx / 2, cy - fy / 2, zb)), np.array((cx + fx / 2, cy + fy / 2, zf)))
     return {'shell': shell, 'hub': hub, 'fins': fins, 'fan_centre': (cx, cy, (zf + zt) / 2), 'top': zt, 'centre': (cx, cy)}
 
 
 def heatsink_model():
-    """The analytic plate-fin model of the same cooler (cadagent.heatsink)."""
+    """The analytic plate-fin model of the same cooler (cadagent.heatsink): plates across x, channels along y."""
     from cadagent.heatsink import PlateFin
     c = TH['cooler']
-    sx, sy, sz = c['size']
-    along, across = (sx, sy) if c['exhaust_axis'] == 'x' else (sy, sx)
-    fin_h = sz - c['base_thickness'] - c['cover_thickness'] - 15.5
+    fx, fy, sz = c['size']
+    along, across = (fx, fy) if c['exhaust_axis'] == 'x' else (fy, fx)
+    fin_h = sz - c['fin_bottom'] - c['fan_thickness']
     m = TH['module']
-    return PlateFin(length=along, width=across - 1.6, fin_height=fin_h, fin_thickness=c['fin_thickness'], pitch=c['fin_pitch'],
+    return PlateFin(length=along, width=across, fin_height=fin_h, fin_thickness=c['fin_thickness'], pitch=c['fin_pitch'],
                     base_thickness=c['base_thickness'], k_fin=c['k_fin'], k_base=c['k_base_eff'], flow_length=along / 2,
                     branches=2, source=(m['soc_size'] + 2 * m['ttp_thickness'],) * 2)
 
@@ -138,7 +141,8 @@ def make(name, power_w, cooled, fine, cell=None, iterations=None):
         ha = 1 / r['fins']
         # first fin temperature: the block's effective conductance seen in a coarse calibration run (the CFD block is
         # flushed unevenly), so calibration starts close to its answer
-        t_fin = TH['case']['ambient_c'] + 8.0 + power_w / (ha * TH['cooler']['block_effectiveness_guess'])
+        t_fin = TH['cooler'].get('first_fin_temperature_c') or (
+            TH['case']['ambient_c'] + 8.0 + power_w / (ha * TH['cooler']['block_effectiveness_guess']))
         case.porous_box('fins', *g['fins'], d=pc['d_vector'], f=pc['f_vector'], e1=e1, e2=e2,
                         ha_w_k=round(ha, 4), fin_temperature_c=round(t_fin, 2), target_w=power_w,
                         note='compact fin block: Darcy-Forchheimer and fin conductance from cadagent.heatsink.PlateFin; '
@@ -160,17 +164,26 @@ def plate_temperature(res, power_w):
     m = TH['module']
     a = (m['soc_size'] + 2 * m['ttp_thickness']) ** 2 * 1e-6
     r_pad = P['cooler']['tim_thickness'] / 1000 / (m['tim_k'] * a)
-    t_in = fan['air_through_fan_c']
+    # Fan direction (TH fan axis): blowing down, the fan breathes enclosure air and pushes it into the fins; blowing up
+    # (the fitted cooler), the fan exhausts the air the fins heated, so the air into the fins is the fan air minus the
+    # fins' heat: T_in = T_fan - Q / (rho q cp), the mixed temperature of everything the fins draw in.
+    blows_up = TH['fan']['axis'][2] > 0
+    t_fan = fan['air_through_fan_c']
+    q_fins = res.get('block_heat_w') or power_w
+    rho = 101325 / (287.05 * (t_fan + 273.15))
+    t_in = round(t_fan - q_fins / (rho * q * 1007), 2) if blows_up else t_fan
     fins = res['case_setup']['porous'][0]
     t_fin = fins.get('fin_temperature_c')
     t_plate = t_fin + power_w * (r['spreading'] + r['base'] + r_pad)
     t_model = t_in + power_w * (r['total_k_per_w'] + r_pad)
-    return {'air_into_fins_c': t_in, 'fan_flow_m3h': fan['flow_m3h'], 'fin_temperature_c': round(t_fin, 2),
+    return {'air_into_fins_c': t_in, 'fan_air_c': t_fan, 'fan_role': 'exhaust' if blows_up else 'intake',
+            'fan_flow_m3h': fan['flow_m3h'], 'fin_temperature_c': round(t_fin, 2),
             'heat_out_w': res.get('heat_out_w'), 'heatsink': {k: (round(v, 4) if isinstance(v, float) else v) for k, v in r.items()},
             'pad_k_per_w': round(r_pad, 4), 'ttp_hotspot_c': round(t_plate, 1), 'ttp_hotspot_model_only_c': round(t_model, 1),
             'ttp_limit_c': TH['limits']['ttp_max_c'], 'margin_c': round(TH['limits']['ttp_max_c'] - t_plate, 1), 'heatsink_model': hs.describe(),
             'method': 'T_plate = T_fin (CFD, calibrated so the fins deliver the module power) + P x (spreading + base, cadagent.heatsink) + P x pad; '
-                      'ttp_hotspot_model_only_c is the plate-fin model alone at the CFD fan flow and intake air'}
+                      'ttp_hotspot_model_only_c is the plate-fin model alone at the CFD fan flow and the air into the fins '
+                      '(blowing up: the fan air minus the fins\' heat over the fan flow)'}
 
 
 CASES = {'bare40': (40, False), 'bare15': (15, False), 'cooled': (40, True)}
@@ -190,18 +203,33 @@ if __name__ == '__main__':
     ap.add_argument('--recalibrate', type=int, metavar='ROUNDS',
                     help='cooled cases: continue the fin-temperature calibration of the existing case folder for up to ROUNDS '
                          'more rounds, starting from the fin temperature it reached')
+    ap.add_argument('--set', action='append', default=[], metavar='KEY=JSON',
+                    help='design variant: override an enclosure parameter (dotted key into cad/parameters.json "enclosure"), '
+                         'e.g. --set fan_grille.spokes=12; use with --suffix')
+    ap.add_argument('--fin-start', type=float, help='first fin temperature (C) for the calibration, e.g. a similar case\'s answer')
     ap.add_argument('--balance', type=int, metavar='MAX_ITERATIONS',
                     help='continue the existing case folders 1000 iterations at a time until the energy balance is within 5 %% '
-                         '(or MAX_ITERATIONS in total), instead of writing and running them from scratch')
+                         'and the run is steady (or MAX_ITERATIONS in total), instead of writing and running them from scratch; '
+                         'a cooled case keeps its calibrated fin temperature and is re-checked at the end')
     a = ap.parse_args()
+    for kv in a.set:                                # a design variant: change the CAD parameters for this run only
+        k, v = kv.split('=', 1)
+        node, *path = k.split('.')
+        tgt = b.e[node] if path else b.e
+        for q in path[:-1]:
+            tgt = tgt[q]
+        tgt[path[-1] if path else node] = json.loads(v)
+        for fn in (b.base, b.cover):
+            fn.cache_clear()
+    if a.fin_start:
+        TH['cooler']['first_fin_temperature_c'] = a.fin_start
     out = a.exports
     out.mkdir(parents=True, exist_ok=True)
     for name in a.cases:
         w, cooled = CASES[name]
-        if (a.recalibrate and not cooled) or (a.balance and cooled):
-            # never fall through to writing (which wipes the case folder): --recalibrate is for cooled cases, --balance for
-            # the others (a cooled case is balanced by its calibration)
-            print(f'{name}: skipped ({"--recalibrate needs a cooled case" if a.recalibrate else "--balance is for cases without fins"})', flush=True)
+        if a.recalibrate and not cooled:
+            # never fall through to writing (which wipes the case folder)
+            print(f'{name}: skipped (--recalibrate needs a cooled case)', flush=True)
             continue
         case = make(name, w, cooled, a.fine, a.cell, a.iterations)
         if a.recalibrate:               # more calibration rounds from where the last run stopped
@@ -218,8 +246,16 @@ if __name__ == '__main__':
             d = a.sim_root / (name + a.suffix)
             t = time.time()
             res = case.run_until_balanced(d, chunk=1000, max_iterations=a.balance)
-            rc = 0 if res.get('solver_finished') else 1
             print(name, 'continuation', res['continuation'], flush=True)
+            if cooled and res.get('solver_finished'):
+                # A calibration can settle the fins before the room is steady. The continuation keeps the calibrated fin
+                # temperature; re-check it at the end (no extra rounds unless the fins' heat has drifted off target).
+                earlier = json.loads((out / f'{name}{a.suffix}.json').read_text()).get('fin_calibration', [])
+                cont = res['continuation']
+                res = case.calibrate_fins(d, w, rounds=a.recalibrate or 2)
+                res['fin_calibration'] = earlier + [dict(h, resumed=True) for h in res['fin_calibration']]
+                res['continuation'] = cont
+            rc = 0 if res.get('solver_finished') else 1
         else:
             d = case.write(a.sim_root / (name + a.suffix), np_procs=a.np)
             print(f'{name}: wrote {d}', flush=True)

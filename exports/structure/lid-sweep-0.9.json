@@ -1,0 +1,102 @@
+{
+ "revision": "0.9-g48r",
+ "criteria": {
+  "max_deflection_mm": 1.19,
+  "max_grille_deflection_mm": 1.44,
+  "min_sf_p999": 2.0
+ },
+ "rows": [
+  {
+   "roof_mm": 4.5,
+   "rib_depth_mm": 6.0,
+   "spokes": 8,
+   "hub_mm": 30.0,
+   "volume_cm3": 158.6,
+   "roof_deflection_mm": 0.637,
+   "grille_deflection_mm": 1.366,
+   "sf_p999": 2.48,
+   "sf_peak": 1.18,
+   "minutes": 3.8,
+   "ok": true
+  },
+  {
+   "roof_mm": 4.5,
+   "rib_depth_mm": 6.0,
+   "spokes": 12,
+   "hub_mm": 20.0,
+   "volume_cm3": 158.3,
+   "roof_deflection_mm": 0.623,
+   "grille_deflection_mm": 1.247,
+   "sf_p999": 2.58,
+   "sf_peak": 1.22,
+   "minutes": 2.6,
+   "ok": true
+  },
+  {
+   "roof_mm": 4.0,
+   "rib_depth_mm": 6.5,
+   "spokes": 12,
+   "hub_mm": 20.0,
+   "volume_cm3": 152.0,
+   "roof_deflection_mm": 0.679,
+   "grille_deflection_mm": 1.31,
+   "sf_p999": 2.27,
+   "sf_peak": 1.0,
+   "minutes": 2.9,
+   "ok": true
+  },
+  {
+   "roof_mm": 4.0,
+   "rib_depth_mm": 7.5,
+   "spokes": 12,
+   "hub_mm": 20.0,
+   "volume_cm3": 153.0,
+   "roof_deflection_mm": 0.605,
+   "grille_deflection_mm": 1.203,
+   "sf_p999": 2.28,
+   "sf_peak": 1.08,
+   "minutes": 3.7,
+   "ok": true
+  },
+  {
+   "roof_mm": 3.5,
+   "rib_depth_mm": 7.0,
+   "spokes": 12,
+   "hub_mm": 20.0,
+   "volume_cm3": 145.7,
+   "roof_deflection_mm": 0.742,
+   "grille_deflection_mm": 1.375,
+   "sf_p999": 2.05,
+   "sf_peak": 0.97,
+   "minutes": 2.2,
+   "ok": true
+  },
+  {
+   "roof_mm": 3.5,
+   "rib_depth_mm": 8.0,
+   "spokes": 12,
+   "hub_mm": 20.0,
+   "volume_cm3": 146.7,
+   "roof_deflection_mm": 0.654,
+   "grille_deflection_mm": 1.252,
+   "sf_p999": 2.11,
+   "sf_peak": 0.93,
+   "minutes": 2.4,
+   "ok": true
+  }
+ ],
+ "best": {
+  "roof_mm": 3.5,
+  "rib_depth_mm": 8.0,
+  "spokes": 12,
+  "hub_mm": 20.0,
+  "volume_cm3": 146.7,
+  "roof_deflection_mm": 0.654,
+  "grille_deflection_mm": 1.252,
+  "sf_p999": 2.11,
+  "sf_peak": 0.93,
+  "minutes": 2.4,
+  "ok": true
+ },
+ "method": "300 N spread over the lid top (roof and grille), lid held at its rim; PLA layer strength; the lightest passing variant, or within 1.5 cm3 of it the one with the larger safety factor"
+}

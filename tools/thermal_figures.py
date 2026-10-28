@@ -16,7 +16,8 @@ from cadagent import simviz as sv
 P = json.loads((R / 'cad/parameters.json').read_text())
 LIM = P['thermal']['limits']
 TITLES = {'bare40': 'AGX module with no heatsink, 40 W', 'bare15': 'AGX module with no heatsink, 15 W',
-          'cooled': 'Rev 0.7 with the J501 cooler, 40 W', 'cooled-0.8': 'Rev 0.8 (duct, lower lid, floor vents), 40 W'}
+          'cooled': 'Rev 0.7 with the 34 mm WS-RDN-601 cooler, 40 W', 'cooled-0.8': 'Rev 0.8 with the 34 mm WS-RDN-601 cooler, 40 W',
+          'cooled-0.9': 'Rev 0.9 with the reComputer mini J501 cooler (fan blowing up through a flush grille), 40 W'}
 
 
 def subtitle(res):
@@ -26,8 +27,12 @@ def subtitle(res):
             bits.append(f"{k} {v['max_c']:.0f} °C")
     if res.get('network'):
         bits.append(f"thermal plate {res['network']['ttp_hotspot_c']:.0f} °C (limit {LIM['ttp_max_c']})")
+    n = res.get('network') or {}
     for k, f in res.get('fans', {}).items():
-        bits.append(f"fan {f['flow_cfm']:.1f} CFM, air in {f['air_through_fan_c']:.1f} °C")
+        if n.get('fan_role') == 'exhaust':
+            bits.append(f"fan {f['flow_cfm']:.1f} CFM up, air into the fins {n['air_into_fins_c']:.1f} °C, out {f['air_through_fan_c']:.1f} °C")
+        else:
+            bits.append(f"fan {f['flow_cfm']:.1f} CFM, air in {f['air_through_fan_c']:.1f} °C")
     return ' · '.join(bits)
 
 

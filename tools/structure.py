@@ -1,6 +1,7 @@
 """Structural load cases on the printed shells (cadagent.fea: gmsh + scikit-fem, quadratic tetrahedra).
 
-  lid_press   300 N spread over the lid top (someone leaning on it, a load on top), the lid resting on the base rim
+  lid_press   300 N spread over the lid top (someone leaning on it, a load on top), the lid resting on the base rim;
+              the roof and the flush fan grille are reported separately (the grille must stay clear of the fan)
   base_mount  robot mounting: base_mount held at its four ear slots; 1.5 kg of carrier, module and cooler at 10 g
               (150 N) down through the board-post and cooler-column landings, plus 5 g (75 N) sideways
 
@@ -78,6 +79,14 @@ if __name__ == '__main__':
                    von_mises_p99_mpa=round(float(np.percentile(vm, 99)), 2), von_mises_p999_mpa=round(float(np.percentile(vm, 99.9)), 2),
                    peak_at_mm=[round(float(v), 1) for v in cent[k]],
                    safety_factor_p999=round(st.material.strength_mpa / float(np.percentile(vm, 99.9)), 2))
+        g = b.e.get('fan_grille')
+        if name == 'lid_press' and g:
+            # the flush fan grille may flex more than the roof (it only has to stay clear of the fan): report both
+            mag, P = np.linalg.norm(st.disp, axis=0), st.points
+            cx, cy = b.fan_centre()
+            grille = np.array([b.inside_outline(x, y, g['clearance']) for x, y in P[:, :2]]) & (P[:, 2] > b.H - b.RT - .1)
+            res.update(grille_max_displacement_mm=round(float(mag[grille].max()), 4), roof_max_displacement_mm=round(float(mag[~grille].max()), 4),
+                       fan_clearance_mm=round(b.H - g['thickness'] - b.FAN_TOP, 3))
         (out / f'{name}-{a.tag}.json').write_text(json.dumps(res, indent=2, default=float) + '\n')
         from cadagent import simviz
         label = {'lid_press': '300 N on the lid', 'base_mount': 'robot mounting, 10 g down + 5 g sideways'}[name]

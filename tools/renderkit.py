@@ -40,7 +40,7 @@ def hardware_meshes(dz=0):
     items += [(ref/'J26-envelope-0.stl',(.72,.47,.30),shift),(ref/'J26-envelope-1.stl',(.1,.3,.55),shift)] if (ref/'J26-envelope-0.stl').exists() else []
     return items
 
-def render(name,items,caption,meshes=(),view='iso',labels=(),note='',size=(1600,1100),clip=None):
+def render(name,items,caption,meshes=(),view='iso',labels=(),note='',size=(1600,1100),clip=None,zoom=None):
     import os
     selected=os.environ.get('J501_RENDER_ONLY')
     if selected and name not in selected.split(','):return
@@ -63,7 +63,7 @@ def render(name,items,caption,meshes=(),view='iso',labels=(),note='',size=(1600,
     elif view=='bottom':cam.SetPosition(380,-420,-380);cam.SetViewUp(0,0,1)
     elif view=='section':cam.SetPosition(103,-600,60);cam.SetViewUp(0,0,1)
     elif isinstance(view,tuple):cam.SetPosition(103+view[0],96+view[1],60+view[2]);cam.SetViewUp(0,0,1)
-    cam.SetFocalPoint(103,96,60);cam.ParallelProjectionOn();ren.ResetCamera();cam.Zoom(.93 if labels else 1.04)
+    cam.SetFocalPoint(103,96,60);cam.ParallelProjectionOn();ren.ResetCamera();cam.Zoom(zoom or (.93 if labels else 1.04))
     win.Render();f=vtk.vtkWindowToImageFilter();f.SetInput(win);f.Update()
     wr=vtk.vtkPNGWriter();wr.SetFileName(str(out/name));wr.SetInputConnection(f.GetOutputPort());wr.Write()
     im=Image.open(out/name).convert('RGB');d=ImageDraw.Draw(im)
@@ -76,5 +76,11 @@ def render(name,items,caption,meshes=(),view='iso',labels=(),note='',size=(1600,
         d.line((qx,qy,tx,ty+12),fill='#b75a18',width=3);d.ellipse((qx-6,qy-6,qx+6,qy+6),fill='#cf722e')
         d.rounded_rectangle((bb[0]-9,bb[1]-7,bb[2]+9,bb[3]+7),6,fill='#ffffff',outline='#b75a18',width=2);d.text((tx,ty),text,font=font,fill='#16303f')
     if note:
-        d.rectangle((0,size[1]-54,size[0],size[1]),fill='white');d.text((30,size[1]-40),note,font=ImageFont.truetype(FONT,17),fill='#516571')
+        font=ImageFont.truetype(FONT,17);lines=['']
+        for w in note.split():  # wrap to the image width
+            t=(lines[-1]+' '+w).strip()
+            if d.textlength(t,font=font)>size[0]-60 and lines[-1]:lines.append(w)
+            else:lines[-1]=t
+        top=size[1]-30-24*len(lines);d.rectangle((0,top,size[0],size[1]),fill='white')
+        for i,t in enumerate(lines):d.text((30,top+14+24*i),t,font=font,fill='#516571')
     im.save(out/name);win.Finalize();print(name,flush=True)

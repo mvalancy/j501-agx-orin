@@ -1,0 +1,78 @@
+{
+  "groups": [
+    {
+      "title": "Cooler study",
+      "summary": "reComputer mini J501 (G48R) cooler: the project's one cooler model, checked against the Rev 0.9 lid with the fan moved \u00b13 mm, and against the printed Rev 0.8 lid (collision control and the 18 mm riser).",
+      "views": [
+        {
+          "title": "Assembly",
+          "kind": "image",
+          "file": "preview/cooler-study-assembly.png",
+          "caption": "Cooler model from S05/S06, photos and measurements. Pipe bends, plates and ears approximate."
+        },
+        {
+          "title": "Clearances",
+          "kind": "image",
+          "file": "preview/cooler-study-clearance.png",
+          "caption": "Plan and height stack: the lid fan pocket, skirt and ribs against the fan moved \u00b13 mm."
+        },
+        {
+          "title": "Installed",
+          "kind": "image",
+          "file": "preview/cooler-study-installed.png",
+          "caption": "On the carrier; magenta = module screw axes."
+        },
+        {
+          "title": "Exploded",
+          "kind": "image",
+          "file": "preview/cooler-study-exploded.png",
+          "caption": "Spreader, standoffs, base and pipes, plates, fan."
+        },
+        {
+          "title": "Top",
+          "kind": "image",
+          "file": "preview/cooler-study-top.png",
+          "caption": "Fan centred on the module; the spreader's finned bar is at the front I/O edge."
+        },
+        {
+          "title": "Side",
+          "kind": "image",
+          "file": "preview/cooler-study-side.png",
+          "caption": "Fan top 70 mm above the PCB top (design; measured about 68 mm)."
+        },
+        {
+          "title": "Interactive 3D",
+          "kind": "model",
+          "file": "exports/view/view.json",
+          "caption": "The project 3D viewer. The cooler is its own section in the parts list, next to the printed parts, the carrier board and module, and the screws."
+        }
+      ],
+      "reports": [
+        {
+          "title": "Cooler components (STEP readback)",
+          "file": "exports/cooler-study/fit-review.json",
+          "pass_key": "study_valid"
+        },
+        {
+          "title": "Rev 0.9 lid clears the cooler (fan \u00b13 mm)",
+          "file": "exports/cooler-study/fit-review.json",
+          "pass_key": "release_cover_fit_pass"
+        }
+      ],
+      "downloads": [
+        {
+          "title": "Assembly STEP",
+          "file": "exports/cooler-study/g48r-reference.step"
+        },
+        {
+          "title": "Fit report",
+          "file": "exports/cooler-study/fit-review.json"
+        },
+        {
+          "title": "Dimensions and sources (cooler section)",
+          "file": "cad/parameters.json"
+        }
+      ]
+    }
+  ]
+}

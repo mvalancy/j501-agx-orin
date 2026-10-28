@@ -4,7 +4,7 @@ Carrier STEP,5176 solids + 158 open shells; preserve both,S01,4 zero-thickness p
 NVIDIA module,Exact simplified STEP downloaded; version 20230131,S09,Confirm user module revision
 Mini-FAKRA,Amphenol exact candidate STEP + drawing downloaded,S10,Dimensions match footprint; MPN identity still unknown
 GMSL full STEP,Not found in official resources or relevant repository folder,S04 GMSL schematic,Need actual board measurements or vendor model
-Cooler complete STEP,Not found; two cooler datasheets and fan PDF retained,S03/S05/S06,Actual cooler identity and CAD required for final fit
+Cooler complete STEP,Not found; modelled from the S05/S06 datasheets and photos,S03/S05/S06,Identity confirmed; fan top measured (about 68 mm over the PCB)
 Samtec QTH,Catalog and exact schematic suffix found; standalone 3D download not obtained,S08,Use 16 mm stack envelope only
 Single USB-A J26,Placeholder source extrusion does not match 13.85 mm footprint height,S01 carrier STEP,Measure or obtain exact MPN/model before final rear plate
 Audio jacks,Source library surrogate differs from schematic MPN,S07 page 28,Measure mouth centers and actual plug barrels

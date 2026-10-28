@@ -15,6 +15,8 @@ cad:
     - {name: print-review,      run: tools/print_review.py,     needs: [build]}
     - {name: design-metrics,    run: tools/design_metrics.py,   log: design-metrics.log, needs: [build]}
     - {name: mounts,            run: tools/check_mounts.py,     needs: [build]}
+    - {name: cooler-study,      run: tools/cooler_fit_review.py, log: cooler-study.log, needs: [build], timeout_s: 3600}
+    - {name: view,              run: tools/view_model.py,       log: view.log, needs: [build, cooler-study]}
     - {name: storage,           run: tools/check_storage.py,    needs: [build]}
     - {name: cable-diagram,     run: tools/cable_diagram.py,    needs: [build]}
     - {name: docs,              run: tools/write_docs.py}
@@ -46,7 +48,7 @@ cad:
       pass_key: [all_parts_single_valid_watertight, plastic_intersections_zero, carrier_and_hardware_pass,
                  open_shell_pass, port_plug_fit_pass, mount_checks_pass, storage_checks_pass, assembly_paths_pass, nominal_P1S_bounds_pass]
   package:
-    name: j501-agx-rev08-fit-check
+    name: j501-agx-rev09-fit-check
     include: [README.md, ASSEMBLY.md, "docs/assembly/*", requirements.txt, cad/parameters.json, "docs/*", "exports/*.stl", "exports/*.3mf",
               "exports/*.step", "exports/*.json", references/sources.json]
   # cad-agent slice: real grams and print time for the enclosure set (Bambu Studio CLI, P1S 0.20 Standard, PLA Basic)
@@ -57,16 +59,44 @@ cad:
              rear_io: "#8a9099", side_hatch: "#8a9099", chimney_cap: "#5aa9e6"}
     hidden: [base_mount, front_gmsl, mount_fit_template, m3_insert_coupon, countersink_coupon, rpsma_coupon, rail_coupon, rail_key,
              storage_35, storage_25, storage_mount_plate, ssd_clip]
+    # One viewer for everything (tools/view_model.py): each category is a section of the parts list with a show-all box.
+    # The carrier board and the AGX module come from the local vendor references (not redistributed); without them they
+    # are listed as not exported.
+    parts_category: Printed parts
+    categories:
+      Alternatives and test coupons: [base_mount, front_gmsl, mount_fit_template, m3_insert_coupon, countersink_coupon, rpsma_coupon,
+                                      rail_coupon, rail_key]
+      Storage options: [storage_35, storage_25, storage_mount_plate, ssd_clip]
+    extra:
+      - {name: spreader, file: exports/cooler-study/spreader.step, color: "#bb743e", category: "Cooler (reComputer mini J501)"}
+      - {name: spacers, file: exports/cooler-study/spacers.step, color: "#d9b062", category: "Cooler (reComputer mini J501)"}
+      - {name: cold_plate, file: exports/cooler-study/cold_plate.step, color: "#c98a5a", category: "Cooler (reComputer mini J501)"}
+      - {name: heat_pipes, file: exports/cooler-study/heat_pipes.step, color: "#d4b896", category: "Cooler (reComputer mini J501)"}
+      - {name: fins, file: exports/cooler-study/fins.step, color: "#929ca3", category: "Cooler (reComputer mini J501)"}
+      - {name: mount_ears, file: exports/cooler-study/mount_ears_provisional.step, color: "#ac9e8b", category: "Cooler (reComputer mini J501)"}
+      - {name: fan_frame, file: exports/cooler-study/fan_frame.step, color: "#303b46", category: "Cooler (reComputer mini J501)"}
+      - {name: fan_rotor, file: exports/cooler-study/fan_rotor.step, color: "#111a23", category: "Cooler (reComputer mini J501)"}
+      - {name: carrier_board, file: references/hardware/carrier-full.stl, offset: [15, 15, 20], color: "#2f6b4f", category: Carrier board and module}
+      - {name: agx_module, file: exports/view-context/agx_module.step, color: "#5d6970", category: Carrier board and module}
+      - {name: board_outline, file: exports/cooler-study/pcb_reference.step, color: "#347857", category: Carrier board and module, hidden: true}
+      - {name: lid_screws, file: exports/view-context/lid_screws.step, color: "#b8bec6", category: Screws and hardware}
+      - {name: board_screws, file: exports/view-context/board_screws.step, color: "#c9a227", category: Screws and hardware}
+      - {name: cooler_tiedown_screws, file: exports/view-context/cooler_tiedown_screws.step, color: "#b8bec6", category: Screws and hardware}
+      - {name: antenna_bulkheads, file: exports/view-context/antenna_bulkheads.step, color: "#c9a227", category: Screws and hardware}
   # project site: `cad-agent site --serve` (http://127.0.0.1:8643/site/). The top bar below is on every page it serves.
   site:
     title: J501 AGX enclosure
     tagline: A printed enclosure for the Seeed reServer J501 carrier with a Jetson AGX Orin, its cooler, antennas and drives
+    notice: "Rev 0.9 candidate: lid for the reComputer mini J501 (G48R) cooler. CAD fit (±3 mm fan position), lid FEA (300 N) and CFD with the fan blowing up (40 W, converged) checked; not yet test-printed."
+    review: exports/cooler-study/review.json
     milestones: docs/milestones.yaml
     pages: [README.md, ASSEMBLY.md, "docs/README.md", "exports/README.md", "cad/README.md", "tools/README.md",
-            "preview/README.md", "references/README.md", "docs/assembly/README.md"]
+            "preview/README.md", "references/README.md", "docs/assembly/README.md", "docs/cooler-fit-review.md",
+            "exports/cooler-study/README.md"]
     live_reload: {watch: [preview, docs, exports, site]}
     nav:
       - {id: overview, title: Overview, href: site/}
+      - {id: cooler, title: Cooler fit, href: site/pages/docs-cooler-fit-review-md.html}
       - {id: renders, title: Renders, href: preview/index.html}
       - {id: model, title: 3D model, href: _cadagent/kit/viewer.html}
       - {id: simulation, title: Simulation, href: preview/simulation.html}

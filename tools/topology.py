@@ -78,11 +78,11 @@ def roof_study(voxel):
         t.keep(s)
     for x, y in e['lid_screw_centers']:
         t.keep(disc(x, y, e['lid_column_diameter'] / 2 + 2, z0, H))
-    d = e.get('fan_duct')
-    if d:
-        cx, cy = b.c['center_in_pcb'][0] + b.M, b.c['center_in_pcb'][1] + b.M
-        ri = d['inner_diameter'] / 2
-        t.keep(disc(cx, cy, ri + d['wall'], z0, H))
+    g = e.get('fan_grille')
+    if g:   # the fan skirt is kept and the fan pocket stays empty (octagon approximated by its inscribed circle)
+        cx, cy = b.fan_centre()
+        ri = b.c['fan']['frame'] / 2 + g['clearance']
+        t.keep(disc(cx, cy, ri + g['skirt_wall'], z0, H))
         t.void(disc(cx, cy, ri, z0 - 1, H - voxel))
     for lo, hi in (((0, Y0, z0), (W, Y0 + band, z0 + 0.01)), ((0, Y1 - band, z0), (W, Y1, z0 + 0.01)),
                    ((0, Y0, z0), (band, Y1, z0 + 0.01)), ((W - band, Y0, z0), (W, Y1, z0 + 0.01))):

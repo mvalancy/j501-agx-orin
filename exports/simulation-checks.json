@@ -1,54 +1,59 @@
 {
-  "revision": "0.8-thermal",
+  "revision": "0.9-g48r",
   "pass": true,
   "checks": [
     {
       "check": "structure lid_press",
       "pass": true,
-      "detail": "SF 2.99 (min 2.0), deflection 0.7218 mm (max 1.19), revision 0.8-thermal"
+      "detail": "SF 2.11 (min 2.0), roof deflection 0.6542 mm (max 1.19), fan grille 1.2523 mm (max 1.44, fan 2.442 mm below), revision 0.9-g48r"
     },
     {
       "check": "structure lid_press: peak",
-      "pass": true,
-      "detail": "single-element peak 22.72 MPa, SF 1.1 at [114.6, 66.7, 87.7] mm; advisory: a sharp inside corner, mesh-dependent",
+      "pass": false,
+      "detail": "single-element peak 26.91 MPa, SF 0.93 at [104.2, 11.0, 85.9] mm; advisory: a sharp inside corner, mesh-dependent",
       "advisory": true
     },
     {
       "check": "structure base_mount",
       "pass": true,
-      "detail": "SF 3.71 (min 2.0), deflection 0.9068 mm, revision 0.8-thermal"
+      "detail": "SF 3.69 (min 2.0), deflection 0.9068 mm, revision 0.9-g48r"
     },
     {
       "check": "structure base_mount: peak",
       "pass": false,
-      "detail": "single-element peak 26.99 MPa, SF 0.93 at [205.5, 76.2, 11.7] mm; advisory: a sharp inside corner, mesh-dependent",
+      "detail": "single-element peak 27.0 MPa, SF 0.93 at [205.5, 76.2, 11.7] mm; advisory: a sharp inside corner, mesh-dependent",
       "advisory": true
     },
     {
       "check": "CFD on this revision",
       "pass": true,
-      "detail": "result revision 0.8-thermal"
+      "detail": "result revision 0.9-g48r"
+    },
+    {
+      "check": "CFD fan matches the design",
+      "pass": true,
+      "detail": "result: axis [0, 0, 1], centre [105.0, 105.5]; design: axis [0, 0, 1], centre [105.0, 105.5]"
     },
     {
       "check": "thermal plate margin",
       "pass": true,
-      "detail": "57.2 \u00b0C, 22.8 K under the limit (min 10.0)"
+      "detail": "35.6 \u00b0C, 44.4 K under the limit (min 10.0)"
     },
     {
       "check": "fan operating point",
       "pass": true,
-      "detail": "7.76 CFM, 0.339 of free air"
+      "detail": "23.96 CFM, 0.433 of free air"
     },
     {
       "check": "no re-breathing",
-      "pass": false,
-      "detail": "air into the fan +7.1 K above the room (target 3.0 K); advisory: its effect is in the plate temperature, which is gated above",
+      "pass": true,
+      "detail": "air into the fins +0.1 K above the room (target 3.0 K); advisory: its effect is in the plate temperature, which is gated above",
       "advisory": true
     },
     {
       "check": "CFD converged",
       "pass": true,
-      "detail": "fins calibrated: True (carry 40.49 W of 40); energy balance -1.4 %"
+      "detail": "fins calibrated: True (carry 39.86 W of 40); energy balance -0.5 %"
     }
   ],
   "note": "Reads committed simulation results; CFD and topology optimisation are run by hand (hours), FEA by tools/structure.py."

@@ -2,6 +2,7 @@
 from pathlib import Path
 import csv,json,hashlib,html,sys
 R=Path(__file__).resolve().parents[1];D=R/'docs';D.mkdir(exist_ok=True);sys.path.insert(0,str(R/'cad'));from ports import resolve
+import build as b  # tie-down seat height (HS_HEAD_Z)
 P=resolve(json.loads((R/'cad/parameters.json').read_text()))
 S=json.loads((R/'references/sources.json').read_text())
 extra={'202003906_reServer_Industrial_J501_Carrier_Board_v1.0_SCH_PDF_20240529.pdf':'https://files.seeedstudio.com/wiki/reComputer-Jetson/J501/202003906_reServer_Industrial_J501_Carrier_Board_v1.0_SCH_PDF_20240529.pdf','samtec-qsh-qth.pdf':'https://suddendocs.samtec.com/catalog_english/qsh.pdf','Jetson_AGX_Orin_Module_3D_STEP_Model.zip':'https://developer.nvidia.com/downloads/jetson-agx-orin-module-3d-step-modelzip','FM4-NZRP-PCB-1.stp':'https://s3-us-west-2.amazonaws.com/catsy.582/FM4-NZRP-PCB-1.stp','FM4-NXRP-PCB-1.pdf':'https://s3-us-west-2.amazonaws.com/catsy.582/FM4-NXRP-PCB-1.pdf','gmsl_connectoin.png':'https://files.seeedstudio.com/wiki/reComputer-Jetson/J501/gmsl_connectoin.png','gmsl.png':'https://files.seeedstudio.com/wiki/reComputer-Jetson/J501/gmsl.png','seeed-oshw-tree.json':'https://api.github.com/repos/Seeed-Studio/OSHW-Jetson-Series/git/trees/main?recursive=1','interfaces.html':'https://wiki.seeedstudio.com/j501_carrier_board_interfaces_usage/'}
@@ -30,13 +31,15 @@ for k,v in flatten(P):
  elif k.startswith('pcb.'):
   status='CAD derived';source=C+'; references/solids.json and mount-features.json';check='Measure board edges and mounting centers using the printed template.';limit='Mount centers from separate proxy solids, not drilled holes in the PCB solid. M3 hole/thread suitability is unconfirmed.'
  elif k=='cooler.size':
-  status='manufacturer datasheet; identity unconfirmed';source='S03 Seeed WS-RDN-601 datasheet (100 x 87 x 34 mm)';check='Measure the fitted cooler height and which two faces show fin edges; read the fan label.';limit='Rev 0.8 lid and intake ring assume 34 mm. The earlier 110 x 100 x 50 envelope was the reComputer mini J501 heatsink (S05), a different product.'
+  status='manufacturer drawing; identity confirmed by user photos 2026-10-27';source='S06 G48R drawings (97 x 102 x 48.3 mm with the 92 x 15 fan) + S05 (110 x 100 x 50 mm kit) + 2 mm copper spreader';check='Measured 2026-10-27: PCB top to fan top about 68 mm (design keeps 70.0). Fan centre: on the module centre from the photo (ears on the module holes); the lid tolerates 3 mm.';limit='Fan centre from a photo with a fitted camera model (+/-3 mm). The 34 mm WS-RDN-601 is kept as cooler.alternatives (the Rev 0.8 cover fits it).'
  elif k=='cooler.agx_top_above_pcb_top':
   status='derived nominal';source=N+' + Molex 2048430001 drawing sheet 2';check='8 mm mated module PCB spacing + 11.18 mm module PCB-bottom to TTP top.';limit='Top of the AGX thermal plate = start of the heatsink standoff threads. Module revision not measured.'
  elif k=='cooler.tim_thickness':
   status='assumed';source='User: standard thermal pad between heatsink and AGX';check='Measure the fitted pad (compressed).';limit='Raises the heatsink and reduces the roof gap; does not change the tie-down screw length.'
+ elif k.startswith('cooler.alternatives'):
+  status='alternative part';source='S03 (WS-RDN-601) and the fan note';check='Pick the cover that matches the fitted cooler.';limit='Not the default build.'
  elif k.startswith('cooler.'):
-  status='assumed';source='Large cooler reference and inner mount center pattern';check='Measure installed cooler XY offset and top elevation.';limit='No exact cooler CAD located.'
+  status='drawing / photo derived';source='S05, S06 and user photos IMG_1852-1854 (2026-10-27)';check='Measure the spreader outline and the finned bar height (photo: 100 x 111 mm spreader, bar at the front edge).';limit='No vendor CAD; plate thickness and the finned bar height are assumed.'
  elif k=='gmsl.board_size':
   status='manufacturer';source='S02 datasheet page 2';check='Measure GMSL outline 103 x 45.'
  elif k=='gmsl.stack_between_pcb_surfaces':
@@ -64,8 +67,9 @@ for key,value,check in [
  ('side.hatch_notch','X202..206; Y76..118; Z12..72','45-degree V grooves (1.2 deep) in both sides and the bottom.'),
  ('side.hatch','X202..206; Y76.2..117.8; Z12.2..71.8','Flush with the wall; V tongues 1.0 deep; lid outer skin stops it lifting.'),
  ('joint.tongue_rebate','Tongue X2.3..3.7 (and mirror) Z72..76.5; lid rebate X2..4 Z72..77','Locates the lid on both side walls; 0.3 mm per side.'),
- ('cover.outline','X0..206; Y5.5..186.5; Z72..112; walls 4; roof 6','Flush with the base; 1.5 roof chamfer; 0.6 reveal chamfers at the split.'),
- ('cover.roof_grille','216 hex cells, 10 A/F, 1.8 webs, 6 deep; fan-side inlet chamfer 0.6 x 1.0 (11.2 A/F at the underside, 0.6 land)','Finger-safe over the fan; roof underside Z106; tapered entry guides fan air into the cells.'),
+ ('cover.outline',f"X0..206; Y5.5..186.5; Z72..{P['enclosure']['height']:g}; walls 4; roof {P['enclosure']['roof_thickness']:g}",'Flush with the base; 1.5 roof chamfer; 0.6 reveal chamfers at the split.'),
+ ('cover.fan_grille',f"Flush {P['enclosure']['fan_grille']['thickness']:g} mm grille over the fan (hub disc D{P['enclosure']['fan_grille']['hub_diameter']:g}, {P['enclosure']['fan_grille']['rings']} rings, {P['enclosure']['fan_grille']['spokes']} spokes); skirt {P['enclosure']['fan_grille']['skirt_wall']:g} mm, {P['enclosure']['fan_grille']['clearance']:g} mm outside the fan frame",'Fan top Z91.56, grille underside 2.44 mm above it; the skirt reaches 3.5 mm below the fan top; the fan blows up, and the skirt sends its exhaust straight out through the grille.'),
+ ('cover.roof_grille','Hex cells 10 A/F, 1.8 webs outside the fan skirt; the band next to the skirt is blind (1.2 mm top skin); fan-side inlet chamfer 0.6 x 1.0','Finger-safe; with the wall vents these are the air intakes, kept away from the fan plume by the blind band.'),
  ('cover.vents','4 x 20 stadium slots, pitch 9, Z80..100; 13 per side, 17 per end','Same rhythm as base and plate vents.'),
  ('base.side_vents','4 x 28 stadium slots, pitch 9, Y42..150, Z28..56','Right side: three slots move onto the J17 hatch.'),
  ('panel.vents','3.6 x 20 slots, pitch 9, X31..175, Z46..66','Aligned with the cooler fin exits; 45-degree lead-ins.'),
@@ -120,7 +124,8 @@ for a in [
 ('GMSL L4/L5/L8/L11/L14/L17/L20/L23','SPM0635-151M','150 uH PoC inductors','GMSL 6','6.5x5.6 footprint; assumed 3.5 height','Package footprint from schematic; placement/height provisional','Exact supplier drawing and populated height missing'),
 ('GMSL PoC small inductors','AWL3225FP220MTF / PFL1005-561MRW','22 uH and 560 nH filters','GMSL 6','Not individually modeled','Schematic MPNs','Not a complete electrical BOM; no placement file available'),
 ('GMSL factory mounting kit','Unspecified supplied copper/brass supports and screws','Retains addon to carrier','Seeed installation photo','Two 16 mm support proxies at candidate CAD centers','Preserve existing parts; M3 depiction assumed','Measure thread, seat-to-seat length, washer and support OD'),
-('Cooler','Seeed heatsink with fan for reServer J501 (p-5970, WS-RDN-601)','100x87x34 mm: copper base, 3 heat pipes, stacked Al fins, 8015 5 V fan','323011387Jetson_AGX_Orin_Heatsink_100x87x34mm-datasheet.pdf','Datasheet envelope + illustrative fins/fan; compact thermal model','User cooler identity not confirmed (measure height)','Exact fin stack, retention screws and TIM CAD missing')]:inv(*a)
+('Cooler','Seeed reComputer mini J501 heatsink with fan (100099421; G48R tower + 9215 fan)','110x100 mm 2 mm copper spreader, 6.8 mm M3 F-F standoffs, 5 x D6 heat pipes, 84x93x33.3 mm Al fins, 92x92x15 mm 12 V fan; 50.3 mm overall','100099421.pdf (S05); reComputer_Mini_J501_Fan.pdf (S06)','Datasheet geometry: spreader, standoffs, pipes, fin stack, octagonal fan frame; compact thermal model','Identity confirmed from the user\'s photos (2026-10-27); centred on the module (ears on the module holes); fan top measured about 68 mm over the PCB','Standoff thread depth and short-screw length'),
+('Cooler (alternative)','Seeed heatsink with fan for reServer J501 (p-5970, WS-RDN-601)','100x87x34 mm: copper base, 3 heat pipes, stacked Al fins, 8015 5 V fan','323011387Jetson_AGX_Orin_Heatsink_100x87x34mm-datasheet.pdf (S03)','cooler.alternatives.ws_rdn_601; fits the Rev 0.8 cover','Datasheet only','Not the fitted cooler; it fits under the Rev 0.9 lid (ribs end at Z85.5, cooler top about Z75), airflow not simulated')]:inv(*a)
 write('connector-inventory.csv',['reference','part_number_or_description','function','schematic_sheet','model_or_geometry','evidence_status','missing_or_required_check'],I)
 B=[]
 def bom(*a):B.append(a)
@@ -139,7 +144,7 @@ for a in [('P1','base','1 (desktop, and always with storage trays)','Printed','2
 ('H1','M3 x 10 heat-set insert','8 (4 board + 4 lid)','User kit','4.2 body / 3.75 starter','Install before electronics'),
 ('H3','M3 x 16 ISO 4762 socket head','4','Purchase','Lid screws','2.5 mm hex, 40 mm reach'),
 ('H5','M3 x 10 ISO 7380 button head','4','Purchase','Board screws','8.4 mm engagement'),
-('H7','M3 x 35 flat head, DIN 7991 / ISO 10642, A2','4','Purchase','Up through the floor pocket into the female standoffs between the AGX module and the heatsink','Raised countersink seat at Z9.76 gives exactly 4 mm (8 threads) of engagement; thermal pad does not change it'),
+('H7','M3 x 35 flat head, DIN 7991 / ISO 10642, A2','4','Purchase','Up through the floor pocket, board, module and copper spreader into the bottom of the cooler\'s 6.8 mm F-F standoffs',f'Raised countersink seat at Z{b.HS_HEAD_Z:.2f} gives {b.e["heatsink_thread_engagement"]:g} mm ({b.e["heatsink_thread_engagement"]/0.5:.0f} threads) of engagement and leaves {b.c["standoffs"]["height"]-b.e["heatsink_thread_engagement"]:.1f} mm for the short screws from the heatsink ears'),
 ('H10','RP-SMA female bulkhead pigtail (1/4-36 thread) to U.FL/MHF4 as the radio needs','4 (2 Wi-Fi + 2 cellular)','Purchase','D6.6 hole with a 6.0 mm flat (the thread milled flat stops it turning); 2.5 mm local wall; 8 mm nut + lock washer outside','Insert from inside; thread must cover 2.5 mm wall + washer + nut + about 4 mm for the antenna'),
 ('P15','storage_35 (3.5 in tray)','0-2','Printed','206x181x32; one SFF-8301 drive; 12V IN D8 hole','Print floor down; stack in any order'),
 ('P16','storage_25 (2.5 in tray)','0-2','Printed','206x181x22; two SFF-8201 drives up to 15 mm','Print floor down'),
@@ -192,7 +197,7 @@ write('model-search.csv',['item','result','source','next_check'],[
  ['NVIDIA module','Exact simplified STEP downloaded; version 20230131',N,'Confirm user module revision'],
  ['Mini-FAKRA','Amphenol exact candidate STEP + drawing downloaded',A,'Dimensions match footprint; MPN identity still unknown'],
  ['GMSL full STEP','Not found in official resources or relevant repository folder',G,'Need actual board measurements or vendor model'],
- ['Cooler complete STEP','Not found; two cooler datasheets and fan PDF retained','S03/S05/S06','Actual cooler identity and CAD required for final fit'],
+ ['Cooler complete STEP','Not found; modelled from the S05/S06 datasheets and photos','S03/S05/S06','Identity confirmed; fan top measured (about 68 mm over the PCB)'],
  ['Samtec QTH','Catalog and exact schematic suffix found; standalone 3D download not obtained',SAM,'Use 16 mm stack envelope only'],
  ['Single USB-A J26','Placeholder source extrusion does not match 13.85 mm footprint height',C,'Measure or obtain exact MPN/model before final rear plate'],
  ['Audio jacks','Source library surrogate differs from schematic MPN',SCH+' page 28','Measure mouth centers and actual plug barrels'],

@@ -4,6 +4,7 @@ Cooler fasteners and GMSL connector shapes/locations are explicitly provisional.
 """
 import build as b
 import cadquery as cq
+import math
 from pathlib import Path
 
 def insert(length=10):
@@ -53,7 +54,7 @@ def heatsink_screw_head_z():
     return b.HS_HEAD_Z
 
 def heatsink_screw_length():
-    # Standard length chosen so the thread engagement in the heatsink standoff is exactly the specified 8 threads.
+    # Standard length; the seat height (build.HS_HEAD_Z) sets the specified thread engagement in the cooler standoff.
     return b.e['heatsink_screw_length']
 
 def enclosure_hardware():
@@ -88,36 +89,49 @@ def heatsink_tiedown():
     return [('H7 cooler tie-down M3 flat head from below',flat_screw(3,L).translate((x,y,hz)),COL['steel']) for x,y in b.heatsink_holes()]
 
 def cooler_and_module():
-    c=b.c;cx,cy=c['center_in_pcb'];cx+=b.M;cy+=b.M;sx,sy,sz=c['size']
-    seat=b.COOLER_SEAT
+    c=b.c;cx,cy=b.fan_centre();seat=b.COOLER_SEAT
     # Module envelope and existing cooler retention screws, not replacement specifications.
     module=cq.Shape.importBrep(str(b.ROOT/'references/nvidia-module/p3701-sku0-simplified.brep')).rotate((0,0,0),(0,0,1),-90).translate((b.M+48.25,b.M+131.5,b.Z+b.p['thickness']+8))
-    # Seeed WS-RDN-601 (datasheet S03): copper base with 3 flattened heat pipes, stacked aluminium fins open at the two
-    # exhaust faces, closed side plates, an 8015 fan under a top cover. Fin count and pitch are a visual stand-in.
-    th=b.P['thermal']['cooler'];bt,ct=th['base_thickness'],th['cover_thickness'];x0,y0=cx-sx/2,cy-sy/2;top=seat+sz
-    zf=top-ct-15.5;along_x=th['exhaust_axis']=='x'
-    base=b.box(x0,y0,seat,sx,sy,bt)
+    # Seeed reComputer mini J501 heatsink (S05/S06, user photos and measurements 2026-10-27): a 2 mm copper spreader on
+    # the module, a G48R tower (copper base, 5 x D6 U-bent heat pipes along x, aluminium plates across x open at the front
+    # and rear faces) on 6.8 mm M3 F-F standoffs, and a 92 x 15 mm fan clipped on top. This is the project's one cooler
+    # model: renders, clearance checks and the cooler study (cad/cooler_reference.py) all use it. Bend paths, the base
+    # block, blade shapes and the mounting ears are original approximations.
+    sp=c['spreader'];sx,sy=sp['size'];scx,scy=sp['center_in_pcb'][0]+b.M,sp['center_in_pcb'][1]+b.M;st=sp['thickness']
+    spreader=b.box(scx-sx/2,scy-sy/2,seat,sx,sy,st)
     for x,y in b.p['module_mount_centers']:
-        base=base.cut(b.cyl(b.M+x,b.M+y,seat-1,2.2,bt+2))
-    items=[('E2 NVIDIA AGX Orin source STEP',module,COL['dark']),('E3 cooler copper base, 3 heat pipes',base,COL['copper'])]
-    for i in (-1,0,1):  # heat pipes run across the fins
-        hp=b.box(cx-sx/2+4,cy+i*24-3,seat+bt-1.2,sx-8,6,1.6) if not along_x else b.box(cx+i*28-3,cy-sy/2+4,seat+bt-1.2,6,sy-8,1.6)
-        items.append(('E3 heat pipe',hp,COL['copper']))
-    fins=[]
-    if along_x:   # plates parallel to X, stacked along Y: air leaves at the +/-X faces
-        for y in [y0+1.5+i*2.6 for i in range(int((sy-3)/2.6)+1)]:fins.append(b.box(x0,y,seat+bt,sx,.6,zf-seat-bt))
-    else:
-        for x in [x0+1.5+i*2.6 for i in range(int((sx-3)/2.6)+1)]:fins.append(b.box(x,y0,seat+bt,.6,sy,zf-seat-bt))
-    items+=[('E3 stacked aluminium fins (visual pitch)',f,(.62,.63,.65)) for f in fins]
-    sides=[b.box(x0,y0,seat+bt,sx,.8,sz-bt),b.box(x0,y0+sy-.8,seat+bt,sx,.8,sz-bt)] if along_x else [b.box(x0,y0,seat+bt,.8,sy,sz-bt),b.box(x0+sx-.8,y0,seat+bt,.8,sy,sz-bt)]
-    items+=[('E3 cooler side plate',q,COL['dark']) for q in sides]
-    frame=b.box(cx-40,cy-40,zf,80,80,15.5).cut(b.cyl(cx,cy,zf-1,38.5,18))
-    hub=b.cyl(cx,cy,zf,16.5,15.5)
-    cover=b.box(x0,y0,top-ct,sx,sy,ct).cut(b.cyl(cx,cy,top-ct-1,38,ct+2)).fuse(b.cyl(cx,cy,top-ct,16.5,ct))
-    items += [('E3 fan frame (8015)',frame,COL['dark']),('E3 fan hub',hub,COL['dark']),('E3 cooler top cover',cover,COL['dark'])]
-    for a in range(0,360,40):
-        blade=b.box(cx+17,cy-6,zf+5,20,12,2).rotate((cx,cy,0),(cx,cy,1),a)
-        items.append(('E3 fan blade',blade,COL['dark']))
+        spreader=spreader.cut(b.cyl(b.M+x,b.M+y,seat-1,1.7,st+2))
+    top=seat+st
+    items=[('E2 NVIDIA AGX Orin source STEP',module,COL['dark']),('E3 copper heat spreader 2 mm',spreader,COL['copper'])]
+    x0,y0,x1,y1=c['aux_fins']['box_in_pcb']
+    items.append(('E3 spreader finned bar (assumed height)',b.box(x0+b.M,y0+b.M,top,x1-x0,y1-y0,c['aux_fins']['height']),COL['dark']))
+    so=c['standoffs'];px,py=so['pattern'];ox,oy=so['center_in_pcb'][0]+b.M,so['center_in_pcb'][1]+b.M
+    lugs=[(ox+sx_*px/2,oy+sy_*py/2) for sx_ in (-1,1) for sy_ in (-1,1)]
+    items+=[('E3 standoff 6.8 mm M3 F-F',b.cyl(x,y,top,so['diameter']/2,so['height']).cut(b.cyl(x,y,top-1,1.25,so['height']+2)),COL['steel']) for x,y in lugs]
+    hs=c['heatsink'];fx,fy=hs['fins'];zb,zt=top+hs['fin_bottom_above_spreader'],top+hs['height_above_spreader']
+    n=hs['heat_pipes'];r=hs['pipe_diameter']/2;L=hs['pipe_span_x'];ys=[cy+(i-(n-1)/2)*hs['pipe_pitch_y'] for i in range(n)]
+    bw=max(44.0,ys[-1]-ys[0]+2*r+4)
+    items.append(('E3 heatsink copper base',b.box(cx-22,cy-bw/2,top,44,bw,hs['fin_bottom_above_spreader']),COL['copper']))
+    for x,y in lugs:   # heatsink ears on the standoff tops, up to the plate stack (provisional: adapter outline not measured)
+        edge=cx-fx/2-.5 if x<cx else cx+fx/2+.5;x0_,x1_=sorted((x,edge))
+        ear=b.cyl(x,y,0,4,1.5).fuse(b.box(x0_,y-4,0,x1_-x0_,8,1.5)).cut(b.cyl(x,y,-1,1.7,4)).cut(b.box(cx-fx/2-.5,cy-fy/2-.5,-1,fx+1,fy+1,4))
+        items.append(('E3 mounting ear (provisional)',ear.translate((0,0,top+so['height'])),COL['steel']))
+    zl,zu=r+.5,hs['height_above_spreader']-6;rr=(zu-zl)/2;turn=L/2-r-rr
+    for i,y in enumerate(ys):   # each pipe: along x in the base, a U-bend at one end, back along x through the plates
+        path=cq.Workplane('XZ').moveTo(-20,zl).lineTo(turn,zl).threePointArc((turn+rr,zl+rr),(turn,zu)).lineTo(-L/2,zu).wire().val()
+        pipe=cq.Workplane(cq.Plane(origin=(-20,0,zl),xDir=(0,1,0),normal=(1,0,0))).circle(r).sweep(path,isFrenet=True).val()
+        pipe=pipe.rotate((0,0,0),(0,0,1),180*(i%2)).translate((cx,y,top))
+        items.append(('E3 heat pipe D6',pipe,COL['copper']))
+    items+=[('E3 aluminium plate',b.box(x,cy-fy/2,zb,hs['fin_thickness'],fy,zt-zb),(.62,.63,.65))
+            for x in [cx-fx/2+i*hs['fin_pitch'] for i in range(int(fx/hs['fin_pitch'])+1)]]
+    f=c['fan'];zf=zt;ft=f['thickness'];rb=f['blade_diameter']/2
+    frame=b.prism_z(b.fan_outline(),zf,ft).cut(b.cyl(cx,cy,zf-1,rb+.4,ft+2))
+    items+=[('E3 fan frame 92 x 15',frame,COL['dark']),('E3 fan hub',b.cyl(cx,cy,zf+1,f['hub_diameter']/2,ft-1),COL['dark'])]
+    k=(rb-1.0)/44.12;hr=f['hub_diameter']/2-.5
+    for a in range(0,360,360//f.get('blades',9)):   # swept plan blades (visual, no aerodynamic pitch)
+        blade=(cq.Workplane('XY').moveTo(hr,-3*k).threePointArc((29*k,-5*k),(43*k,-13*k)).threePointArc((43.6*k,-3*k),(38*k,6*k))
+               .threePointArc((25*k,9*k),(hr,3*k)).close().extrude(1.4).val())
+        items.append(('E3 fan blade',blade.rotate((0,0,0),(0,0,1),a).translate((cx,cy,zf+7)),COL['dark']))
     return items+heatsink_tiedown()
 
 def gmsl():

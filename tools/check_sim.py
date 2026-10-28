@@ -37,9 +37,15 @@ for case, c in (('lid_press', crit['lid_press']), ('base_mount', crit['base_moun
         row(f'structure {case}', False, f'exports/structure/{case}-{REV}.json missing: run tools/structure.py')
         continue
     sf = r.get('safety_factor_p999')
-    passed = sf is not None and sf >= c['min_sf_p999'] and r['max_displacement_mm'] <= c.get('max_deflection_mm', 1e9) and r.get('revision') == P['revision']
-    row(f'structure {case}', passed, f"SF {sf} (min {c['min_sf_p999']}), deflection {r['max_displacement_mm']} mm"
-        + (f" (max {c['max_deflection_mm']})" if 'max_deflection_mm' in c else '') + f", revision {r.get('revision')}")
+    if 'grille_max_displacement_mm' in r and 'max_grille_deflection_mm' in c:   # roof and fan grille judged separately
+        d, dg = r['roof_max_displacement_mm'], r['grille_max_displacement_mm']
+        passed = sf is not None and sf >= c['min_sf_p999'] and d <= c['max_deflection_mm'] and dg <= c['max_grille_deflection_mm'] and r.get('revision') == P['revision']
+        row(f'structure {case}', passed, f"SF {sf} (min {c['min_sf_p999']}), roof deflection {d} mm (max {c['max_deflection_mm']}), "
+            f"fan grille {dg} mm (max {c['max_grille_deflection_mm']}, fan {r.get('fan_clearance_mm')} mm below), revision {r.get('revision')}")
+    else:
+        passed = sf is not None and sf >= c['min_sf_p999'] and r['max_displacement_mm'] <= c.get('max_deflection_mm', 1e9) and r.get('revision') == P['revision']
+        row(f'structure {case}', passed, f"SF {sf} (min {c['min_sf_p999']}), deflection {r['max_displacement_mm']} mm"
+            + (f" (max {c['max_deflection_mm']})" if 'max_deflection_mm' in c else '') + f", revision {r.get('revision')}")
     row(f'structure {case}: peak', (r.get('safety_factor') or 0) >= 1.0,
         f"single-element peak {r.get('max_von_mises_mpa')} MPa, SF {r.get('safety_factor')} at {r.get('peak_at_mm')} mm; "
         "advisory: a sharp inside corner, mesh-dependent", advisory=True)
@@ -51,12 +57,25 @@ if not t:
 else:
     n, f = t.get('network', {}), t['fans'].get('fan', {})
     margin = n.get('margin_c', -1)
-    intake = f.get('air_through_fan_c', 99) - P['thermal']['case']['ambient_c']
+    # air into the fins (thermal.py works it out for either fan direction; older results: the air through the fan)
+    intake = n.get('air_into_fins_c', f.get('air_through_fan_c', 99)) - P['thermal']['case']['ambient_c']
     row('CFD on this revision', t.get('revision', P['revision']) == P['revision'], f"result revision {t.get('revision', 'not recorded')}")
+    # the result must be for the current fan: same direction and centre as the design (a revision string alone let a
+    # fan-down run at an old fan position pass)
+    import sys
+    sys.path.insert(0, str(R / 'cad'))
+    import build as b
+    setup = next((x for x in t.get('case_setup', {}).get('fans', []) if x.get('name') == 'fan'), {})
+    want_axis, want_xy = P['thermal']['fan']['axis'], b.fan_centre()
+    got_axis, got_c = setup.get('axis'), setup.get('centre_mm') or [None, None]
+    same_fan = got_axis == want_axis and None not in got_c[:2] and max(abs(got_c[0] - want_xy[0]), abs(got_c[1] - want_xy[1])) <= 0.5
+    row('CFD fan matches the design', same_fan,
+        f"result: axis {got_axis}, centre {got_c[:2]}; design: axis {want_axis}, centre {[round(v, 2) for v in want_xy]}")
     row('thermal plate margin', margin >= tc['ttp_margin_c'], f"{n.get('ttp_hotspot_c')} °C, {margin} K under the limit (min {tc['ttp_margin_c']})")
     row('fan operating point', f.get('fraction_of_free_air', 0) >= tc['min_fan_fraction_of_free_air'], f"{f.get('flow_cfm')} CFM, {f.get('fraction_of_free_air')} of free air")
+    estimate = '' if intake >= -0.5 else ' (an estimate below the room temperature: the fan-zone average is not the outlet temperature; read the flow figure)'
     row('no re-breathing', intake <= tc['max_intake_rise_c'],
-        f"air into the fan {intake:+.1f} K above the room (target {tc['max_intake_rise_c']} K); advisory: its effect is in "
+        f"air into the fins {intake:+.1f} K above the room{estimate} (target {tc['max_intake_rise_c']} K); advisory: its effect is in "
         "the plate temperature, which is gated above", advisory=True)
     row('CFD converged', bool(t.get('converged')) and bool(t.get('calibrated')),
         f"fins calibrated: {bool(t.get('calibrated'))} (carry {t.get('block_heat_w')} W of 40); energy balance "

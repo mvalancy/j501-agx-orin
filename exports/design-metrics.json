@@ -1,10 +1,10 @@
 {
-  "revision": "0.8-thermal",
+  "revision": "0.9-g48r",
   "envelope": {
     "outer_mm": [
       206.0,
       181.0,
-      92.0
+      97.0
     ],
     "base_mount_print_mm": [
       206.0,
@@ -14,7 +14,7 @@
     "lid_print_mm": [
       206.0,
       181.0,
-      20.0
+      25.0
     ],
     "rev04_outer_mm": [
       218.8,
@@ -23,30 +23,38 @@
     ]
   },
   "roof": {
-    "hex_cells": 216,
+    "hex_cells": 106,
+    "hex_positions_total": 216,
+    "blind_or_cut_cells": 110,
     "across_flats_mm": 10.0,
     "web_mm": 1.8,
-    "depth_mm": 4.5,
-    "open_area_mm2": 18706.1,
-    "open_percent_of_lid_plan": 50.24,
-    "finger_probe_note": "10 mm across flats (11.5 mm across corners) keeps the 12 mm IEC 61032 test finger out of the fan.",
+    "depth_mm": 3.5,
+    "open_area_mm2": 9179.9,
+    "open_percent_of_lid_plan": 24.66,
+    "finger_probe_note": "10 mm across flats (11.5 mm across corners) keeps the 12 mm IEC 61032 test finger out of the enclosure; over the fan the flush grille sets the limit (see grille_finger).",
     "inlet_chamfer": {
       "flare_per_side_mm": 0.6,
       "depth_mm": 1.0,
       "wall_angle_from_cell_axis_deg": 31.0,
       "fan_side_across_flats_mm": 11.2,
       "fan_side_web_land_mm": 0.6,
-      "fan_side_open_area_mm2": 23465.0,
-      "full_web_depth_mm": 3.5,
-      "note": "Tapered entry on the fan side reduces the sharp-edge inlet loss; the 10 mm A/F exterior opening still sets the finger limit and the minimum flow area. Not tested in airflow."
+      "fan_side_open_area_mm2": 11515.2,
+      "full_web_depth_mm": 2.5,
+      "note": "Chamfer on the inside face of each cell. Rev 0.9 draws room air in through these cells (the fan blows up and out through the grille), so the chamfer is on the outlet side and does little for the flow; the sharp outer edge is the entry, and the 10 mm A/F exterior opening sets the finger limit and the minimum flow area. Kept because it prints roof-down with no overhang. Not tested in airflow on its own."
     },
-    "roof_underside_z": 87.5,
-    "nominal_cooler_clearance_mm": 12.242,
+    "roof_underside_z": 93.5,
+    "grille_underside_z": 94.0,
+    "nominal_cooler_clearance_mm": 2.442,
+    "cooler_clearance_note": "fan top to the underside of the flush grille over it (the roof is cut away there); design fan height 70 mm over the PCB top, measured about 68 mm",
+    "grille_finger": {
+      "opening_mm": 10.57,
+      "test_finger_reach_mm": 3.16
+    },
     "rev04": "67.37% open with 25 x 29 mm cells (finger-accessible), 11.242 mm cooler clearance"
   },
   "vents": {
     "lid_side_and_end_slots": 60,
-    "lid_wall_open_mm2": 2434.0,
+    "lid_wall_open_mm2": 2914.0,
     "base_side_slots": 16,
     "base_and_hatch_open_mm2": 2822.7,
     "panel_slots_each": 17,
@@ -55,7 +63,7 @@
   "cooler_tiedown": {
     "screw_length_nominal_mm": 35.0,
     "agx_top_z": 40.758,
-    "thread_engagement_mm": 4.0,
+    "thread_engagement_mm": 3.0,
     "tim_thickness_mm": 0.5,
     "pattern_mm": [
       92,
@@ -84,13 +92,15 @@
     "clearance_hole": 3.4,
     "countersink_diameter": 7.0,
     "countersink_angle_deg": 90,
-    "head_seat_z": 9.758,
-    "engagement_check_mm": 4.0,
+    "head_seat_z": 11.258,
+    "thread_start_z": 43.258,
+    "engagement_check_mm": 3.0,
+    "engagement_ws_rdn_601_mm": 5.5,
     "floor_ribs": [
       3.0,
       3.0
     ],
-    "limits": "M3 inferred from the module holes; standoff thread depth must be >= 4.5 mm. Printed column creep under clamp load not tested."
+    "limits": "M3 inferred from the module holes. G48R stack: the screw enters the 6.8 mm F-F standoff from below the 2 mm spreader and 0.5 mm pad (pad assumed: a 1 mm pad leaves 2.5 mm), leaving 3.8 mm for the short screws from above; check by hand that the M3 x 35 turns 6 full threads before the short screws go in. On a Rev 0.9 base the 34 mm WS-RDN-601 (no spreader) takes the same M3 x 35 with engagement_ws_rdn_601_mm; its standoff thread depth is not documented, so check it does not bottom out. Printed column creep under clamp load not tested."
   },
   "lid_fastening": {
     "screws": "M3 x 16 ISO 4762 socket head",

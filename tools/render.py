@@ -9,10 +9,10 @@ hw=[(s,col) for _,s,col in h.enclosure_hardware()]
 electronics=[(s,col) for _,s,col in h.cooler_and_module()+h.gmsl()]
 plastic=[(mounted,shell),(front,plate),(rear,plate),(hatch,plate)]
 rev=b.P['revision'].split('-')[0]
-render('assembled.png',plastic+hw+electronics+[(cover,lid)],f'Rev {rev} / flush shell, framed I/O plates, finger-safe hex roof',hardware_meshes(),note='Four M3 lid screws from the top; four M3 board screws; four cooler tie-down screws from below. GMSL XY and cooler identity remain provisional.')
+render('assembled.png',plastic+hw+electronics+[(cover,lid)],f'Rev {rev} / flush shell, framed I/O plates, fan under a flush grille',hardware_meshes(),note='Four M3 lid screws from the top; four M3 board screws; four cooler tie-down screws from below. Cooler: reComputer mini J501 heatsink (G48R + 92 mm fan). GMSL XY remains provisional.')
 render('rear.png',plastic+hw+electronics+[(cover,lid)],'Rear I/O / per-port windows sized for mating plug overmolds',hardware_meshes(),view='rear')
 render('no-gmsl.png',[(base,shell),(b.panel(),plate),(rear,plate),(hatch,plate)]+hw+[(s,col) for _,s,col in h.cooler_and_module()]+[(cover,lid)],'Desktop base / no GMSL / no dummy openings',hardware_meshes())
-render('open.png',plastic+hw+electronics,'Open assembly / all carrier solids and open shells retained',hardware_meshes(),note='Source carrier and NVIDIA module; candidate mini-FAKRA STEP. GMSL component locations and cooler are provisional.')
+render('open.png',plastic+hw+electronics,'Open assembly / all carrier solids and open shells retained',hardware_meshes(),note='Source carrier and NVIDIA module; candidate mini-FAKRA STEP. GMSL component locations are provisional.')
 render('top.png',plastic+hw+electronics,'Top inspection / board corner supports and cooler tie-down pattern',hardware_meshes(),view='top')
 render('bottom.png',[(mounted,shell)]+[(s,col) for _,s,col in h.heatsink_tiedown()],'Underside / recessed cooler tie-downs, foot pockets, mounting tabs',view='bottom',note='Flat-head screws sit 0.43 mm below the floor, so the base stays flat on a desk or a mounting plate.')
 cut=b.box(-50,66,-5,320,200,140)
@@ -25,7 +25,7 @@ for name,s,col in h.enclosure_hardware():
 for name,s,col in h.cooler_and_module():expl.append((s.translate((0,0,-45)) if name.startswith('H7') else s.translate((0,0,110)),col))
 for name,s,col in h.gmsl():expl.append((s.translate((0,-25,75)),col))
 labels=[('P2','Lid: hex grille, 4 x M3 from top',(103,96,262),(25,130)),
- ('E3','Existing cooler (reference envelope)',(105,105,195),(1180,190)),
+ ('E3','reComputer mini J501 cooler (G48R, 92 mm fan)',(105,105,195),(1180,190)),
  ('E1','Carrier with complete source shells',(185,170,80),(1180,400)),
  ('E4–E8','GMSL + candidate connector models',(70,0,113),(25,400)),
  ('H1/H3','Lid inserts and M3 x 16 screws',(8.8,30,247),(25,250)),
@@ -62,7 +62,11 @@ keep=[(s,col) for name,s,col in h.enclosure_hardware() if 'board' in name]
 render('board-mount.png',[(section,shell)]+keep,'Board attachment / printed supports and M3 inserts',hardware_meshes(),view='front',note='16 mm broad support; 7 mm landing clears nearby SMT parts. No loose board spacers.')
 for name in json.loads((ROOT/'references/hardware/indices.json').read_text()):
  render('connector-'+name+'.png',[],'Carrier geometry / '+name.replace('_',' '),[(ROOT/'references/hardware'/(name+'.stl'),(.4,.55,.58),(0,0,0))],note='See inventory: some source bodies are simplified. Assembly preview includes separate open shells.',size=(1000,700))
-render('lid-detail.png',[(cover,lid)],'Lid / honeycomb grille over the cooler fan',view='rear',note='10 mm across-flats cells keep a 12 mm test finger out of the fan. Screw counterbores sit in a solid border.',size=(1500,1050))
+render('lid-detail.png',[(cover,lid)],'Lid / flush exhaust grille over the fan, hex intake cells around it',view='rear',note=f"Grille openings {b.grille_gap():.1f} mm wide: a 12 mm test finger sinks {b.finger_reach(b.grille_gap()):.1f} mm, {b.e['fan_grille']['thickness']+b.H-b.e['fan_grille']['thickness']-b.FAN_TOP-b.finger_reach(b.grille_gap()):.1f} mm short of the fan. The 10 mm hex cells keep it out. The band next to the fan skirt is closed on top so the fan does not re-breathe its exhaust.",size=(1500,1050))
+fx,fy=b.fan_centre();cutf=b.box(fx,-50,-5,200,320,140)
+secf=[(mounted.intersect(cutf),(.62,.66,.70)),(cover.intersect(cutf),(.80,.82,.85))]+[(s.intersect(cutf),col) for _,s,col in h.cooler_and_module() if s.BoundingBox().xmax>fx]
+render('cooler-fit.png',secf,f'Section X{fx:.0f} through the fan / the cooler under the Rev {rev} lid',hardware_meshes(),view=(-600,0,0),clip=((fx,0,0),(1,0,0)),zoom=1.8,
+       note=f"Fan top Z{b.FAN_TOP:.2f}, grille underside Z{b.H-b.e['fan_grille']['thickness']:g} ({b.H-b.e['fan_grille']['thickness']-b.FAN_TOP:.2f} mm). The skirt reaches {b.e['fan_grille']['skirt_below_fan_top']:g} mm below the fan top, {b.e['fan_grille']['clearance']:g} mm outside its frame.")
 xc,yc=min(b.hex_centers(),key=lambda q:(q[0]-103)**2+(q[1]-96)**2);pitch=b.e['hex_across_flats']+b.e['hex_web']
 chunk=cover.intersect(b.box(xc,yc-1.6*pitch,b.H-b.RT-1,2.5,3.2*pitch,b.RT+2))
 render('hex-inlet.png',[(chunk,(.80,.82,.84))],f'Lid detail / fan-side inlet chamfer, 2.5 mm slice at X{xc:.1f} through a column of cells (fan side down)',view=(-500,-110,-70),note=f"Fan below, outside above. Each cell opens to {b.e['hex_across_flats']+2*b.e['hex_inlet_flare']:g} mm A/F at the fan side and tapers over {b.e['hex_inlet_depth']:g} mm to the {b.e['hex_across_flats']:g} mm finger-safe opening; {b.e['hex_web']-2*b.e['hex_inlet_flare']:.1f} mm web land.",size=(1500,1050))
