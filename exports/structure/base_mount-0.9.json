@@ -32,7 +32,7 @@
   "stiffness_n_per_mm": 449.4,
   "case": "base_mount",
   "revision": "0.9-g48r",
-  "solve_minutes": 4.0,
+  "solve_minutes": 1.1,
   "von_mises_p99_mpa": 3.8,
   "von_mises_p999_mpa": 6.77,
   "peak_at_mm": [

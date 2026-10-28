@@ -23,25 +23,33 @@
     ]
   },
   "roof": {
-    "hex_cells": 216,
+    "hex_cells": 106,
+    "hex_positions_total": 216,
+    "blind_or_cut_cells": 110,
     "across_flats_mm": 10.0,
     "web_mm": 1.8,
     "depth_mm": 3.5,
-    "open_area_mm2": 18706.1,
-    "open_percent_of_lid_plan": 50.24,
-    "finger_probe_note": "10 mm across flats (11.5 mm across corners) keeps the 12 mm IEC 61032 test finger out of the fan.",
+    "open_area_mm2": 9179.9,
+    "open_percent_of_lid_plan": 24.66,
+    "finger_probe_note": "10 mm across flats (11.5 mm across corners) keeps the 12 mm IEC 61032 test finger out of the enclosure; over the fan the flush grille sets the limit (see grille_finger).",
     "inlet_chamfer": {
       "flare_per_side_mm": 0.6,
       "depth_mm": 1.0,
       "wall_angle_from_cell_axis_deg": 31.0,
       "fan_side_across_flats_mm": 11.2,
       "fan_side_web_land_mm": 0.6,
-      "fan_side_open_area_mm2": 23465.0,
+      "fan_side_open_area_mm2": 11515.2,
       "full_web_depth_mm": 2.5,
       "note": "Tapered entry on the fan side reduces the sharp-edge inlet loss; the 10 mm A/F exterior opening still sets the finger limit and the minimum flow area. Not tested in airflow."
     },
     "roof_underside_z": 93.5,
-    "nominal_cooler_clearance_mm": 1.942,
+    "grille_underside_z": 94.0,
+    "nominal_cooler_clearance_mm": 2.442,
+    "cooler_clearance_note": "fan top to the underside of the flush grille over it (the roof is cut away there); design fan height 70 mm over the PCB top, measured about 68 mm",
+    "grille_finger": {
+      "opening_mm": 10.57,
+      "test_finger_reach_mm": 3.16
+    },
     "rev04": "67.37% open with 25 x 29 mm cells (finger-accessible), 11.242 mm cooler clearance"
   },
   "vents": {
@@ -85,12 +93,14 @@
     "countersink_diameter": 7.0,
     "countersink_angle_deg": 90,
     "head_seat_z": 11.258,
-    "engagement_check_mm": 5.5,
+    "thread_start_z": 43.258,
+    "engagement_check_mm": 3.0,
+    "engagement_ws_rdn_601_mm": 5.5,
     "floor_ribs": [
       3.0,
       3.0
     ],
-    "limits": "M3 inferred from the module holes; standoff thread depth must be >= 4.5 mm. Printed column creep under clamp load not tested."
+    "limits": "M3 inferred from the module holes. G48R stack: the screw enters the 6.8 mm F-F standoff from below the 2 mm spreader and 0.5 mm pad (pad assumed: a 1 mm pad leaves 2.5 mm), leaving 3.8 mm for the short screws from above; check by hand that the M3 x 35 turns 6 full threads before the short screws go in. On a Rev 0.9 base the 34 mm WS-RDN-601 (no spreader) takes the same M3 x 35 with engagement_ws_rdn_601_mm; its standoff thread depth is not documented, so check it does not bottom out. Printed column creep under clamp load not tested."
   },
   "lid_fastening": {
     "screws": "M3 x 16 ISO 4762 socket head",

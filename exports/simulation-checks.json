@@ -30,25 +30,30 @@
       "detail": "result revision 0.9-g48r"
     },
     {
+      "check": "CFD fan matches the design",
+      "pass": true,
+      "detail": "result: axis [0, 0, 1], centre [105.0, 105.5]; design: axis [0, 0, 1], centre [105.0, 105.5]"
+    },
+    {
       "check": "thermal plate margin",
       "pass": true,
-      "detail": "37.1 \u00b0C, 42.9 K under the limit (min 10.0)"
+      "detail": "35.6 \u00b0C, 44.4 K under the limit (min 10.0)"
     },
     {
       "check": "fan operating point",
       "pass": true,
-      "detail": "22.85 CFM, 0.413 of free air"
+      "detail": "23.96 CFM, 0.433 of free air"
     },
     {
       "check": "no re-breathing",
       "pass": true,
-      "detail": "air into the fins +1.9 K above the room (target 3.0 K); advisory: its effect is in the plate temperature, which is gated above",
+      "detail": "air into the fins +0.1 K above the room (target 3.0 K); advisory: its effect is in the plate temperature, which is gated above",
       "advisory": true
     },
     {
       "check": "CFD converged",
       "pass": true,
-      "detail": "fins calibrated: True (carry 40.73 W of 40); energy balance -0.5 %"
+      "detail": "fins calibrated: True (carry 39.86 W of 40); energy balance -0.5 %"
     }
   ],
   "note": "Reads committed simulation results; CFD and topology optimisation are run by hand (hours), FEA by tools/structure.py."
