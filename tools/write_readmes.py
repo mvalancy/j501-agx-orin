@@ -329,6 +329,10 @@ Scripts that check, render, document and package the design. [`cad-agent.yaml`](
 | [`serve_preview.py`](serve_preview.py) | Serves the local review site ([`preview/index.html`](../preview/index.html)) |
 | [`package_release.py`](package_release.py) | Builds the print zip and release notes |
 | [`ci_check.py`](ci_check.py) | What CI runs: print files match the manifest, every check passed, STLs are sound, README links resolve |
+| [`thermal.py`](thermal.py) | Airflow and heat in OpenFOAM (hours): the bare module, and the cooler at 40 W (`exports/thermal/`) |
+| [`thermal_figures.py`](thermal_figures.py) | Sections, streamlines and videos of each finished CFD case (`preview/thermal/`) |
+| [`lid_sweep.py`](lid_sweep.py) | Lid study: roof, ribs and fan grille variants under 300 N; picks the lightest passing lid |
+| [`lid_riser.py`](lid_riser.py) | One-off riser that lifts an already printed cover over a taller cooler or fan (not a release part) |
 ''')
 
 # ---------------------------------------------------------------- references

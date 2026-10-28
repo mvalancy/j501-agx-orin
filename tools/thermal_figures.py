@@ -16,7 +16,8 @@ from cadagent import simviz as sv
 P = json.loads((R / 'cad/parameters.json').read_text())
 LIM = P['thermal']['limits']
 TITLES = {'bare40': 'AGX module with no heatsink, 40 W', 'bare15': 'AGX module with no heatsink, 15 W',
-          'cooled': 'Rev 0.7 with the J501 cooler, 40 W', 'cooled-0.8': 'Rev 0.8 (duct, lower lid, floor vents), 40 W'}
+          'cooled': 'Rev 0.7 with the 34 mm WS-RDN-601 cooler, 40 W', 'cooled-0.8': 'Rev 0.8 with the 34 mm WS-RDN-601 cooler, 40 W',
+          'cooled-0.9': 'Rev 0.9 with the reComputer mini J501 cooler (fan under a flush grille), 40 W'}
 
 
 def subtitle(res):

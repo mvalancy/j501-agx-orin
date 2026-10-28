@@ -1,5 +1,5 @@
 {
-  "revision": "0.8-thermal",
+  "revision": "0.9-g48r",
   "units": "mm",
   "pcb": {
     "width": 176.0,
@@ -56,8 +56,8 @@
     "floor": 4.0,
     "wall": 4.0,
     "base_height": 72.0,
-    "height": 92.0,
-    "roof_thickness": 4.5,
+    "height": 97.0,
+    "roof_thickness": 3.5,
     "outer_corner_radius": 8.0,
     "cavity_corner_radius": 4.0,
     "base_bottom_chamfer": 0.8,
@@ -179,7 +179,7 @@
     ],
     "lid_vent_z": [
       75,
-      86
+      88
     ],
     "panel_vent_x": [
       31,
@@ -287,12 +287,6 @@
     "support_floor_flare": 3.0,
     "support_shoulder_gusset": 2.0,
     "support_fillet_note": "Board posts and cooler columns: 3 mm concave radius fillet at the floor and 2 mm concave radius fillet between the pad landing and the broad column. Both stay below the landing top and are re-cut by the component relief.",
-    "fan_duct": {
-      "inner_diameter": 80.0,
-      "wall": 1.6,
-      "gap_above_cooler": 2.0,
-      "note": "Rev 0.8: a ring under the roof around the fan so the fan breathes outside air through the hex cells inside the ring; the cells outside it let the hot exhaust out. Ends 2 mm above the cooler top (lid lifts off freely). Checked in CFD (tools/thermal.py)."
-    },
     "floor_vents": {
       "file": "exports/topology/floor-vents.json",
       "threshold": 0.3,
@@ -303,77 +297,168 @@
     },
     "roof_ribs": {
       "width": 2.0,
-      "depth": 6.0,
-      "segments": [
-        [
-          4.0,
-          105.5,
-          63.4,
-          105.5
-        ],
-        [
-          146.6,
-          105.5,
-          202.0,
-          105.5
-        ],
-        [
-          105.0,
-          9.5,
-          105.0,
-          63.9
-        ],
-        [
-          105.0,
-          147.1,
-          105.0,
-          182.5
-        ],
-        [
-          8.8,
-          30.0,
-          72.27,
-          79.82
-        ],
-        [
-          8.8,
-          162.0,
-          69.13,
-          126.57
-        ],
-        [
-          197.2,
-          30.0,
-          137.19,
-          79.14
-        ],
-        [
-          197.2,
-          162.0,
-          140.47,
-          127.24
-        ]
-      ],
-      "note": "Rev 0.8: eight ribs under the roof, from the intake ring to the middle of each wall and to the four lid-screw corners: the radial pattern of the roof topology study (tools/topology.py roof). Chosen by tools/roof_sweep.py as the lightest lid that is stiffer than Rev 0.7 and keeps a safety factor of 2 (99.9th-percentile stress) under 300 N."
+      "depth": 8.0,
+      "note": "Rev 0.9: eight ribs under the roof from the fan skirt to the middle of each wall and to the four lid-screw corners (the radial pattern of the Rev 0.8 roof topology study), centred on the fan, with a round boss where each meets the skirt. Roof 3.5 mm and ribs 8 mm deep from tools/lid_sweep.py (exports/structure/lid-sweep-0.9.json).",
+      "layout": "star"
     },
-    "roof_note": "Rev 0.8: 4.5 mm roof with ribs (Rev 0.7: 6 mm, no ribs)."
+    "roof_note": "Rev 0.8: 4.5 mm roof with ribs (Rev 0.7: 6 mm, no ribs).",
+    "fan_grille": {
+      "thickness": 3.0,
+      "clearance": 6.0,
+      "skirt_wall": 2.4,
+      "skirt_below_fan_top": 3.5,
+      "hub_diameter": 20.0,
+      "rings": 2,
+      "ring_width": 1.4,
+      "spokes": 12,
+      "spoke_width": 2.0,
+      "note": "Rev 0.9: the roof is cut away over the fan down to a flush 3 mm grille (hub disc, 2 rings, 12 spokes); the fan top sits 2.44 mm under it. A skirt wall around the fan frame (6 mm clear, so a 3 mm fan-position error still clears; down to 3.5 mm below the fan top) keeps the hot exhaust out of the intake and stiffens the cut-out; the roof ribs start on it. Spokes, hub and thickness from the lid sweep (300 N): 12 spokes and a D20 hub flex least.",
+      "band_skin": 1.2
+    }
   },
   "cooler": {
-    "size": [
-      100.0,
-      87.0,
-      34.0
-    ],
+    "profile": "recomputer_mini_j501",
+    "model": "Seeed reComputer mini J501 heatsink with fan (SKU 100099421): a G48R heat-pipe tower (Li Yang Peng) on a 2 mm copper spreader, 9215 fan 92 x 92 x 15 mm, 12 V",
+    "datasheets": "S05 references/100099421.pdf (110 x 100 x 50 mm, 12 V, 14.1-55.26 CFM); S06 references/reComputer_Mini_J501_Fan.pdf (G48R drawings: heatsink 93 x 102 x 33.3 mm, 97 x 102 x 48.3 mm with the fan, 5 x D6 heat pipes; fan 9215-Y)",
+    "identity_confirmed": true,
+    "identity_note": "User photos 2026-10-27 (IMG_1852-1854) and the user: this cooler is fitted. The Rev 0.8 lid, sized for the 34 mm WS-RDN-601, hit it by about 15 mm.",
     "center_in_pcb": [
-      90.0,
-      90.5
+      88.0,
+      70.5
     ],
+    "center_note": "Fan and fin centre. From IMG_1852 with a camera model fitted to the 4 lid inserts and 4 board screws (2 px rms): fan hub at PCB (84.5, 70.8); the cooler mount ears sit on a 93 x 80 pattern centred at (88, 69); the spreader edges say the photo reads about 2 mm low in x. About +/-3 mm: measure the fan centre from the PCB edges.",
+    "size": [
+      102.0,
+      97.0,
+      50.3
+    ],
+    "size_note": "Envelope from the spreader underside to the fan top: x along the heat pipes with their U-bends (102), y across the fins (fan 92, fins 93, 97 overall), z = 2 mm copper spreader + 48.3 mm heatsink with fan (S06).",
     "agx_top_above_pcb_top": 19.18,
     "tim_thickness": 0.5,
-    "tim_note": "Thermal pad between the AGX thermal plate and the heatsink; 0.5 mm nominal, measure the fitted pad. Raises the heatsink, not the standoff thread start.",
-    "minimum_top_clearance": 10.0,
-    "identity_confirmed": false,
-    "size_note": "Rev 0.8: Seeed heatsink with fan for reServer J501 (p-5970, WS-RDN-601), 100 x 87 x 34 mm (datasheet S03), the README reference cooler. The earlier 110 x 100 x 50 envelope came from the reComputer mini J501 heatsink (S05), a different product. Measure the fitted cooler height before printing."
+    "tim_note": "Thermal pad between the AGX thermal plate and the copper spreader (Seeed supplies pads); 0.5 mm nominal, measure the fitted pad. Raises the cooler, not the standoff thread start.",
+    "spreader": {
+      "size": [
+        100.0,
+        110.0
+      ],
+      "center_in_pcb": [
+        90.0,
+        82.0
+      ],
+      "thickness": 2.0,
+      "note": "2 mm copper between the AGX thermal plate and the heatsink (user). 100 x 110 from S05 (110 x 100 overall) and the photo (PCB y 25-138, x 38-137)."
+    },
+    "aux_fins": {
+      "box_in_pcb": [
+        45.0,
+        121.0,
+        135.0,
+        137.0
+      ],
+      "height": 12.0,
+      "note": "Black finned bar on the spreader rear edge (photo, S05 gallery). Height assumed."
+    },
+    "standoffs": {
+      "height": 6.8,
+      "diameter": 4.0,
+      "thread": "M3 female-female round spacer",
+      "pattern": [
+        92.0,
+        79.0
+      ],
+      "center_in_pcb": [
+        90.0,
+        69.5
+      ],
+      "note": "Between the spreader and the heatsink bracket, short M3 screws each end (user). Pattern from the photo ears."
+    },
+    "heatsink": {
+      "fins": [
+        84.0,
+        93.0
+      ],
+      "fin_bottom_above_spreader": 5.0,
+      "height_above_spreader": 33.3,
+      "pipe_span_x": 102.0,
+      "heat_pipes": 5,
+      "pipe_diameter": 6.0,
+      "fin_pitch": 1.75,
+      "fin_thickness": 0.35,
+      "material": "Al 6063-T5 fins, C1100 copper base and heat pipes, nickel plated (S06)",
+      "note": "Plates stand across x (stacked along x, 84 mm), 93 mm wide in y: air from the fan leaves at the front and rear (+/-y) faces and under the fins. Pitch counted from IMG_1853 (about 48 plates); thickness assumed."
+    },
+    "fan": {
+      "frame": 92.0,
+      "thickness": 15.0,
+      "corner_chamfer": 17.5,
+      "blade_diameter": 88.24,
+      "hub_diameter": 32.8,
+      "model": "9215-Y: 12 V, 0-4000 rpm PWM, 14.1-55.26 CFM, 0.84-2.87 mmH2O, 0.24-2.28 W, 4-pin 2510 (S06 p.2, drawing p.11)",
+      "note": "Octagonal PBT frame 92.2 x 91.2 mm; corner chamfer legs read from IMG_1852.",
+      "frame_conservative": 95.0
+    },
+    "minimum_fan_clearance": 2.0,
+    "alternatives": {
+      "ws_rdn_601": {
+        "model": "Seeed heatsink with fan for reServer J501 (p-5970, WS-RDN-601), 100 x 87 x 34 mm, 8015 5 V fan",
+        "datasheet": "S03 references/323011387Jetson_AGX_Orin_Heatsink_100x87x34mm-datasheet.pdf",
+        "size": [
+          100.0,
+          87.0,
+          34.0
+        ],
+        "center_in_pcb": [
+          90.0,
+          90.5
+        ],
+        "cover": "The Rev 0.8 cover (release rev0.8, height 92) was sized for this cooler: intake ring 2 mm above its 34 mm top.",
+        "thermal": {
+          "cooler": {
+            "model": "Seeed heatsink with fan for Jetson AGX Orin, WS-RDN-601",
+            "datasheet": "references/323011387Jetson_AGX_Orin_Heatsink_100x87x34mm-datasheet.pdf",
+            "size": [
+              100.0,
+              87.0,
+              34.0
+            ],
+            "base_thickness": 3.5,
+            "cover_thickness": 1.0,
+            "fin_pitch": 1.8,
+            "fin_thickness": 0.3,
+            "k_base_eff": 1500.0,
+            "k_fin": 200.0,
+            "exhaust_axis": "x",
+            "heat_pipes": 3,
+            "basis": "Datasheet: 100 x 87 x 34 mm, copper heat pipes through stacked aluminium fins ('air-conditioner outdoor unit' construction), 8015 fan under a top grille, rated 100-120 W; the underside photo shows 3 flattened heat pipes and closed side plates. Assumed: fins 0.3 mm at 1.8 mm pitch, 3.5 mm base, air leaving through the two faces at +/-X (fin edges), effective base conductivity 1500 W/mK. Measure: fin count and thickness, which faces show fin edges, total height.",
+            "block_effectiveness_guess": 0.25,
+            "block_effectiveness_note": "Starting point for the fin-temperature calibration only: a coarse J501 run delivered about 8.6 W at 43.5 C fins with 33 C intake air, i.e. the CFD fin block works at roughly a quarter of the uniform-flow conductance, because air from the fan turns straight out along the upper channels."
+          },
+          "fan": {
+            "axis": [
+              0,
+              0,
+              -1
+            ],
+            "d_outer": 76.0,
+            "d_hub": 33.0,
+            "bore": 77.0,
+            "thickness": 6.0,
+            "dp0_pa": 15.2,
+            "q_free_m3h": 38.9,
+            "note": "8015 PWM fan, 5 V, 2300 RPM: 22.90 CFM free air, 1.55 mmH2O at zero flow (datasheet; its two row labels are swapped). Straight-line curve between the two; blowing down into the fins (assumed); hub diameter from the drawing (about 33 mm)."
+          }
+        }
+      },
+      "fans": "Any 92 mm fan clips onto the G48R. A 92 x 25 mm fan sits 10 mm higher: lift the cover with tools/lid_riser.py --rise 10 and M3 screws 10 mm longer."
+    },
+    "fan_xy_uncertainty": 3.0,
+    "measured": {
+      "pcb_top_to_fan_top_mm": 68.0,
+      "date": "2026-10-27",
+      "by": "user (ruler, approximate)",
+      "note": "Design keeps 70.0 mm (fan top Z91.56), 2 mm above the measurement, so the real grille gap is about 4.4 mm."
+    },
+    "fan_xy_note": "Fan centre from photo registration: this model (88, 70.5); the G48R study fit gave (84.5-85, 71). The lid keeps clear of the octagonal frame moved 3 mm in any direction, and of a 95 mm frame (S06 table size, may include the wire clips) moved 3 mm."
   },
   "gmsl": {
     "board_size": [
@@ -579,7 +664,7 @@
         "label": "DC IN 12-36V",
         "marks": [
           {
-            "text": "\u2212",
+            "text": "−",
             "x": 141.91
           },
           {
@@ -1087,22 +1172,23 @@
       "basis": "AGX Orin 32 GB: 15/30/40 W modes (datasheet). Module envelope 100 x 87 x 16 mm from the NVIDIA STEP. Thermal plate thickness, SoC footprint and position under the plate, and the pad conductivity are assumed."
     },
     "cooler": {
-      "model": "Seeed heatsink with fan for Jetson AGX Orin, WS-RDN-601",
-      "datasheet": "references/323011387Jetson_AGX_Orin_Heatsink_100x87x34mm-datasheet.pdf",
+      "model": "G48R heat-pipe tower (reComputer mini J501 heatsink)",
+      "datasheet": "references/reComputer_Mini_J501_Fan.pdf (S06)",
       "size": [
-        100.0,
-        87.0,
-        34.0
+        84.0,
+        93.0,
+        48.3
       ],
-      "base_thickness": 3.5,
-      "cover_thickness": 1.0,
-      "fin_pitch": 1.8,
-      "fin_thickness": 0.3,
+      "base_thickness": 7.0,
+      "fin_bottom": 5.0,
+      "fan_thickness": 15.0,
+      "fin_pitch": 1.75,
+      "fin_thickness": 0.35,
       "k_base_eff": 1500.0,
       "k_fin": 200.0,
-      "exhaust_axis": "x",
-      "heat_pipes": 3,
-      "basis": "Datasheet: 100 x 87 x 34 mm, copper heat pipes through stacked aluminium fins ('air-conditioner outdoor unit' construction), 8015 fan under a top grille, rated 100-120 W; the underside photo shows 3 flattened heat pipes and closed side plates. Assumed: fins 0.3 mm at 1.8 mm pitch, 3.5 mm base, air leaving through the two faces at +/-X (fin edges), effective base conductivity 1500 W/mK. Measure: fin count and thickness, which faces show fin edges, total height.",
+      "exhaust_axis": "y",
+      "heat_pipes": 5,
+      "basis": "S06: fins 84 (stack) x 93 x 28.3 mm above a 5 mm gap, 5 x D6 copper heat pipes, 9215 fan on top blowing down (down-draft tower). Base 7 mm = 2 mm copper spreader + 5 mm heatsink base. Assumed: fin thickness 0.35 mm, effective base conductivity 1500 W/mK.",
       "block_effectiveness_guess": 0.25,
       "block_effectiveness_note": "Starting point for the fin-temperature calibration only: a coarse J501 run delivered about 8.6 W at 43.5 C fins with 33 C intake air, i.e. the CFD fin block works at roughly a quarter of the uniform-flow conductance, because air from the fan turns straight out along the upper channels."
     },
@@ -1112,13 +1198,13 @@
         0,
         -1
       ],
-      "d_outer": 76.0,
-      "d_hub": 33.0,
-      "bore": 77.0,
-      "thickness": 6.0,
-      "dp0_pa": 15.2,
-      "q_free_m3h": 38.9,
-      "note": "8015 PWM fan, 5 V, 2300 RPM: 22.90 CFM free air, 1.55 mmH2O at zero flow (datasheet; its two row labels are swapped). Straight-line curve between the two; blowing down into the fins (assumed); hub diameter from the drawing (about 33 mm)."
+      "d_outer": 88.24,
+      "d_hub": 32.8,
+      "bore": 89.0,
+      "thickness": 15.0,
+      "dp0_pa": 28.1,
+      "q_free_m3h": 93.9,
+      "note": "9215-Y at full speed (12 V, 4000 rpm): 55.26 CFM free air, 2.87 mmH2O at zero flow (S06 p.2); straight-line curve between the two; blowing down into the fins."
     },
     "case": {
       "cell_mm": 8.0,
@@ -1136,10 +1222,11 @@
     }
   },
   "structure": {
-    "note": "Acceptance criteria for tools/structure.py results (tools/check_sim.py). Stress is the 99.9th percentile away from the supports, against PLA layer strength; deflection limits keep each revision at least as stiff as Rev 0.7.",
+    "note": "Acceptance criteria for tools/structure.py results (tools/check_sim.py). Stress is the 99.9th percentile away from the supports, against PLA layer strength; deflection limits keep each revision at least as stiff as Rev 0.7. Rev 0.9: the roof keeps the Rev 0.7 deflection limit; the flush fan grille (the user accepts a weaker spot over the fan) only has to stay at least 1 mm clear of the fan under the same 300 N (fan gap 2.44 mm).",
     "lid_press": {
       "max_deflection_mm": 1.19,
-      "min_sf_p999": 2.0
+      "min_sf_p999": 2.0,
+      "max_grille_deflection_mm": 1.44
     },
     "base_mount": {
       "min_sf_p999": 2.0

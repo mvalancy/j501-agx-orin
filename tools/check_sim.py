@@ -37,9 +37,15 @@ for case, c in (('lid_press', crit['lid_press']), ('base_mount', crit['base_moun
         row(f'structure {case}', False, f'exports/structure/{case}-{REV}.json missing: run tools/structure.py')
         continue
     sf = r.get('safety_factor_p999')
-    passed = sf is not None and sf >= c['min_sf_p999'] and r['max_displacement_mm'] <= c.get('max_deflection_mm', 1e9) and r.get('revision') == P['revision']
-    row(f'structure {case}', passed, f"SF {sf} (min {c['min_sf_p999']}), deflection {r['max_displacement_mm']} mm"
-        + (f" (max {c['max_deflection_mm']})" if 'max_deflection_mm' in c else '') + f", revision {r.get('revision')}")
+    if 'grille_max_displacement_mm' in r and 'max_grille_deflection_mm' in c:   # roof and fan grille judged separately
+        d, dg = r['roof_max_displacement_mm'], r['grille_max_displacement_mm']
+        passed = sf is not None and sf >= c['min_sf_p999'] and d <= c['max_deflection_mm'] and dg <= c['max_grille_deflection_mm'] and r.get('revision') == P['revision']
+        row(f'structure {case}', passed, f"SF {sf} (min {c['min_sf_p999']}), roof deflection {d} mm (max {c['max_deflection_mm']}), "
+            f"fan grille {dg} mm (max {c['max_grille_deflection_mm']}, fan {r.get('fan_clearance_mm')} mm below), revision {r.get('revision')}")
+    else:
+        passed = sf is not None and sf >= c['min_sf_p999'] and r['max_displacement_mm'] <= c.get('max_deflection_mm', 1e9) and r.get('revision') == P['revision']
+        row(f'structure {case}', passed, f"SF {sf} (min {c['min_sf_p999']}), deflection {r['max_displacement_mm']} mm"
+            + (f" (max {c['max_deflection_mm']})" if 'max_deflection_mm' in c else '') + f", revision {r.get('revision')}")
     row(f'structure {case}: peak', (r.get('safety_factor') or 0) >= 1.0,
         f"single-element peak {r.get('max_von_mises_mpa')} MPa, SF {r.get('safety_factor')} at {r.get('peak_at_mm')} mm; "
         "advisory: a sharp inside corner, mesh-dependent", advisory=True)

@@ -13,25 +13,13 @@ import build as b
 import structure
 
 TARGET_DEFLECTION = json.loads((R / 'exports/structure/lid_press-0.7.json').read_text())['max_displacement_mm']
-cx, cy = b.c['center_in_pcb'][0] + b.M, b.c['center_in_pcb'][1] + b.M
-X0, X1, Y0, Y1 = b.T, b.W - b.T, b.Y0 + b.T, b.Y1 - b.T
-ri = b.e['fan_duct']['inner_diameter'] / 2 + b.e['fan_duct']['wall']
-
-LAYOUTS = {
-    'none': [],
-    # four spokes from the intake ring to the middle of each wall
-    'cross': [(X0, cy, cx - ri, cy), (cx + ri, cy, X1, cy), (cx, Y0, cx, cy - ri), (cx, cy + ri, cx, Y1)],
-    # the cross plus four diagonals to the lid-screw corners
-    'star': [(X0, cy, cx - ri, cy), (cx + ri, cy, X1, cy), (cx, Y0, cx, cy - ri), (cx, cy + ri, cx, Y1)] +
-            [(x, y, cx + (x - cx) * ri / np.hypot(x - cx, y - cy), cy + (y - cy) * ri / np.hypot(x - cx, y - cy))
-             for x, y in b.e['lid_screw_centers']],
-}
+LAYOUTS = ['none', 'cross', 'star']   # ribs from the fan skirt to the wall middles, plus the four lid-screw corners
 
 
 def lid(rt, layout, depth=6.0, width=2.0):
     b.RT = rt
     b.e['roof_thickness'] = rt
-    b.e['roof_ribs'] = {'width': width, 'depth': depth, 'segments': [list(map(float, s)) for s in LAYOUTS[layout]]} if LAYOUTS[layout] else None
+    b.e['roof_ribs'] = {'width': width, 'depth': depth, 'layout': layout} if layout != 'none' else None
     b.cover.cache_clear()
     return b.cover()
 
@@ -78,7 +66,7 @@ if __name__ == '__main__':
         ax.annotate('chosen', (best['volume_cm3'], best['deflection_mm']), xytext=(8, -14), textcoords='offset points', fontsize=9, color='#26323a')
     ax.set_xlabel('lid volume (cm³)')
     ax.set_ylabel('deflection under 300 N (mm)')
-    ax.set_title('Rev 0.8 roof study: lighter is left, stiffer is down', loc='left', fontsize=11)
+    ax.set_title(f"Rev {b.P['revision'].split('-')[0]} roof study: lighter is left, stiffer is down", loc='left', fontsize=11)
     ax.legend(frameon=False)
     for s in ('top', 'right'):
         ax.spines[s].set_visible(False)

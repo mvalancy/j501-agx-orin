@@ -29,7 +29,7 @@
         {
           "name": "P2 \u00b7 cover",
           "status": "pass",
-          "message": "valid single solid \u00b7 watertight \u00b7 206 \u00d7 181 \u00d7 20 mm \u00b7 fits Bambu Lab P1S bed 256 \u00d7 256 \u00d7 256 mm",
+          "message": "valid single solid \u00b7 watertight \u00b7 206 \u00d7 181 \u00d7 25 mm \u00b7 fits Bambu Lab P1S bed 256 \u00d7 256 \u00d7 256 mm",
           "evidence": {
             "type": "screenshot",
             "path": "../preview/part-cover.png",
@@ -440,8 +440,9 @@
         },
         {
           "name": "simulation \u00b7 Strength, airflow and filament (simulation)",
-          "status": "pass",
-          "message": "pass true in exports/simulation-checks.json",
+          "status": "fail",
+          "message": "pass is false (exports/simulation-checks.json)",
+          "error": "pass is false",
           "evidence": {
             "type": "screenshot",
             "path": "../preview/simulation.html",
@@ -489,17 +490,17 @@
   ],
   "header_meta": {
     "project": "j501-agx",
-    "revision": "rev 0.8-thermal",
-    "generated": "2026-10-27 13:30 UTC"
+    "revision": "rev 0.9-g48r",
+    "generated": "2026-10-28 00:09 UTC"
   },
   "footer_meta": {
-    "checks": "48 pass / 0 fail / 0 skip",
+    "checks": "47 pass / 1 fail / 0 skip",
     "physical_fit": "physical fit NOT verified (CAD only)",
-    "slicer": "sliced (Bambu Studio (command line)): 367.6 g, 11.8 h for 5 part(s), 0.20mm Standard @BBL X1C, Bambu PLA Basic @BBL P1S 0.4 nozzle"
+    "slicer": "slicer not run"
   },
   "project": "j501-agx",
-  "revision": "0.8-thermal",
+  "revision": "0.9-g48r",
   "physical_fit_verified": false,
-  "slicer_run": true,
-  "pass": true
+  "slicer_run": false,
+  "pass": false
 }

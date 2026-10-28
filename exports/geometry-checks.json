@@ -31,9 +31,9 @@
     "print_bounds_mm": [
       206.0,
       181.0,
-      20.0
+      25.0
     ],
-    "volume_cm3": 133.36
+    "volume_cm3": 144.24
   },
   "front_no_gmsl": {
     "degenerate_tessellation_faces_removed": 0,

@@ -51,8 +51,10 @@ columns. Do this before any electronics go in.
 
 ![Module and cooler](docs/assembly/05-cooler.png)
 
-Fit the AGX Orin module and its cooler as Seeed supplies them. Fit the GMSL board now too, if you have one, with its
-supplied supports and screws.
+Fit the AGX Orin module and its cooler as Seeed supplies them: the reComputer mini J501 heatsink's 2 mm copper
+spreader on the module's thermal pad, the heat-pipe tower on its 6.8 mm standoffs, and the fan. Plug the fan into the
+fan header and run its cable down the side of the cooler, below the fan top: the lid's skirt sits 3 mm outside the fan
+frame. Fit the GMSL board now too, if you have one, with its supplied supports and screws.
 
 ### 6. Tie the cooler down
 
@@ -81,7 +83,8 @@ Slide the front plate (P4, or P3 with GMSL), the rear plate (P5) and the side ha
 ![Lid and screws](docs/assembly/09-lid.png)
 
 Lower the lid and fit four M3 × 16 socket heads from the top (2.5 mm hex key, about 40 mm reach). The lid locks the
-plates and hatch in place.
+plates and hatch in place. The fan sits in the pocket under the round grille, 2.4 mm below it; if the lid does not sit
+down flat, stop and check the fan cable and the cooler height (fan top 70 mm above the board's top face).
 
 ## Drive trays (optional)
 

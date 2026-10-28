@@ -1,0 +1,47 @@
+{
+  "part": "lid",
+  "material": "PLA",
+  "material_note": "Bambu PLA Basic: Z (layer) strength used",
+  "mesh": {
+    "nodes": 38535,
+    "tets": 117328,
+    "size_mm": 3.0,
+    "element": "P2 tetrahedra"
+  },
+  "loads": [
+    {
+      "kind": "force",
+      "n": [
+        0.0,
+        0.0,
+        -300.0
+      ],
+      "area_mm2": 21779.7
+    }
+  ],
+  "max_displacement_mm": 1.2388,
+  "probe_displacement_mm": [
+    -0.0003,
+    -0.006,
+    -0.3282
+  ],
+  "max_von_mises_mpa": 26.31,
+  "von_mises_design_mpa": 26.31,
+  "safety_factor": 0.95,
+  "assumptions": "linear elastic, small deflection, isotropic; faces clamped where fixed; no contact, preload or buckling",
+  "stiffness_n_per_mm": 914.1,
+  "case": "lid_press",
+  "revision": "0.9-g48r",
+  "solve_minutes": 6.9,
+  "von_mises_p99_mpa": 6.2,
+  "von_mises_p999_mpa": 11.53,
+  "peak_at_mm": [
+    102.8,
+    181.2,
+    86.4
+  ],
+  "safety_factor_p999": 2.17,
+  "grille_max_displacement_mm": 1.2388,
+  "roof_max_displacement_mm": 0.7261,
+  "fan_clearance_mm": 2.442
+}

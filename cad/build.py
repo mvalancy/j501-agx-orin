@@ -269,6 +269,37 @@ def floor_vents():
     s=v['across_flats'];return [cq.Workplane('XY').pushPoints(pts).polygon(6,2*s/math.sqrt(3)).extrude(F+2).val().translate((0,0,-1))]
 
 # ---------------------------------------------------------------- lid
+def fan_centre(): return c['center_in_pcb'][0]+M,c['center_in_pcb'][1]+M
+
+def fan_outline(d=0.0,shift=(0.0,0.0)):
+    # The fan frame's octagon (square with 45-degree corner chamfers) grown outward by d, around the fan centre (+ shift).
+    f=c['fan'];a=f['frame']/2+d;k=f['corner_chamfer']+2*d-d*math.sqrt(2);cx,cy=fan_centre();cx,cy=cx+shift[0],cy+shift[1]
+    pts=[(a,-(a-k)),(a,a-k),(a-k,a),(-(a-k),a),(-a,a-k),(-a,-(a-k)),(-(a-k),-a),(a-k,-a)]
+    return [(cx+x,cy+y) for x,y in pts]
+
+def fan_keepout_gaps():
+    # The lid against the fan frame moved by the photo-registration uncertainty in eight directions: the modelled
+    # frame, and the S06 table's 95 mm size. Negative = overlap volume (mm3).
+    u=c.get('fan_xy_uncertainty',0.0);cov=cover();out={}
+    for name,grow in (('frame',0.0),('conservative',(c['fan'].get('frame_conservative',c['fan']['frame'])-c['fan']['frame'])/2)):
+        worst=None
+        for i in range(8):
+            a=math.radians(45*i);env=prism_z(fan_outline(grow,(u*math.cos(a),u*math.sin(a))),FAN_TOP-c['fan']['thickness'],c['fan']['thickness'])
+            v=cov.intersect(env).Volume();g=-v if v>1e-6 else cov.distance(env)
+            worst=g if worst is None else min(worst,g)
+        out[name]=round(worst,2)
+    return out
+
+def inside_outline(x,y,d):
+    # True if (x,y) lies inside fan_outline(d) (convex polygon, counter-clockwise).
+    pts=fan_outline(d)
+    return all((x2-x1)*(y-y1)-(y2-y1)*(x-x1)>=0 for (x1,y1),(x2,y2) in zip(pts,pts[1:]+pts[:1]))
+
+def roof_cells():
+    # The open roof cells: every cell of the field that clears the fan skirt (the fan breathes through its own grille).
+    g=e['fan_grille'];Rh=e['hex_across_flats']/math.sqrt(3);d=g['clearance']+g['skirt_wall']+Rh+1.0
+    return [(x,y) for x,y in hex_centers() if not inside_outline(x,y,d)]
+
 def hex_centers():
     s=e['hex_across_flats'];pitch=s+e['hex_web'];Rh=s/math.sqrt(3);x0,y0,x1,y1=e['hex_field']
     dx=pitch*math.sqrt(3)/2;nx=int((x1-x0-2*Rh)//dx);ny=int((y1-y0-s)//pitch)
@@ -279,10 +310,12 @@ def hex_centers():
             if x-Rh>=x0-1e-6 and x+Rh<=x1+1e-6 and y-s/2>=y0-1e-6 and y+s/2<=y1+1e-6:pts.append((x,y))
     return pts
 
+FAN_TOP=COOLER_SEAT+c['size'][2]  # top of the cooler's fan frame
+
 @lru_cache(maxsize=None)
 def cover():
     # Flush lid. Four M3 screws from the top into inserts in the base columns.
-    roof_z=H-RT;cr=e['cavity_corner_radius']
+    roof_z=H-RT;cr=e['cavity_corner_radius'];g=e['fan_grille']
     s=outer_block(BH,H,e['split_chamfer'],e['roof_edge_chamfer'])
     s=subtract(s,[rrect(T,Y0+T,W-T,Y1-T,cr,BH-1,roof_z-BH+1)])
     # Chamfered ledges sit on the I/O panel tops; 45 degrees in roof-down print orientation.
@@ -299,8 +332,8 @@ def cover():
         vz0,vz1=e['lid_vent_z']
         # A roof rib that ends on a wall must land on solid wall: a vent slot under its end left the rib floating with
         # 0.5 mm of air each side, the lid's peak stress (local safety factor 1.0 under 300 N). Skip those slots.
-        rr=e.get('roof_ribs') or {};keep=rr.get('width',0)/2+e['vent_width']/2+2.0
-        ends=[(x,y) for s_ in rr.get('segments',[]) for x,y in (s_[:2],s_[2:])]
+        keep=e['roof_ribs']['width']/2+e['vent_width']/2+2.0
+        ends=[q for s_ in rib_segments() for q in (s_[:2],s_[2:])]
         def clear(wall,pos):
             near={'x0':lambda x,y:x<T+3,'x1':lambda x,y:x>W-T-3,'y0':lambda x,y:y<Y0+T+3,'y1':lambda x,y:y>Y1-T-3}[wall]
             return all(abs(pos-(y if wall[0]=='x' else x))>keep for x,y in ends if near(x,y))
@@ -308,41 +341,83 @@ def cover():
             cuts+=[slot('x',-1,T+2,y,vz0,vz1,e['vent_width'])]*clear('x0',y)+[slot('x',W-T-1,T+2,y,vz0,vz1,e['vent_width'])]*clear('x1',y)
         for x in vent_positions(*e['panel_vent_x']):
             cuts+=[slot('y',Y0-1,T+2,x,vz0,vz1,e['vent_width'])]*clear('y0',x)+[slot('y',Y1-T-1,T+2,x,vz0,vz1,e['vent_width'])]*clear('y1',x)
-    s_af=e['hex_across_flats'];hexes=cq.Workplane('XY').pushPoints(hex_centers()).polygon(6,2*s_af/math.sqrt(3)).extrude(RT+2).val().translate((0,0,roof_z-1))
+    s_af=e['hex_across_flats'];cells=roof_cells()
+    hexes=cq.Workplane('XY').pushPoints(cells).polygon(6,2*s_af/math.sqrt(3)).extrude(RT+2).val().translate((0,0,roof_z-1))
     # Fan-side inlet chamfer: each cell widens toward the cooler so the webs meet the airflow with a tapered edge.
     # The exterior face keeps the 10 mm A/F finger limit; in roof-down print orientation the chamfer is not an overhang.
     f,fd,ov=e['hex_inlet_flare'],e['hex_inlet_depth'],.01;ang=math.degrees(math.atan(f/fd))
-    inlet=cq.Workplane('XY').workplane(offset=roof_z-ov).pushPoints(hex_centers()).polygon(6,2*(s_af+2*f+2*ov*f/fd)/math.sqrt(3)).extrude(fd+ov,taper=ang).vals()
-    cuts+=[hexes]+inlet
+    inlet=cq.Workplane('XY').workplane(offset=roof_z-ov).pushPoints(cells).polygon(6,2*(s_af+2*f+2*ov*f/fd)/math.sqrt(3)).extrude(fd+ov,taper=ang).vals()
+    # Over the fan the roof is cut away to a flush grille: the fan top sits just under it.
+    pocket=prism_z(fan_outline(g['clearance']),roof_z-1,H-g['thickness']-roof_z+1)
+    cuts+=[hexes]+inlet+[pocket,fan_grille_openings()]
+    # The band of cells next to the skirt stays closed on top (no hot exhaust right beside the intake) but is hollow
+    # underneath, under a thin skin: light, and printed roof-down the skin is the first layers on the bed.
+    band=[(x,y) for x,y in hex_centers() if (x,y) not in set(cells) and not inside_outline(x,y,g['clearance']+s_af/math.sqrt(3)+.3)]
+    if band:cuts.append(cq.Workplane('XY').pushPoints(band).polygon(6,2*s_af/math.sqrt(3)).extrude(RT-g['band_skin']+1).val().translate((0,0,roof_z-1)))
     s=subtract(s,cuts)
-    adds=[]
-    if e.get('fan_duct'):adds.append(fan_duct())  # added after the vents are cut, so the hex cells cannot notch the ring
-    adds+=roof_ribs()
-    return combine([s]+adds) if adds else s
+    return combine([s,fan_skirt()]+roof_ribs())
+
+def grille_gap():
+    # Radial width of the grille openings (their narrow dimension; spokes make them longer around the ring).
+    g=e['fan_grille'];ri,ro=g['hub_diameter']/2,c['fan']['blade_diameter']/2+.4
+    return (ro-ri-g['rings']*g['ring_width'])/(g['rings']+1)
+
+def finger_reach(width,finger=12.0):
+    # How far the hemispherical tip of a test finger (IEC 60529, D12) sinks into a slot this wide.
+    r=finger/2;return r if width>=finger else r-math.sqrt(r*r-(width/2)**2)
+
+def fan_grille_openings():
+    # Annulus over the blades (hub disc left solid), split by rings and spokes into openings grille_gap() wide.
+    g=e['fan_grille'];f=c['fan'];cx,cy=fan_centre();z0=H-g['thickness']-1;h=g['thickness']+2
+    ri,ro=g['hub_diameter']/2,f['blade_diameter']/2+.4
+    open_=cyl(cx,cy,z0,ro,h).cut(cyl(cx,cy,z0-1,ri,h+2))
+    n,w=g['rings'],g['ring_width'];gap=grille_gap();keep=[]
+    for i in range(n):
+        r=ri+(i+1)*gap+i*w;keep.append(cyl(cx,cy,z0-1,r+w,h+2).cut(cyl(cx,cy,z0-2,r,h+4)))
+    sw=g['spoke_width']
+    for i in range(g['spokes']):
+        keep.append(box(0,-sw/2,z0-1,ro+2,sw,h+2).rotate((0,0,0),(0,0,1),360*i/g['spokes']+180/g['spokes']).translate((cx,cy,0)))
+    return open_.cut(*keep).clean()
+
+def fan_skirt():
+    # Wall around the fan frame from the roof down past the fan top: seals the intake from the exhaust and frames the cut-out.
+    g=e['fan_grille'];z0=FAN_TOP-g['skirt_below_fan_top'];top=H-e['roof_edge_chamfer']
+    return prism_z(fan_outline(g['clearance']+g['skirt_wall']),z0,top-z0).cut(prism_z(fan_outline(g['clearance']),z0-1,top-z0+2))
+
+def rib_segments():
+    # From the fan centre to the middle of each wall ('cross') and also to the four lid-screw columns ('star').
+    r=e.get('roof_ribs') or {};cx,cy=fan_centre()
+    if not r:return []
+    cross=[(cx,cy,T,cy),(cx,cy,W-T,cy),(cx,cy,cx,Y0+T),(cx,cy,cx,Y1-T)]
+    return cross+([(cx,cy,x,y) for x,y in e['lid_screw_centers']] if r.get('layout','star')=='star' else [])
 
 def roof_ribs():
-    # Stiffening ribs under the roof, placed from the roof topology study (tools/topology.py roof). Like the duct they
-    # run through the roof, so where one crosses a hex cell it prints from the bed instead of bridging the hole.
+    # Stiffening ribs under the roof, the radial pattern of the roof topology study. Like the skirt they run through the
+    # roof, so where one crosses a hex cell it prints from the bed instead of bridging the hole.
     r=e.get('roof_ribs')
     if not r:return []
     w,dep=r['width'],r['depth'];top=H-e['roof_edge_chamfer'];z0=H-RT-dep;out=[];k=1.5
-    # each rib runs 1.5 mm into the wall and the ring it meets: flush (coplanar) joins tessellate with gaps
+    # each rib runs 1.5 mm into the wall and the skirt it meets: flush (coplanar) joins tessellate with gaps
     cav=rrect(T-k,Y0+T-k,W-T+k,Y1-T+k,e['cavity_corner_radius'],z0-1,top-z0+2)
-    for x0,y0,x1,y1 in r['segments']:
+    fan=prism_z(fan_outline(e['fan_grille']['clearance']),z0-1,top-z0+3)
+    g=e['fan_grille'];so=fan_outline(g['clearance']+g['skirt_wall'])
+    for x0,y0,x1,y1 in rib_segments():
         L=math.hypot(x1-x0,y1-y0);ang=math.degrees(math.atan2(y1-y0,x1-x0))
-        out.append(box(-k,-w/2,z0,L+2*k,w,top-z0).rotate((0,0,0),(0,0,1),ang).translate((x0,y0,0)).intersect(cav))
-    d=e.get('fan_duct')
-    if d:  # keep the intake clear
-        cx,cy=c['center_in_pcb'][0]+M,c['center_in_pcb'][1]+M
-        out=[q.cut(cyl(cx,cy,z0-1,d['inner_diameter']/2,top-z0+3)) for q in out]
+        out.append(box(-k,-w/2,z0,L+2*k,w,top-z0).rotate((0,0,0),(0,0,1),ang).translate((x0,y0,0)).intersect(cav).cut(fan))
+        # a round boss where the rib meets the skirt takes the sharp inside corners out of the joint (FEA stress peak)
+        jx,jy=ray_exit(x0,y0,(x1-x0)/L,(y1-y0)/L,so)
+        out.append(cyl(jx,jy,z0,r.get('boss_radius',4.0),top-z0).cut(fan))
     return out
 
-def fan_duct():
-    # Intake ring under the roof, centred on the cooler: outside air in through the cells inside it, exhaust out around it.
-    # It runs through the roof too, so where it crosses a hex cell it is a wall printed from the bed, not a bridge.
-    d=e['fan_duct'];cx,cy=c['center_in_pcb'][0]+M,c['center_in_pcb'][1]+M;ri=d['inner_diameter']/2
-    z0=COOLER_SEAT+c['size'][2]+d['gap_above_cooler']
-    return cyl(cx,cy,z0,ri+d['wall'],H-e['roof_edge_chamfer']-z0).cut(cyl(cx,cy,z0-1,ri,H-z0+2))
+def ray_exit(x,y,dx,dy,poly):
+    # Where a ray from (x,y) inside a convex polygon leaves it.
+    best=1e9
+    for (ax,ay),(bx,by) in zip(poly,poly[1:]+poly[:1]):
+        ex,ey=bx-ax,by-ay;den=dx*ey-dy*ex
+        if abs(den)<1e-12:continue
+        s=((ax-x)*ey-(ay-y)*ex)/den;u=((ax-x)*dy-(ay-y)*dx)/den
+        if s>0 and -1e-9<=u<=1+1e-9:best=min(best,s)
+    return x+best*dx,y+best*dy
 
 # ---------------------------------------------------------------- panels
 def flared(x0,z0,x1,z1,r,face_y,inward,c,depth):
@@ -658,11 +733,17 @@ if __name__=='__main__':
             collisions.append({'parts':[a,b],'intersection_mm3':round(v,6)})
             if v>0.01:raise RuntimeError(f'Assembly collision {a} / {b}: {v}')
     underside_gap=e['board_support_height']+p['lowest_component']
-    cooler_top=COOLER_SEAT+c['size'][2]
-    top_gap=H-RT-cooler_top
-    assert underside_gap>=3 and top_gap>=c['minimum_top_clearance']
+    cooler_top=FAN_TOP
+    top_gap=H-e['fan_grille']['thickness']-cooler_top
+    finger_to_fan=e['fan_grille']['thickness']+top_gap-finger_reach(grille_gap())
+    keepout=fan_keepout_gaps()
+    assert underside_gap>=3 and top_gap>=c['minimum_fan_clearance'] and finger_to_fan>=1,(underside_gap,top_gap,finger_to_fan)
+    assert keepout['frame']>=c['minimum_fan_clearance'] and keepout['conservative']>=0.5,keepout
     (OUT/'assembly-checks.json').write_text(json.dumps({'revision':P['revision'],'plastic_intersections':collisions,
        'underside_clearance_mm':underside_gap,'assumed_cooler_top_z':round(cooler_top,3),
-       'assumed_cooler_to_roof_mm':round(top_gap,3),
-       'physical_fit_verified':False,'gmsl_position_verified':False,'cooler_identity_verified':False},indent=2)+'\n')
+       'assumed_fan_to_grille_mm':round(top_gap,3),'grille_opening_mm':round(grille_gap(),2),
+       'test_finger_to_fan_mm':round(finger_to_fan,2),'fan_xy_uncertainty_mm':c.get('fan_xy_uncertainty',0.0),
+       'fan_moved_min_gap_mm':keepout['frame'],'fan_95mm_moved_min_gap_mm':keepout['conservative'],
+       'measured_pcb_top_to_fan_top_mm':(c.get('measured') or {}).get('pcb_top_to_fan_top_mm'),
+       'physical_fit_verified':False,'gmsl_position_verified':False,'cooler_identity_verified':bool(c.get('identity_confirmed'))},indent=2)+'\n')
     print(json.dumps(report,indent=2))

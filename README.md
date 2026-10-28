@@ -3,11 +3,11 @@
 <p align="center">
   A 3D-printable housing for the <a href="https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html">Seeed reServer Industrial J501 carrier board</a>
   with an NVIDIA Jetson AGX Orin module.<br>
-  <b>Rev 0.8 · fit-check prototype</b> · fits a 256 mm printer bed · MIT licensed
+  <b>Rev 0.9 · fit-check prototype</b> · fits a 256 mm printer bed · MIT licensed
 </p>
 
 <p align="center">
-  <img src="preview/assembled.png" alt="Rev 0.8 enclosure, assembled" width="820">
+  <img src="preview/assembled.png" alt="Rev 0.9 enclosure, assembled" width="820">
 </p>
 
 ```mermaid
@@ -20,13 +20,13 @@ flowchart LR
     F -.-> G[Drive trays, optional]
 ```
 
-**Download:** [Rev 0.8 print package](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.8): all STL files, assembly instructions and renders in one zip.
+**Download:** [Rev 0.9 print package](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.9): all STL files, assembly instructions and renders in one zip.
 
 **Browse the parts:** the [print index](exports/README.md) shows every part with a picture, its size, a 3D view and download links. Every folder has a README with pictures.
 
-**Status:** every part and clearance is checked in CAD only. Nothing has been printed or test-fitted yet, so print the test parts first.
+**Status:** the Rev 0.8 base, plates and cover have been printed and test-fitted. The base and plates fit; the Rev 0.8 cover hit the cooler by about 15 mm, because it was sized for a lower 34 mm cooler. Rev 0.9 is built around the cooler in the photos (below). Its cover is checked in CAD and simulation only, so print the test parts first.
 
-**You need:** a [Seeed reServer Industrial J501 carrier](https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html), a Jetson AGX Orin module, and a cooler. The optional [GMSL extension board](https://www.seeedstudio.com/reServer-Industrial-J501-GMSL-extension-board-p-5949.html) is supported. The reference cooler is Seeed's [heatsink with fan for the J501](https://www.seeedstudio.com/Aluminum-heatsink-with-Fan-for-Jetson-AGX-Orin-p-5970.html). Port details are on the [Seeed wiki](https://wiki.seeedstudio.com/j501_carrier_board_interfaces_usage/); everything else is at [seeedstudio.com](https://www.seeedstudio.com/).
+**You need:** a [Seeed reServer Industrial J501 carrier](https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html), a Jetson AGX Orin module, and a cooler. The optional [GMSL extension board](https://www.seeedstudio.com/reServer-Industrial-J501-GMSL-extension-board-p-5949.html) is supported. The cooler is Seeed's [reComputer mini J501 heatsink with fan](https://www.seeedstudio.com/reComputer-Mini-J501-heatsink-with-fan-p-6605.html) (110 × 100 × 50 mm: a 2 mm copper spreader, a five-heat-pipe tower and a 92 × 15 mm, 12 V fan). Seeed's lower [34 mm heatsink with fan](https://www.seeedstudio.com/Aluminum-heatsink-with-Fan-for-Jetson-AGX-Orin-p-5970.html) fits the Rev 0.8 cover instead. Port details are on the [Seeed wiki](https://wiki.seeedstudio.com/j501_carrier_board_interfaces_usage/); everything else is at [seeedstudio.com](https://www.seeedstudio.com/).
 
 **Contents:** [Printed parts](#printed-parts) · [Hardware to buy](#hardware-to-buy) · [Assembly guide](ASSEMBLY.md) · [Design notes](#design-notes) · [Reproduce](#reproduce) · [Project folders](#project-folders)
 
@@ -69,6 +69,12 @@ Every printed part has a [3MF](exports/) (opens in Bambu Studio), STL and STEP f
 | P20 Antenna hole coupon | [rpsma_coupon.3mf](exports/rpsma_coupon.3mf) | Which D-hole flat (5.9–6.2 mm) holds an RP-SMA bulkhead without turning |
 
 Filament is not specified yet, so fits, heat resistance and insert retention are untested.
+
+**Already printed the Rev 0.8 cover?** It fits the 34 mm cooler. To use it over the 50 mm reComputer mini J501
+cooler, print the one-off 18 mm riser from `tools/lid_riser.py --rise 18 --slice` (49 g, 1 h 41 min, files in
+`build/print/`). It goes between the base and the cover, and the lid then takes 4 × M3 × 30 screws instead of M3 × 16.
+The riser is a recovery part, not part of the release set. A thicker 92 × 25 mm fan on this cooler needs `--rise 10`
+on the Rev 0.9 cover, with screws 10 mm longer.
 
 ### Hardware to buy
 
@@ -115,7 +121,7 @@ Filament is not specified yet, so fits, heat resistance and insert retention are
 
 ## Design notes
 
-**Size:** 206 × 181 × 112 mm. With two of each tray the stack is 220 mm tall. The largest print, P1M, is 206 × 233 × 76.5 mm.
+**Size:** 206 × 181 × 97 mm. With two of each tray the stack is 220 mm tall. The largest print, P1M, is 206 × 233 × 76.5 mm.
 
 **Review material:** `python tools/serve_preview.py` serves the local review site. The engineering tables are in [docs/engineering-review.html](docs/engineering-review.html); the dimensioned paper review is [docs/check-sheet.pdf](docs/check-sheet.pdf).
 
@@ -215,8 +221,8 @@ The GMSL XY position, port positions and top-component placement remain provisio
 All units are millimeters. In the carrier frame, X starts at the left PCB edge, Y at the front edge and Z at the PCB underside.
 
 - Convert source STEP coordinates by subtracting `(32.199, -510.506, -1.578)`, then adding `(15, 15, 20)` to reach the enclosure datum.
-- The enclosure outline spans X0–206, Y5.5–186.5, Z0–112, with the split at Z72.
-- Key heights: PCB underside Z20 (4 mm floor + 16 mm supports); cooler seat Z40.758; reference cooler top Z90.758; roof underside Z106.
+- The enclosure outline spans X0–206, Y5.5–186.5, Z0–97, with the split at Z72.
+- Key heights: PCB underside Z20 (4 mm floor + 16 mm supports); AGX thermal plate top Z40.758; copper spreader top Z43.258; fan top Z91.558; fan grille underside Z94 (2.44 mm above the fan); roof top Z97.
 
 ### Checks (`exports/`)
 
@@ -263,10 +269,10 @@ listed under `steps:` in that file in order with `.venv/bin/python`.
 `main` is protected: changes go to the `dev` branch, then a pull request from `dev` into `main` (CI's `check` must
 pass and every review comment must be resolved).
 
-1. Change the design, set `revision` in `cad/parameters.json` (for example `0.8-...`), and run `cad-agent all`.
+1. Change the design, set `revision` in `cad/parameters.json` (for example `0.9-...`), and run `cad-agent all`.
 2. Commit everything, including `exports/`, push to `dev`, and open a pull request into `main`. CI checks the committed
    print files match that build and pass every check. Merge it once it is reviewed.
-3. Tag and push: `git tag rev0.8 && git push origin rev0.8`. CI builds the print zip (STLs, instructions, renders) and publishes the release.
+3. Tag and push: `git tag rev0.9 && git push origin rev0.9`. CI builds the print zip (STLs, instructions, renders) and publishes the release.
 
 Releases stay marked pre-release until `physical_fit_verified` is true in `exports/review-validation.json`. Every push also leaves the print zip as a downloadable CI artifact for 30 days.
 
