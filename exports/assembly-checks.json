@@ -105,6 +105,10 @@
   "assumed_fan_to_grille_mm": 2.442,
   "grille_opening_mm": 10.57,
   "test_finger_to_fan_mm": 2.28,
+  "fan_xy_uncertainty_mm": 3.0,
+  "fan_moved_min_gap_mm": 2.44,
+  "fan_95mm_moved_min_gap_mm": 1.5,
+  "measured_pcb_top_to_fan_top_mm": 68.0,
   "physical_fit_verified": false,
   "gmsl_position_verified": false,
   "cooler_identity_verified": true

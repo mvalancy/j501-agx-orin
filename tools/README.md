@@ -24,6 +24,8 @@ Scripts that check, render, document and package the design. [`cad-agent.yaml`](
 | print-review | [`print_review.py`](print_review.py) | `exports/geometry-checks.json`, `exports/print-review.json`: watertight, fits the bed, overhangs |
 | design-metrics | [`design_metrics.py`](design_metrics.py) | `exports/design-metrics.json`: measured dimensions and design calculations |
 | mounts | [`check_mounts.py`](check_mounts.py) | `exports/mount-checks.json`: mounting tabs, washer support and driver access |
+| cooler-study | [`cooler_fit_review.py`](cooler_fit_review.py) | `exports/cooler-study/`: cooler component STEPs and the lid fit report ([cooler fit review](../docs/cooler-fit-review.md)) |
+| view | [`view_model.py`](view_model.py) | `exports/view/` (local only): one 3D viewer with the printed parts, cooler, carrier board, module and screws as sections |
 | storage | [`check_storage.py`](check_storage.py) | `exports/storage-checks.json`: trays, cable routes, bend radii, underside slots |
 | cable-diagram | [`cable_diagram.py`](cable_diagram.py) | `preview/cable-route-diagram.png` |
 | docs | [`write_docs.py`](write_docs.py) | The tables in `docs/` and `docs/engineering-review.html` |

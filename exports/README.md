@@ -188,7 +188,7 @@ Should slide in P12 without rattling.<br>
 <td width="33%" valign="top">
 <a href="countersink_coupon.stl"><img src="../preview/part-countersink_coupon.png" alt="P14 Countersink coupon" width="100%"></a><br>
 <b>P14 · Countersink coupon</b><br>
-<sub>Qty 1 · 40 × 20 × 16 mm</sub><br>
+<sub>Qty 1 · 40 × 20 × 17 mm</sub><br>
 An M3 × 35 flat head should sit flush on its cone.<br>
 <b><a href="countersink_coupon.stl">3D view</a></b> · <a href="countersink_coupon.3mf?raw=true">3MF</a> · <a href="countersink_coupon.stl?raw=true">STL</a> · <a href="countersink_coupon.step?raw=true">STEP</a>
 </td>

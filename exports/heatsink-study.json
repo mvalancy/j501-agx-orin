@@ -4,7 +4,7 @@
   "axis": [
    0,
    0,
-   -1
+   1
   ],
   "d_outer": 88.24,
   "d_hub": 32.8,
@@ -12,7 +12,7 @@
   "thickness": 15.0,
   "dp0_pa": 28.1,
   "q_free_m3h": 93.9,
-  "note": "9215-Y at full speed (12 V, 4000 rpm): 55.26 CFM free air, 2.87 mmH2O at zero flow (S06 p.2); straight-line curve between the two; blowing down into the fins."
+  "note": "9215-Y at full speed (12 V, 4000 rpm): 55.26 CFM free air, 2.87 mmH2O at zero flow (S06 p.2); straight-line curve between the two. Blows up: it pulls air in through the fin block's open sides and out through the lid grille (user, 2026-10-27, on the fitted cooler)."
  },
  "current": {
   "pitch_mm": 1.75,

@@ -55,7 +55,7 @@
   "cooler_tiedown": {
     "screw_length_nominal_mm": 35.0,
     "agx_top_z": 40.758,
-    "thread_engagement_mm": 4.0,
+    "thread_engagement_mm": 3.0,
     "tim_thickness_mm": 0.5,
     "pattern_mm": [
       92,
@@ -84,8 +84,8 @@
     "clearance_hole": 3.4,
     "countersink_diameter": 7.0,
     "countersink_angle_deg": 90,
-    "head_seat_z": 9.758,
-    "engagement_check_mm": 4.0,
+    "head_seat_z": 11.258,
+    "engagement_check_mm": 5.5,
     "floor_ribs": [
       3.0,
       3.0

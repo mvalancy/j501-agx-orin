@@ -1,27 +1,27 @@
 {
   "revision": "0.9-g48r",
-  "pass": false,
+  "pass": true,
   "checks": [
     {
       "check": "structure lid_press",
       "pass": true,
-      "detail": "SF 2.17 (min 2.0), roof deflection 0.7261 mm (max 1.19), fan grille 1.2388 mm (max 1.44, fan 2.442 mm below), revision 0.9-g48r"
+      "detail": "SF 2.11 (min 2.0), roof deflection 0.6542 mm (max 1.19), fan grille 1.2523 mm (max 1.44, fan 2.442 mm below), revision 0.9-g48r"
     },
     {
       "check": "structure lid_press: peak",
       "pass": false,
-      "detail": "single-element peak 26.31 MPa, SF 0.95 at [102.8, 181.2, 86.4] mm; advisory: a sharp inside corner, mesh-dependent",
+      "detail": "single-element peak 26.91 MPa, SF 0.93 at [104.2, 11.0, 85.9] mm; advisory: a sharp inside corner, mesh-dependent",
       "advisory": true
     },
     {
       "check": "structure base_mount",
       "pass": true,
-      "detail": "SF 3.71 (min 2.0), deflection 0.9068 mm, revision 0.9-g48r"
+      "detail": "SF 3.69 (min 2.0), deflection 0.9068 mm, revision 0.9-g48r"
     },
     {
       "check": "structure base_mount: peak",
       "pass": false,
-      "detail": "single-element peak 26.99 MPa, SF 0.93 at [205.5, 76.2, 11.7] mm; advisory: a sharp inside corner, mesh-dependent",
+      "detail": "single-element peak 27.0 MPa, SF 0.93 at [205.5, 76.2, 11.7] mm; advisory: a sharp inside corner, mesh-dependent",
       "advisory": true
     },
     {
@@ -31,24 +31,24 @@
     },
     {
       "check": "thermal plate margin",
-      "pass": false,
-      "detail": "None \u00b0C, -1 K under the limit (min 10.0)"
+      "pass": true,
+      "detail": "37.1 \u00b0C, 42.9 K under the limit (min 10.0)"
     },
     {
       "check": "fan operating point",
       "pass": true,
-      "detail": "16.21 CFM, 0.293 of free air"
+      "detail": "22.85 CFM, 0.413 of free air"
     },
     {
       "check": "no re-breathing",
-      "pass": false,
-      "detail": "air into the fan +3.5 K above the room (target 3.0 K); advisory: its effect is in the plate temperature, which is gated above",
+      "pass": true,
+      "detail": "air into the fins +1.9 K above the room (target 3.0 K); advisory: its effect is in the plate temperature, which is gated above",
       "advisory": true
     },
     {
       "check": "CFD converged",
-      "pass": false,
-      "detail": "fins calibrated: False (carry None W of 40); energy balance -1.2 %"
+      "pass": true,
+      "detail": "fins calibrated: True (carry 40.73 W of 40); energy balance -0.5 %"
     }
   ],
   "note": "Reads committed simulation results; CFD and topology optimisation are run by hand (hours), FEA by tools/structure.py."

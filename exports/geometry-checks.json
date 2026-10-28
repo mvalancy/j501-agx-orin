@@ -9,7 +9,7 @@
       181.0,
       76.5
     ],
-    "volume_cm3": 271.94
+    "volume_cm3": 271.76
   },
   "base_mount": {
     "degenerate_tessellation_faces_removed": 0,
@@ -21,7 +21,7 @@
       233.0,
       76.5
     ],
-    "volume_cm3": 296.55
+    "volume_cm3": 296.37
   },
   "cover": {
     "degenerate_tessellation_faces_removed": 0,
@@ -33,7 +33,7 @@
       181.0,
       25.0
     ],
-    "volume_cm3": 144.24
+    "volume_cm3": 146.46
   },
   "front_no_gmsl": {
     "degenerate_tessellation_faces_removed": 0,
@@ -115,9 +115,9 @@
     "print_bounds_mm": [
       40.0,
       20.0,
-      15.748
+      17.248
     ],
-    "volume_cm3": 5.87
+    "volume_cm3": 6.21
   },
   "rpsma_coupon": {
     "degenerate_tessellation_faces_removed": 0,
