@@ -53,7 +53,7 @@ columns. Do this before any electronics go in.
 
 Fit the AGX Orin module and its cooler as Seeed supplies them: the reComputer mini J501 heatsink's 2 mm copper
 spreader on the module's thermal pad, the heat-pipe tower on its 6.8 mm standoffs, and the fan. Plug the fan into the
-fan header and run its cable down the side of the cooler, below the fan top: the lid's skirt sits 3 mm outside the fan
+fan header and run its cable down the side of the cooler, below the fan top: the lid's skirt sits 6 mm outside the fan
 frame. Fit the GMSL board now too, if you have one, with its supplied supports and screws.
 
 ### 6. Tie the cooler down
@@ -61,8 +61,9 @@ frame. Fit the GMSL board now too, if you have one, with its supplied supports a
 ![Tie-down screws from below](docs/assembly/06-tiedown.png)
 
 Replace each of the cooler's four screws with an M3 × 35 flat head, driven up from under the floor. It passes
-through the column, the board and the module, and threads 4 mm into the standoff between the module and the
-heatsink. Tighten gently; the columns are printed.
+through the column, the board, the module and the copper spreader, and threads 3 mm into the bottom of the cooler's
+6.8 mm standoff, leaving the top of the standoff for the short screws from the heatsink ears. Tighten gently; the
+columns are printed. In a Rev 0.8 base the seat is 1.5 mm lower, so the same screw only catches about 3 threads.
 
 ### 7. Fit the antennas
 

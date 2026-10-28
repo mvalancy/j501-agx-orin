@@ -226,7 +226,7 @@ def section_changes():
             'summary': '<ul>'
                        "<li><b>The cooler is the one actually fitted:</b> Seeed's <i>reComputer mini J501</i> heatsink with fan (S05/S06), "
                        "a 2 mm copper spreader, a G48R tower with five 6 mm heat pipes and a 92 × 15 mm, 12 V fan, 50.3 mm tall above the "
-                       "thermal pad. The fan sits about 20 mm toward the front I/O from the module centre (from the user's photo). "
+                       "thermal pad. The fan is centred on the module (the user's photo: its four ears sit on the module's mounting holes). "
                        "Rev 0.8 had assumed the 34 mm WS-RDN-601, and its printed lid hit this cooler by about 15 mm.</li>"
                        f"<li><b>Enclosure {e['height']:g} mm tall</b> (Rev 0.8: 92 mm, Rev 0.7: 112 mm). The lid is cut away over the fan down to a "
                        f"flush {g['thickness']:g} mm grille ({g['spokes']} spokes, {g['rings']} rings): the fan top is 2.4 mm under it, so the "

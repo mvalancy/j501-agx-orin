@@ -1,19 +1,35 @@
 #!/usr/bin/env python3
-"""Build an isolated cooler reference and fit study; never rebuild the enclosure/CFD."""
+"""Cooler fit study: the reComputer mini J501 (G48R) cooler against the lids, with the fan-position uncertainty.
 
+Exports the cooler's components (one model: cad/hardware.py, grouped by cad/cooler_reference.py) as STEP and reads
+them back, then intersects exact lid solids with the cooler keep-outs:
+
+- the release lid (exports/cover.step) with the fan moved by the photo-registration uncertainty in eight directions,
+  for the modelled frame and for the S06 table's 95 mm size; it must clear both;
+- the Rev 0.8 lid (git tag rev0.8) at lifts of 0 mm (the collision the printed lid showed: a negative control),
+  15 mm and the riser height (tools/lid_riser.py), the recovery path for an already printed Rev 0.8 lid.
+
+Writes exports/cooler-study/fit-review.json (bound to source and artifact hashes; checked in CI by
+tools/check_cooler_study.py), component STEPs, the shared viewer meshes and preview/cooler-study-*.png.
+"""
 from pathlib import Path
-import sys, json, hashlib, math
+import sys, json, hashlib, subprocess, tempfile
 from types import SimpleNamespace
 import cadquery as cq
-
 R = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(R / "cad"))
-import cooler_reference as c
-from cadagent.view import export_view
-from cadagent.render import Renderer
+sys.path.insert(0, str(R / 'cad'))
+sys.path.insert(0, str(R / 'tools'))
+import cooler_reference as c  # noqa: E402
+import build as b  # noqa: E402
+from lid_riser import screw as riser_screw  # noqa: E402
+from cadagent.view import export_view  # noqa: E402
+from cadagent.render import Renderer  # noqa: E402
 
-OUT = R / "exports/cooler-study"
-OUT.mkdir(parents=True, exist_ok=True)
+OUT = R / 'exports/cooler-study'
+REV08 = 'rev0.8'          # the printed lid that hit the cooler
+RISER = 18.0              # tools/lid_riser.py default
+SOURCES = ['cad/parameters.json', 'cad/cooler_reference.py', 'cad/hardware.py', 'cad/build.py',
+           'tools/cooler_fit_review.py', 'exports/cover.step']
 
 
 def sha(p):
@@ -21,369 +37,184 @@ def sha(p):
 
 
 def bounds(s):
-    b = s.BoundingBox()
-    return [round(x, 4) for x in [b.xmin, b.ymin, b.zmin, b.xmax, b.ymax, b.zmax]]
+    bb = s.BoundingBox()
+    return [round(x, 4) for x in (bb.xmin, bb.ymin, bb.zmin, bb.xmax, bb.ymax, bb.zmax)]
+
+
+def gap(lid, shell, s):
+    # Overlap from the solids; clearance from the lid's faces: a lid read back from STEP can misclassify a nearby
+    # point as inside itself and report a distance of 0 (seen on the 95 mm keep-out).
+    v = lid.intersect(s).Volume()
+    return {'intersection_mm3': round(v, 3), 'minimum_gap_mm': 0.0 if v > 1e-6 else round(shell.distance(s), 3)}
+
+
+def worst(rows):
+    # the tightest case over the shifts: largest intersection, else smallest gap
+    return min(rows, key=lambda r: (-r['intersection_mm3'], r['minimum_gap_mm']))
+
+
+def lid_vs_cooler(lid, dz=0.0, conservative=False):
+    lid = lid.translate((0, 0, dz)) if dz else lid
+    shell = cq.Compound.makeCompound(lid.Faces())
+    out = {}
+    for name in ('fan', 'heat_sink'):
+        rows = []
+        for sh in c.shifts():
+            r = gap(lid, shell, c.keepouts(sh, conservative)[name])
+            rows.append(dict(r, shift_mm=list(sh)))
+        out[name] = {'nominal': rows[0], 'worst_shift': worst(rows[1:])}
+    return out
+
+
+def rev08_cover():
+    data = subprocess.run(['git', 'show', f'{REV08}:exports/cover.step'], cwd=R, capture_output=True, check=True).stdout
+    with tempfile.NamedTemporaryFile(suffix='.step') as t:
+        t.write(data)
+        t.flush()
+        return cq.importers.importStep(t.name).val(), hashlib.sha256(data).hexdigest()
 
 
 def main():
+    OUT.mkdir(parents=True, exist_ok=True)
     pieces = c.parts()
     metrics = {}
     for name, s in pieces.items():
-        path = OUT / f"{name}.step"
+        path = OUT / f'{name}.step'
         cq.exporters.export(s, str(path))
         read = cq.importers.importStep(str(path)).val()
-        metrics[name] = {
-            "valid": read.isValid(),
-            "solid_count": len(read.Solids()),
-            "volume_mm3": round(read.Volume(), 4),
-            "bounds_mm": bounds(read),
-        }
+        metrics[name] = {'valid': read.isValid(), 'solid_count': len(read.Solids()), 'volume_mm3': round(read.Volume(), 2),
+                         'bounds_mm': bounds(read)}
         assert read.isValid() and read.Volume() > 0, name
-    print("reference solids exported/read back", flush=True)
-    cq.exporters.export(
-        c.compound(list(pieces.values())), str(OUT / "g48r-reference.step")
-    )
-    # The old low-profile model remains available as a separate envelope.
-    old = c.Q["ws_rdn_601"]
-    ox, oy = [x + c.M for x in old["fan_center_in_pcb"]]
-    sx, sy, sz = old["size"]
-    legacy = c.box(ox - sx / 2, oy - sy / 2, c.SPREADER_Z, sx, sy, sz)
-    cq.exporters.export(legacy, str(OUT / "ws-rdn-601-envelope.step"))
-    E = c.E
-    roof = E["height"] - E["roof_thickness"]
-    rib = roof - E["roof_ribs"]["depth"]
-    ring = c.SPREADER_Z + c.C["size"][2] + E["fan_duct"]["gap_above_cooler"]
-    required = max(
-        c.TOP + 2 + c.G["height_stack_uncertainty"] - z for z in [roof, rib, ring]
-    )
-    recovery = math.ceil(required)
-    # Test the actual committed cover with conservative occupied volumes. Compare
-    # nominal placement against a +/-3 mm XY, +2 mm height uncertainty envelope.
-    coverpath = R / "exports/cover.step"
-    cover = cq.importers.importStep(str(coverpath)).val()
-    nominal = c.keepouts()
-    grow = c.G["photo_xy_uncertainty"]
-    uncertain = {}
-    for name, s in nominal.items():
-        b = s.BoundingBox()
-        uncertain[name] = c.box(
-            b.xmin - grow,
-            b.ymin - grow,
-            b.zmin,
-            b.xlen + 2 * grow,
-            b.ylen + 2 * grow,
-            b.zlen + c.G["height_stack_uncertainty"],
-        )
+    print('components exported and read back', flush=True)
+    cq.exporters.export(c.compound([s for k, s in pieces.items() if k not in c.CONTEXT]), str(OUT / 'g48r-reference.step'))
+    alt = c.C['alternatives']['ws_rdn_601']
+    ax, ay = [v + c.M for v in alt.get('center_in_pcb', c.C['center_in_pcb'])]
+    sx, sy, sz = alt['size']
+    cq.exporters.export(b.box(ax - sx / 2, ay - sy / 2, c.SPREADER_Z, sx, sy, sz), str(OUT / 'ws-rdn-601-envelope.step'))
+
+    release = cq.importers.importStep(str(R / 'exports/cover.step')).val()
+    rel = {'modelled_frame': lid_vs_cooler(release), 'frame_95mm': lid_vs_cooler(release, conservative=True)}
+    print('release lid', json.dumps({k: {n: v['worst_shift'] for n, v in r.items()} for k, r in rel.items()}), flush=True)
+    old, old_sha = rev08_cover()
     trials = []
-    for lift in [0, 15, recovery]:
-        moved = cover.translate((0, 0, lift))
-        row = {"lid_lift_mm": lift, "nominal": {}, "uncertainty_envelope": {}}
-        for label, items in [("nominal", nominal), ("uncertainty_envelope", uncertain)]:
-            for name, s in items.items():
-                vol = moved.intersect(s).Volume()
-                gap = moved.distance(s)
-                row[label][name] = {
-                    "intersection_mm3": round(vol, 4),
-                    "minimum_gap_mm": round(gap, 4),
-                }
-        trials.append(row)
-        print("cover trial", lift, json.dumps(row), flush=True)
-    # Geometric height floor with new ribs outside the cooler footprint and a
-    # relocated inlet: not a completed lid, structural result or flow guarantee.
-    roof_floor = (
-        c.TOP
-        + c.G["height_stack_uncertainty"]
-        + c.G["minimum_printed_clearance"]
-        + E["roof_thickness"]
-    )
+    for lift in (0.0, 15.0, RISER):
+        trials.append({'lid_lift_mm': lift, **lid_vs_cooler(old, lift)})
+        print('rev0.8 lid lift', lift, json.dumps({n: trials[-1][n]['worst_shift'] for n in ('fan', 'heat_sink')}), flush=True)
+
+    f = rel['modelled_frame']
+    min_fan = c.C['minimum_fan_clearance']
+    release_pass = (all(v['nominal']['intersection_mm3'] < 1e-6 and v['worst_shift']['intersection_mm3'] < 1e-6 for r in rel.values() for v in r.values())
+                    and f['fan']['worst_shift']['minimum_gap_mm'] >= min_fan and rel['frame_95mm']['fan']['worst_shift']['minimum_gap_mm'] >= 0.5)
+    meas = c.C.get('measured', {})
     report = {
-        "study_valid": all(x["valid"] for x in metrics.values()),
-        "current_cover_fit_pass": all(
-            v["intersection_mm3"] < 1e-6
-            for v in trials[0]["uncertainty_envelope"].values()
-        ),
-        "scope": "Reference CAD and exact committed-cover versus conservative envelope intersections; not manufacturing geometry, a selected airflow option or a release.",
-        "source_sha256": {
-            f: sha(R / f)
-            for f in [
-                "cad/cooler-profiles.json",
-                "cad/cooler_reference.py",
-                "cad/parameters.json",
-                "tools/cooler_fit_review.py",
-                "exports/cover.step",
-            ]
-        },
-        "parts": metrics,
-        "stack_z_mm": {
-            "pcb_underside": c.BOARD_Z,
-            "agx_thermal_plate_top": c.AGX_TOP,
-            "copper_spreader_bottom": c.SPREADER_Z,
-            "cooler_contact": c.CONTACT_Z,
-            "fin_top_fan_bottom": c.FAN_Z,
-            "fan_top": c.TOP,
-            "current_roof_underside": roof,
-            "current_rib_bottom": rib,
-            "current_ring_bottom": ring,
-        },
-        "fan_offset_from_existing_inlet_mm": round(math.hypot(c.CX - ox, c.CY - oy), 3),
-        "current_cover_trials": trials,
-        "same_lid_recovery_lift_floor_mm": round(required, 3),
-        "same_lid_study_lift_mm": recovery,
-        "replacement_roof_height_floor_mm": round(roof_floor, 3),
-        "replacement_roof_height_candidate_mm": math.ceil(roof_floor),
-        "unresolved": [
-            "Spreader/fan seating datum and secondary TIM",
-            "Spacer pattern versus long tie-down axes",
-            "Effective female thread depth and short-screw length",
-            "Actual fan offset and top height",
-            "Fin pitch and pipe bend path",
-            "Replacement roof structural stiffness and airflow",
+        'study_valid': all(x['valid'] for x in metrics.values()),
+        'release_cover_fit_pass': release_pass,
+        'scope': 'One cooler model (cad/hardware.py) against exact lid solids. Fit only: strength is tools/structure.py, '
+                 'airflow tools/thermal.py.',
+        'revision': b.P['revision'],
+        'fan_xy_uncertainty_mm': c.C.get('fan_xy_uncertainty', 0.0),
+        'source_sha256': {p: sha(R / p) for p in SOURCES},
+        'rev08_cover_sha256': old_sha,
+        'parts': metrics,
+        'stack_z_mm': {'pcb_underside': b.Z, 'agx_thermal_plate_top': round(b.AGX_TOP, 3), 'copper_spreader_bottom': round(c.SPREADER_Z, 3),
+                       'cooler_contact': round(c.CONTACT_Z, 3), 'fin_top_fan_bottom': round(c.FAN_Z, 3), 'fan_top_design': round(c.TOP, 3),
+                       'fan_top_measured': round(b.Z + b.p['thickness'] + meas['pcb_top_to_fan_top_mm'], 3) if meas else None,
+                       'grille_underside': round(b.H - b.e['fan_grille']['thickness'], 3),
+                       'skirt_bottom': round(c.TOP - b.e['fan_grille']['skirt_below_fan_top'], 3),
+                       'rib_bottom': round(b.H - b.RT - b.e['roof_ribs']['depth'], 3)},
+        'measured': meas,
+        'release_cover': rel,
+        'rev08_cover_trials': trials,
+        'riser': {'rise_mm': RISER, **riser_screw(RISER)},
+        'unresolved': [
+            'Fan centre: two photo fits differ by about 3.5 mm in X (covered by the uncertainty)',
+            'Spacer pattern versus the long tie-down axes, and the heatsink ear outline',
+            'Effective female thread depth and short-screw length',
+            'Heat-pipe bend path, plate count and the base block outline',
         ],
-        "production_ready": False,
-        "physical_fit_verified": False,
-        "cfd_reused_for_g48r": False,
+        'production_ready': False,
+        'physical_fit_verified': False,
     }
-    (OUT / "fit-review.json").write_text(json.dumps(report, indent=2) + "\n")
-    renderer = Renderer(
-        R / "preview",
-        size=(1500, 1050),
-        branding="J501 COOLER STUDY",
-        subtitle="G48R reference | original approximate CAD | NOT a printable cooler",
-        tessellation=(0.15, 0.3),
-    )
-    loaded = {k: cq.importers.importStep(str(OUT / f"{k}.step")).val() for k in pieces}
+    renderer = Renderer(R / 'preview', size=(1500, 1050), branding='J501 COOLER STUDY',
+                        subtitle='reComputer mini J501 (G48R) | the project cooler model | NOT a printable part', tessellation=(0.15, 0.3))
+    loaded = {k: cq.importers.importStep(str(OUT / f'{k}.step')).val() for k in pieces}
 
     def rgb(k):
-        return tuple(int(c.COLORS[k][i : i + 2], 16) / 255 for i in (1, 3, 5))
-
-    context = {"module_axes_reference", "pcb_reference", "agx_reference"}
-    shapes = [(s, rgb(k)) for k, s in loaded.items() if k not in context]
-    for mode, view in [("assembly", "iso"), ("top", "top"), ("side", "front")]:
-        renderer.render(
-            f"cooler-study-{mode}.png",
-            shapes,
-            caption="Mini J501 / G48R cooler: " + mode,
-            view=view,
-            note="2 mm copper spreader; 5 x diameter 6 heat pipes; 15 mm fan | bends, fins and mount positions provisional",
-        )
-    renderer.render(
-        "cooler-study-installed.png",
-        [(s, rgb(k)) for k, s in loaded.items()],
-        caption="Cooler position on carrier / provisional mounting",
-        note="Magenta: existing module screw axes. Adapter lugs and copper plate plan are estimates pending physical confirmation.",
-    )
-    exploded = []
-    for k, s in loaded.items():
-        if k in context:
-            continue
-        dz = (
-            50
-            if k.startswith("fan")
-            else 16 if k not in ["spreader", "spacers_provisional"] else 0
-        )
-        exploded.append((s, rgb(k), (0, 0, dz)))
-    renderer.render(
-        "cooler-study-exploded.png",
-        exploded,
-        caption="Cooler stack / separated reference components",
-        note="6.8 mm spacers and adapter ears shown provisionally; screws omitted until thread stack and mounting axes are confirmed",
-    )
-    project = SimpleNamespace(
-        root=R,
-        exports_dir=OUT,
-        title="J501 G48R cooler / reference study",
-        part_ids={},
-        view={
-            "parts": False,
-            "hidden": ["module_axes_reference", "pcb_reference", "agx_reference"],
-            "colors": c.COLORS,
-            "extra": [
-                {"name": k, "file": str((OUT / f"{k}.step").relative_to(R))}
-                for k in pieces
-            ],
-        },
-    )
-    export_view(project)
+        return tuple(int(c.COLORS[k][i:i + 2], 16) / 255 for i in (1, 3, 5))
+    shapes = [(s, rgb(k)) for k, s in loaded.items() if k not in c.CONTEXT]
+    for mode, view in (('assembly', 'iso'), ('top', 'top'), ('side', 'front')):
+        renderer.render(f'cooler-study-{mode}.png', shapes, caption='reComputer mini J501 / G48R cooler: ' + mode, view=view,
+                        note='2 mm copper spreader; 6.8 mm M3 standoffs; 5 x D6 heat pipes; 84 x 93 mm plates; 92 x 15 mm fan | bends and ears approximate')
+    renderer.render('cooler-study-installed.png', [(s, rgb(k)) for k, s in loaded.items()], caption='Cooler on the carrier',
+                    note='Magenta: module screw axes. The cooler is centred on the module; its ears sit on the module screw axes.')
+    exploded = [(s, rgb(k), (0, 0, 50 if k.startswith('fan') else 16 if k not in ('spreader', 'spacers') else 0))
+                for k, s in loaded.items() if k not in c.CONTEXT]
+    renderer.render('cooler-study-exploded.png', exploded, caption='Cooler stack / separated components',
+                    note='Standoffs carry the heatsink ears; the cooler contact sits directly on the copper spreader (no 6.8 mm gap)')
+    export_view(SimpleNamespace(root=R, exports_dir=OUT, title='J501 cooler / reComputer mini J501 (G48R)', part_ids={},
+                                view={'parts': False, 'hidden': list(c.CONTEXT), 'colors': c.COLORS,
+                                      'extra': [{'name': k, 'file': str((OUT / f'{k}.step').relative_to(R))} for k in pieces]}))
     draw(report)
-    artifacts = (
-        list(OUT.glob("*.step"))
-        + list((OUT / "view").glob("*.stl"))
-        + [OUT / "view/view.json"]
-        + list((R / "preview").glob("cooler-study-*.png"))
-    )
-    report["artifact_sha256"] = {
-        str(p.relative_to(R)): sha(p) for p in sorted(artifacts)
-    }
-    (OUT / "fit-review.json").write_text(json.dumps(report, indent=2) + "\n")
-    print(
-        json.dumps(
-            {
-                k: report[k]
-                for k in [
-                    "fan_offset_from_existing_inlet_mm",
-                    "same_lid_study_lift_mm",
-                    "replacement_roof_height_candidate_mm",
-                ]
-            }
-        ),
-        flush=True,
-    )
+    artifacts = (sorted(OUT.glob('*.step')) + sorted((OUT / 'view').glob('*.stl')) + [OUT / 'view/view.json']
+                 + sorted((R / 'preview').glob('cooler-study-*.png')))
+    report['artifact_sha256'] = {str(p.relative_to(R)): sha(p) for p in artifacts}
+    (OUT / 'fit-review.json').write_text(json.dumps(report, indent=2) + '\n')
+    print(json.dumps({'release_cover_fit_pass': release_pass, 'fan_worst_gap_mm': f['fan']['worst_shift']['minimum_gap_mm'],
+                      'fan95_worst_gap_mm': rel['frame_95mm']['fan']['worst_shift']['minimum_gap_mm']}), flush=True)
+    return 0 if release_pass and report['study_valid'] else 1
 
 
 def draw(report):
     import matplotlib
-
-    matplotlib.use("Agg")
+    matplotlib.use('Agg')
     import matplotlib.pyplot as plt
-    from matplotlib.patches import Rectangle, Circle
-
-    fig, (ax, side) = plt.subplots(
-        1, 2, figsize=(14, 7.5), gridspec_kw={"width_ratios": [1.25, 1]}
-    )
-    ax.add_patch(
-        Rectangle(
-            (0, c.E["front_y"]),
-            c.E["width"],
-            c.E["rear_y"] - c.E["front_y"],
-            fill=False,
-            edgecolor="#254958",
-            lw=2,
-        )
-    )
-    ax.add_patch(
-        Rectangle((c.M, c.M), c.B["width"], c.B["depth"], fc="#d8e9dc", ec="#62967b")
-    )
-    px, py = [x + c.M for x in c.G["spreader_center_in_pcb"]]
-    sx, sy = c.G["spreader_visual_xy"]
-    ax.add_patch(
-        Rectangle(
-            (px - sx / 2, py - sy / 2),
-            sx,
-            sy,
-            fc="#c68b59",
-            alpha=0.45,
-            label="2 mm copper plate (plan estimated)",
-        )
-    )
-    ax.add_patch(
-        Rectangle(
-            (c.CX - 47.5, c.CY - 47.5),
-            95,
-            95,
-            fill=False,
-            ec="#187aa4",
-            lw=2,
-            label="95 mm fan clearance envelope",
-        )
-    )
-    ax.add_patch(
-        Circle(
-            (c.CX, c.CY),
-            44.12,
-            fill=False,
-            ec="#187aa4",
-            lw=2,
-            label="Photographed fan rotor",
-        )
-    )
-    ox, oy = [x + c.M for x in c.C["center_in_pcb"]]
-    ax.add_patch(
-        Circle(
-            (ox, oy),
-            40,
-            fill=False,
-            ec="#aa3388",
-            ls="--",
-            lw=2,
-            label="Existing inlet (80 mm)",
-        )
-    )
-    for x0, y0, x1, y1 in c.E["roof_ribs"]["segments"]:
-        ax.plot([x0, x1], [y0, y1], c="#aa3388", lw=2)
-    for x, y in c.B["module_mount_centers"]:
-        ax.plot(x + c.M, y + c.M, "+", c="#aa3388", ms=9)
-    ax.plot(c.CX, c.CY, "+", c="#187aa4", ms=10)
-    ax.annotate(
-        "Fan shifted about 20 mm\nXY estimate: +/-3 mm",
-        (c.CX, c.CY),
-        xytext=(12, 192),
-        arrowprops={"arrowstyle": "->"},
-        fontsize=9,
-    )
-    ax.set(
-        xlim=(-5, 211),
-        ylim=(-3, 207),
-        xlabel="Enclosure X (mm)",
-        ylabel="Enclosure Y (mm)",
-        title="Plan: existing ribs/inlet versus photographed cooler",
-    )
-    ax.set_aspect("equal")
-    ax.legend(loc="lower left", fontsize=7)
-    z = report["stack_z_mm"]
-    x = 0
-    for name, lo, hi, color in [
-        (
-            "Copper spreader",
-            z["copper_spreader_bottom"],
-            z["cooler_contact"],
-            "#bb743e",
-        ),
-        (
-            "G48R contact to fin top",
-            z["cooler_contact"],
-            z["fin_top_fan_bottom"],
-            "#a4b3bc",
-        ),
-        ("15 mm fan", z["fin_top_fan_bottom"], z["fan_top"], "#375966"),
-    ]:
-        side.add_patch(Rectangle((0, lo), 55, hi - lo, fc=color, ec="white"))
-        side.text(
-            3,
-            (lo + hi) / 2,
-            name,
-            va="center",
-            fontsize=9,
-            color="white" if name.startswith("15") else "#192a34",
-        )
-    for label, key, color in [
-        ("Existing ring bottom", "current_ring_bottom", "#c23c35"),
-        ("Existing rib bottom", "current_rib_bottom", "#ad4e93"),
-        ("Existing roof underside", "current_roof_underside", "#665599"),
-    ]:
-        zz = z[key]
-        side.plot([-2, 95], [zz, zz], ls="--", c=color)
-        side.text(58, zz + 0.4, f"{label}\nZ{zz:.2f}", fontsize=8, color=color)
-    side.axhline(z["fan_top"], c="#187aa4")
-    side.text(
-        58, z["fan_top"] + 0.3, f'Fan top Z{z["fan_top"]:.2f}', fontsize=8, c="#187aa4"
-    )
-    side.set(
-        xlim=(-3, 100),
-        ylim=(38, 104),
-        xticks=[],
-        ylabel="Enclosure Z (mm)",
-        title="Height stack: levels, not a section through the lid",
-    )
-    side.text(
-        1,
-        100,
-        f'New-roof geometric floor: {report["replacement_roof_height_candidate_mm"]} mm\nSame-lid lift study: {report["same_lid_study_lift_mm"]} mm',
-        fontsize=10,
-    )
-    fig.suptitle(
-        "G48R fit study — source dimensions plus explicitly uncertain photo placement",
-        fontsize=14,
-    )
-    fig.text(
-        0.04,
-        0.02,
-        "Geometric study only. New lid not built; no strength or airflow claim. Do not add the 6.8 mm lug spacers beneath the entire cooler.",
-        fontsize=9,
-    )
+    from matplotlib.patches import Rectangle, Circle, Polygon
+    fig, (ax, side) = plt.subplots(1, 2, figsize=(14, 7.5), gridspec_kw={'width_ratios': [1.25, 1]})
+    ax.add_patch(Rectangle((0, b.Y0), b.W, b.D, fill=False, edgecolor='#254958', lw=2))
+    ax.add_patch(Rectangle((c.M, c.M), c.B['width'], c.B['depth'], fc='#d8e9dc', ec='#62967b'))
+    sp = c.C['spreader']
+    px, py = [v + c.M for v in sp['center_in_pcb']]
+    sx, sy = sp['size']
+    ax.add_patch(Rectangle((px - sx / 2, py - sy / 2), sx, sy, fc='#c68b59', alpha=0.4, label='2 mm copper spreader'))
+    g = b.e['fan_grille']
+    ax.add_patch(Polygon(b.fan_outline(), closed=True, fill=False, ec='#187aa4', lw=2, label='fan frame (model)'))
+    for sh in c.shifts()[1:]:
+        ax.add_patch(Polygon(b.fan_outline(0, sh), closed=True, fill=False, ec='#187aa4', lw=0.5, alpha=0.5))
+    ax.add_patch(Polygon(b.fan_outline(g['clearance']), closed=True, fill=False, ec='#c23c35', lw=2, label=f"lid fan pocket (+{g['clearance']:g} mm)"))
+    ax.add_patch(Polygon(b.fan_outline(g['clearance'] + g['skirt_wall']), closed=True, fill=False, ec='#c23c35', lw=1, ls='--', label='skirt outer face'))
+    ax.add_patch(Circle((c.CX, c.CY), c.C['fan']['blade_diameter'] / 2, fill=False, ec='#26323a', lw=1, ls=':', label='rotor'))
+    for x0, y0, x1, y1 in b.rib_segments():
+        ax.plot([x0, x1], [y0, y1], c='#ad4e93', lw=2)
+    ax.plot([], [], c='#ad4e93', lw=2, label='roof ribs (outside the pocket)')
+    ax.annotate(f"fan moved ±{report['fan_xy_uncertainty_mm']:g} mm (thin outlines)", (c.CX, c.CY), xytext=(12, 192),
+                arrowprops={'arrowstyle': '->'}, fontsize=9)
+    ax.set(xlim=(-5, 211), ylim=(-3, 207), xlabel='Enclosure X (mm)', ylabel='Enclosure Y (mm)', title=f"Plan: Rev {report['revision'].split('-')[0]} lid against the cooler")
+    ax.set_aspect('equal')
+    ax.legend(loc='lower left', fontsize=7)
+    z = report['stack_z_mm']
+    for name, lo, hi, color in (('Copper spreader', z['copper_spreader_bottom'], z['cooler_contact'], '#bb743e'),
+                                ('G48R base, pipes, plates', z['cooler_contact'], z['fin_top_fan_bottom'], '#a4b3bc'),
+                                ('15 mm fan', z['fin_top_fan_bottom'], z['fan_top_design'], '#375966')):
+        side.add_patch(Rectangle((0, lo), 55, hi - lo, fc=color, ec='white'))
+        side.text(3, (lo + hi) / 2, name, va='center', fontsize=9, color='white' if name.startswith('15') else '#192a34')
+    for label, key, color in (('Grille underside', 'grille_underside', '#c23c35'), ('Skirt bottom (6 mm outside the frame)', 'skirt_bottom', '#ad4e93'),
+                              ('Rib bottom (outside the pocket)', 'rib_bottom', '#665599')):
+        side.plot([-2, 95], [z[key], z[key]], ls='--', c=color)
+        side.text(58, z[key] + 0.4, f'{label}\nZ{z[key]:.2f}', fontsize=8, color=color)
+    side.axhline(z['fan_top_design'], c='#187aa4')
+    side.text(58, z['fan_top_design'] - 2.2, f"Fan top Z{z['fan_top_design']:.2f} (design, 70 mm over the PCB)", fontsize=8, c='#187aa4')
+    if z.get('fan_top_measured'):
+        side.axhline(z['fan_top_measured'], c='#187aa4', ls=':')
+        side.text(58, z['fan_top_measured'] - 2.2, f"measured Z{z['fan_top_measured']:.2f} (68 mm)", fontsize=8, c='#187aa4')
+    side.set(xlim=(-3, 100), ylim=(38, 100), xticks=[], ylabel='Enclosure Z (mm)', title='Height stack (levels, not a section)')
+    fan = report['release_cover']['modelled_frame']['fan']['worst_shift']
+    f95 = report['release_cover']['frame_95mm']['fan']['worst_shift']
+    fig.suptitle(f"Cooler fit: worst gap to the moved fan {fan['minimum_gap_mm']:.2f} mm (95 mm frame: {f95['minimum_gap_mm']:.2f} mm)", fontsize=14)
+    fig.text(0.04, 0.02, 'Exact lid solid vs keep-outs. The standoffs carry the heatsink ears; the cooler contact sits on the spreader.', fontsize=9)
     fig.tight_layout(rect=(0, 0.04, 1, 0.95))
-    fig.savefig(R / "preview/cooler-study-clearance.png", dpi=145)
+    fig.savefig(R / 'preview/cooler-study-clearance.png', dpi=145)
     plt.close(fig)
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    raise SystemExit(main())

@@ -14,7 +14,7 @@ P20,rpsma_coupon,1 (test),Printed,2.5 mm antenna wall with D-holes 5.9 / 6.0 / 6
 H1,M3 x 10 heat-set insert,8 (4 board + 4 lid),User kit,4.2 body / 3.75 starter,Install before electronics
 H3,M3 x 16 ISO 4762 socket head,4,Purchase,Lid screws,"2.5 mm hex, 40 mm reach"
 H5,M3 x 10 ISO 7380 button head,4,Purchase,Board screws,8.4 mm engagement
-H7,"M3 x 35 flat head, DIN 7991 / ISO 10642, A2",4,Purchase,Up through the floor pocket into the female standoffs between the AGX module and the heatsink,Raised countersink seat at Z9.76 gives exactly 4 mm (8 threads) of engagement; thermal pad does not change it
+H7,"M3 x 35 flat head, DIN 7991 / ISO 10642, A2",4,Purchase,"Up through the floor pocket, board, module and copper spreader into the bottom of the cooler's 6.8 mm F-F standoffs",Raised countersink seat at Z11.26 gives 3 mm (6 threads) of engagement and leaves 3.8 mm for the short screws from the heatsink ears
 H10,RP-SMA female bulkhead pigtail (1/4-36 thread) to U.FL/MHF4 as the radio needs,4 (2 Wi-Fi + 2 cellular),Purchase,D6.6 hole with a 6.0 mm flat (the thread milled flat stops it turning); 2.5 mm local wall; 8 mm nut + lock washer outside,Insert from inside; thread must cover 2.5 mm wall + washer + nut + about 4 mm for the antenna
 P15,storage_35 (3.5 in tray),0-2,Printed,206x181x32; one SFF-8301 drive; 12V IN D8 hole,Print floor down; stack in any order
 P16,storage_25 (2.5 in tray),0-2,Printed,206x181x22; two SFF-8201 drives up to 15 mm,Print floor down

@@ -20,8 +20,15 @@ A cooler-family name hid two distinct height/footprint configurations. Centering
 
 ## Corrective rule
 
+Check a photo registration's orientation against a known feature before using it, and check that known hardware lands on known holes.
+
+
 Keep separate cooler profiles with source dimensions, seating datums and uncertainty. Check the actual lid solid, including ring and ribs, against an expanded occupied envelope. Preserve the known collision as a negative control. Distinguish generic vendor mounting hardware from the product-specific adapter; require physical confirmation before choosing tie-down axes or bolt lengths. Isolate the study from active worktrees and simulation outputs.
 
 ## Limits
 
 The G48R contact stack, adapter pattern, photo placement and pipe bends remain provisional. The 19 mm lift and 101 mm replacement-roof height are geometric candidates, not released parts, strength results or cooling predictions. See the [full fit review](../../docs/cooler-fit-review.md).
+
+## Resolution — Rev 0.9 (2026-10-27)
+
+The study was merged into Rev 0.9 as one model: `cad/hardware.py` `cooler_and_module()` is the only cooler geometry, sized from `cad/parameters.json` `cooler` (the separate `cooler-profiles.json` was folded in). The photo shows an **octagonal** fan frame, as the S06 drawing does; the study's rounded-square frame overstated the corners. Both earlier photo fits (88, 70.5 and 84.5, 70.8) shared one error: the registration had IMG_1852 rotated 180 degrees (the front I/O, with DC IN, RJ45 and audio, is the photo's right-hand wall, DC IN at the top). Corrected, the fan hub lands at PCB (90.4, 90.5) and the four heatsink ears within 2 mm of the four module mounting holes: the cooler is centred on the module, as the study's own observation (ears on the module-hole pitch) suggested. The Rev 0.9 lid uses the module centre, with its fan pocket 6 mm outside the frame; `cad/build.py` and `tools/cooler_fit_review.py` check the exact lid against the fan moved 3 mm in eight directions, for the modelled frame and the S06 table's 95 mm size. The user measured the PCB top to fan top at about 68 mm, 2 mm under the 70 mm design value, so the study's +2 mm height allowance is no longer needed. The 101 mm roof estimate assumed ribs and a 4.5 mm roof; the Rev 0.9 lid is 97 mm with a flush grille over the fan. The Rev 0.8 lid collision stays in the study as a negative control, next to the 18 mm riser check.

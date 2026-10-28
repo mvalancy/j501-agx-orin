@@ -1,9 +1,5 @@
 <h1 align="center">J501 AGX Orin Enclosure</h1>
 
-> **G48R cooler fit study — October 27:** the photographed Mini J501 cooler collides with the existing lid. See the [dimensioned reference assembly and fit review](docs/cooler-fit-review.md), including heat pipes, copper plate, fan placement and actual-cover intersection checks. This development study does not select a Rev 0.9 airflow option or replace the print release below.
-
-![Mini J501 G48R reference study](preview/cooler-study-assembly.png)
-
 <p align="center">
   A 3D-printable housing for the <a href="https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html">Seeed reServer Industrial J501 carrier board</a>
   with an NVIDIA Jetson AGX Orin module.<br>
@@ -24,11 +20,11 @@ flowchart LR
     F -.-> G[Drive trays, optional]
 ```
 
-**Download:** [Rev 0.9 print package](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.9): all STL files, assembly instructions and renders in one zip.
+**Download:** Rev 0.9 is a candidate on `main` and is not tagged yet: print it from [`exports/`](exports/README.md). Tagged releases (all STL files, assembly instructions and renders in one zip) are on the [releases page](https://github.com/mvalancy/j501-agx-orin/releases).
 
 **Browse the parts:** the [print index](exports/README.md) shows every part with a picture, its size, a 3D view and download links. Every folder has a README with pictures.
 
-**Status:** the Rev 0.8 base, plates and cover have been printed and test-fitted. The base and plates fit; the Rev 0.8 cover hit the cooler by about 15 mm, because it was sized for a lower 34 mm cooler. Rev 0.9 is built around the cooler in the photos (below). Its cover is checked in CAD and simulation only, so print the test parts first.
+**Status:** the Rev 0.8 base, plates and cover have been printed and test-fitted. The base and plates fit; the Rev 0.8 cover hit the cooler by about 15 mm, because it was sized for a lower 34 mm cooler. Rev 0.9 is built around that cooler: see the [cooler fit review](docs/cooler-fit-review.md) for the model and the clearance checks (the lid clears the fan even if its true position is 3 mm off the photo estimate). Rev 0.9 also raises the cooler tie-down seats in the base by 1.5 mm, so the M3 × 35 screws catch 6 threads in this cooler's standoffs (a Rev 0.8 base gives about 3). Its cover and base are checked in CAD and simulation only, so print the test parts first.
 
 **You need:** a [Seeed reServer Industrial J501 carrier](https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html), a Jetson AGX Orin module, and a cooler. The optional [GMSL extension board](https://www.seeedstudio.com/reServer-Industrial-J501-GMSL-extension-board-p-5949.html) is supported. The cooler is Seeed's [reComputer mini J501 heatsink with fan](https://www.seeedstudio.com/reComputer-Mini-J501-heatsink-with-fan-p-6605.html) (110 × 100 × 50 mm: a 2 mm copper spreader, a five-heat-pipe tower and a 92 × 15 mm, 12 V fan). Seeed's lower [34 mm heatsink with fan](https://www.seeedstudio.com/Aluminum-heatsink-with-Fan-for-Jetson-AGX-Orin-p-5970.html) fits the Rev 0.8 cover instead. Port details are on the [Seeed wiki](https://wiki.seeedstudio.com/j501_carrier_board_interfaces_usage/); everything else is at [seeedstudio.com](https://www.seeedstudio.com/).
 

@@ -21,7 +21,8 @@ C=e['panel_clearance']  # legacy name used by older tools
 AGX_TOP=Z+p['thickness']+c['agx_top_above_pcb_top']  # top of the module thermal plate; heatsink standoff threads start here
 COOLER_SEAT=AGX_TOP+c['tim_thickness']
 # Countersunk head face of the cooler tie-down screw: a standard length gives exactly the specified thread engagement.
-HS_HEAD_Z=AGX_TOP+e['heatsink_thread_engagement']-e['heatsink_screw_length']
+HS_THREAD_Z=COOLER_SEAT+c['spreader']['thickness'] if c.get('spreader') else AGX_TOP  # where the tie-down screw meets the standoff's female thread
+HS_HEAD_Z=HS_THREAD_Z+e['heatsink_thread_engagement']-e['heatsink_screw_length']
 FONT='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
 OUT=ROOT/'exports'; OUT.mkdir(exist_ok=True)
 

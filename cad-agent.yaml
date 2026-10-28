@@ -15,6 +15,7 @@ cad:
     - {name: print-review,      run: tools/print_review.py,     needs: [build]}
     - {name: design-metrics,    run: tools/design_metrics.py,   log: design-metrics.log, needs: [build]}
     - {name: mounts,            run: tools/check_mounts.py,     needs: [build]}
+    - {name: cooler-study,      run: tools/cooler_fit_review.py, log: cooler-study.log, needs: [build], timeout_s: 3600}
     - {name: storage,           run: tools/check_storage.py,    needs: [build]}
     - {name: cable-diagram,     run: tools/cable_diagram.py,    needs: [build]}
     - {name: docs,              run: tools/write_docs.py}
@@ -61,7 +62,7 @@ cad:
   site:
     title: J501 AGX enclosure
     tagline: A printed enclosure for the Seeed reServer J501 carrier with a Jetson AGX Orin, its cooler, antennas and drives
-    notice: "G48R study branch: reference model and fit evidence only. Existing print files and thermal results describe the previous cooler. Rev 0.9 airflow selection remains pending."
+    notice: "Rev 0.9 candidate: lid for the reComputer mini J501 (G48R) cooler. CAD, FEA and CFD checked; not yet test-printed."
     review: exports/cooler-study/review.json
     milestones: docs/milestones.yaml
     pages: [README.md, ASSEMBLY.md, "docs/README.md", "exports/README.md", "cad/README.md", "tools/README.md",
@@ -70,9 +71,10 @@ cad:
     live_reload: {watch: [preview, docs, exports, site]}
     nav:
       - {id: overview, title: Overview, href: site/}
-      - {id: cooler, title: Cooler study, href: site/pages/docs-cooler-fit-review-md.html}
+      - {id: cooler, title: Cooler fit, href: site/pages/docs-cooler-fit-review-md.html}
       - {id: renders, title: Renders, href: preview/index.html}
-      - {id: model, title: 3D model, href: "_cadagent/kit/viewer.html?manifest=/exports/cooler-study/view/view.json"}
+      - {id: model, title: 3D model, href: _cadagent/kit/viewer.html}
+      - {id: cooler3d, title: Cooler 3D, href: "_cadagent/kit/viewer.html?manifest=/exports/cooler-study/view/view.json"}
       - {id: simulation, title: Simulation, href: preview/simulation.html}
       - {id: review, title: Engineering review, href: docs/engineering-review.html}
       - {id: checks, title: Checks, href: docs/cad-agent-report.html}
