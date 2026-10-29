@@ -1,5 +1,7 @@
 {
   "revision": "0.9-g48r",
+  "release": "0.9.1",
+  "release_note": "Release 0.9.1 (2026-10-29) fixes the Rev 0.9 parts without changing the design revision: the owner found the cover's roof ribs reaching into the four lid-screw counterbores of the printed lid (issue #9). The counterbores and clearance holes are now cut after the ribs, and cad-agent holes checks every hole of every part.",
   "units": "mm",
   "pcb": {
     "width": 176.0,

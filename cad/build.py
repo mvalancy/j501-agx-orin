@@ -326,9 +326,11 @@ def cover():
     s=combine([s]+ledges+cols)
     r0,r1,rh=e['joint_rebate']
     cuts=[box(r0,Y0+3.2,BH-1,r1-r0,D-6.4,rh+1),box(W-r1,Y0+3.2,BH-1,r1-r0,D-6.4,rh+1)]
-    hz=e['lid_screw_head_z']
+    # Lid-screw counterbores and clearance holes are cut last (below), after the ribs and skirt are added: the star ribs
+    # run to the screw centres, and cut first they refilled part of each counterbore (j501 #9; cad-agent holes checks it).
+    hz=e['lid_screw_head_z'];screw_holes=[]
     for x,y in e['lid_screw_centers']:
-        cuts+=[cyl(x,y,hz,e['lid_counterbore_diameter']/2,H-hz+1),cyl(x,y,BH-1,e['lid_screw_clearance']/2,hz-BH+1.01)]
+        screw_holes+=[cyl(x,y,hz,e['lid_counterbore_diameter']/2,H-hz+1),cyl(x,y,BH-1,e['lid_screw_clearance']/2,hz-BH+1.01)]
     if e.get('lid_vent_z'):
         vz0,vz1=e['lid_vent_z']
         # A roof rib that ends on a wall must land on solid wall: a vent slot under its end left the rib floating with
@@ -356,7 +358,7 @@ def cover():
     band=[(x,y) for x,y in hex_centers() if (x,y) not in set(cells) and not inside_outline(x,y,g['clearance']+s_af/math.sqrt(3)+.3)]
     if band:cuts.append(cq.Workplane('XY').pushPoints(band).polygon(6,2*s_af/math.sqrt(3)).extrude(RT-g['band_skin']+1).val().translate((0,0,roof_z-1)))
     s=subtract(s,cuts)
-    return combine([s,fan_skirt()]+roof_ribs())
+    return subtract(combine([s,fan_skirt()]+roof_ribs()),screw_holes)
 
 def grille_gap():
     # Radial width of the grille openings (their narrow dimension; spokes make them longer around the ring).
