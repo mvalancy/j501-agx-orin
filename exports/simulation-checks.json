@@ -5,12 +5,12 @@
     {
       "check": "structure lid_press",
       "pass": true,
-      "detail": "SF 2.11 (min 2.0), roof deflection 0.6542 mm (max 1.19), fan grille 1.2523 mm (max 1.44, fan 2.442 mm below), revision 0.9-g48r"
+      "detail": "SF 2.1 (min 2.0), roof deflection 0.6549 mm (max 1.19), fan grille 1.253 mm (max 1.44, fan 2.442 mm below), revision 0.9-g48r"
     },
     {
       "check": "structure lid_press: peak",
       "pass": false,
-      "detail": "single-element peak 26.91 MPa, SF 0.93 at [104.2, 11.0, 85.9] mm; advisory: a sharp inside corner, mesh-dependent",
+      "detail": "single-element peak 27.1 MPa, SF 0.92 at [104.2, 11.0, 85.9] mm; advisory: a sharp inside corner, mesh-dependent",
       "advisory": true
     },
     {

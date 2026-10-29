@@ -8,24 +8,38 @@
   "parts": {
     "base": {
       "grams": 188.33,
-      "minutes": 337.5,
+      "minutes": 336.6,
       "filament_m": 62.14,
       "error": "Success.",
       "sha256": "6761bac52bd7603e3435fa0a37919603d755636a3002b50845fe02e3ed36d2d3"
     },
-    "cover": {
-      "grams": 129.23,
-      "minutes": 266.2,
-      "filament_m": 42.64,
+    "base_mount": {
+      "grams": 200.82,
+      "minutes": 356.8,
+      "filament_m": 66.26,
       "error": "Success.",
-      "sha256": "0ff6e2256db94d192b590573de1be97dfedd278f9b934a5c712093d4fa81e87e"
+      "sha256": "f8564045af69771ac09cd467e4967e4493582654fd7112a70aeb737ab5bb4938"
+    },
+    "cover": {
+      "grams": 128.78,
+      "minutes": 264.5,
+      "filament_m": 42.49,
+      "error": "Success.",
+      "sha256": "f69ab8b989cc4ee830d5ce7d414ae7b4475725c50524a7756c9f454ddc275805"
     },
     "front_no_gmsl": {
       "grams": 26.26,
-      "minutes": 45.2,
+      "minutes": 45.1,
       "filament_m": 8.66,
       "error": "Success.",
       "sha256": "05b4c43be8b63043d9e0077341f261a8685da4c08e03a7c9cefe57d6aa972d42"
+    },
+    "front_gmsl": {
+      "grams": 25.05,
+      "minutes": 45.1,
+      "filament_m": 8.26,
+      "error": "Success.",
+      "sha256": "9a6b1cf5322c17d3018c2a4dce590ec109be32ea83cdef92943f5a42d19aa776"
     },
     "rear_io": {
       "grams": 25.35,
@@ -40,10 +54,87 @@
       "filament_m": 2.16,
       "error": "Success.",
       "sha256": "6893c4d1d3c59156da1befe9c8d4dca284304b4e171b2ef61802510876955cee"
+    },
+    "mount_fit_template": {
+      "grams": 20.92,
+      "minutes": 44.0,
+      "filament_m": 6.9,
+      "error": "Success.",
+      "sha256": "e551019c345966d9145f01b8c2b2bebcc398ff61b3775d032b98f2e11b5cd7b0"
+    },
+    "m3_insert_coupon": {
+      "grams": 11.39,
+      "minutes": 17.4,
+      "filament_m": 3.76,
+      "error": "Success.",
+      "sha256": "7d40a4934de1e6b15afbb475b778189ea4382a6b7c073fa6c48a97d012d2c855"
+    },
+    "countersink_coupon": {
+      "grams": 4.65,
+      "minutes": 11.3,
+      "filament_m": 1.54,
+      "error": "Success.",
+      "sha256": "6161113254984ffa256e5795e5adb5936fc2433d93e98ee3895b17c3246d6bd6"
+    },
+    "rpsma_coupon": {
+      "grams": 4.62,
+      "minutes": 11.7,
+      "filament_m": 1.52,
+      "error": "Success.",
+      "sha256": "2c7699d7361e7fe74554ce71e1c64a6ae4b7bbd5c9b9f705bfd1ce9b35e2b271"
+    },
+    "rail_coupon": {
+      "grams": 2.11,
+      "minutes": 9.6,
+      "filament_m": 0.7,
+      "error": "Success.",
+      "sha256": "76ca58a4bd3f2459d674036875dc785c4c439061d5082b2c63f56bfdc00e7971"
+    },
+    "rail_key": {
+      "grams": 0.82,
+      "minutes": 7.2,
+      "filament_m": 0.27,
+      "error": "Success.",
+      "sha256": "8e14862f5e940858c3351fd7afa44260a2ebcbb1df860982623114665db911df"
+    },
+    "storage_35": {
+      "grams": 152.53,
+      "minutes": 218.9,
+      "filament_m": 50.33,
+      "error": "Success.",
+      "sha256": "35df0e4e8193618070d9f1479a7c3ea9f0e4c398ad1889febfb07aa572df5c9f"
+    },
+    "storage_25": {
+      "grams": 131.97,
+      "minutes": 178.3,
+      "filament_m": 43.54,
+      "error": "Success.",
+      "sha256": "a19784e27c1579efe4620f1fecf43317d3d9fca103e7b5b505c5f1b839b703e6"
+    },
+    "storage_mount_plate": {
+      "grams": 82.16,
+      "minutes": 107.9,
+      "filament_m": 27.11,
+      "error": "Success.",
+      "sha256": "399f67b227243bb5e9a1e779a5d14f25b243b9ccdfec0197f0130422933e60f6"
+    },
+    "chimney_cap": {
+      "grams": 1.56,
+      "minutes": 3.7,
+      "filament_m": 0.52,
+      "error": "Success.",
+      "sha256": "09ae4c2ce3662e098398fe8e35487d07e816f788cf68f9f3becf93267632312a"
+    },
+    "ssd_clip": {
+      "grams": 0.66,
+      "minutes": 4.5,
+      "filament_m": 0.22,
+      "error": "Success.",
+      "sha256": "240e365eab455f25a2c2e0b3c34073e73e4e56dd0b0431f04eb18e9ebfb0145a"
     }
   },
-  "total_grams": 375.7,
-  "total_hours": 11.75,
+  "total_grams": 1014.5,
+  "total_hours": 28.65,
   "pass": true,
   "note": "Slicer estimates for one copy of each part with the stated profile; supports off unless the profile turns them on."
 }

@@ -14,6 +14,9 @@ Assume the session can end at any time (token budget, crash, a reformatted machi
   thread, CI green, merge with a merge commit. Ask the user before tagging `revX.Y` (it publishes a release).
 - **Long runs** (OpenFOAM CFD, FEA sweeps, `cad-agent all`) go on a compute host, not the shared workstation; record
   host role, command, log and how to collect results in the issue (`cad-remote-runs`).
+- **Every review walks cad-agent's [common-issues index](https://github.com/Valpatel/cad-agent/blob/dev/docs/common-issues.md).**
+  `cad-agent all` must pass every row, "Holes clear" included. In the build, cut holes after every rib, boss and
+  skirt (issue #9).
 - **Evidence is regenerated, not edited.** Exports, reports and renders come from `cad-agent all` on the committed
   sources; commit them together with the change that produced them.
 - **Vendor files are not redistributed.** References (Seeed carrier STEP, NVIDIA module, datasheets) are fetched by

@@ -22,7 +22,7 @@ name = f'j501-agx-rev{rel}'
 out = R / 'release' / name
 subprocess.run([sys.executable, '-m', 'cadagent.cli', 'release', '--project', str(R), '--out', str(out), '--revision', rel],
                check=True)
-zip_ = out.with_suffix('.zip')
+zip_ = out.parent / f'{name}.zip'
 assert (out / 'index.html').is_file() and zip_.is_file(), 'cad-agent release wrote no page or zip'
 m = json.loads((out / 'manifest.json').read_text())
 parts = m.get('parts') or []

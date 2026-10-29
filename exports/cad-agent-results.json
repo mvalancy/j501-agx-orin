@@ -375,6 +375,102 @@
       ]
     },
     {
+      "feature_id": "cad-holes",
+      "feature_title": "Holes clear",
+      "checks": [
+        {
+          "name": "P1 \u00b7 base",
+          "status": "pass",
+          "message": "48 hole(s) clear, 4 listed exception(s)"
+        },
+        {
+          "name": "P1M \u00b7 base mount",
+          "status": "pass",
+          "message": "48 hole(s) clear, 4 listed exception(s)"
+        },
+        {
+          "name": "P2 \u00b7 cover",
+          "status": "pass",
+          "message": "8 hole(s) clear"
+        },
+        {
+          "name": "P4 \u00b7 front no gmsl",
+          "status": "pass",
+          "message": "0 hole(s) clear"
+        },
+        {
+          "name": "P3 \u00b7 front gmsl",
+          "status": "pass",
+          "message": "0 hole(s) clear"
+        },
+        {
+          "name": "P5 \u00b7 rear io",
+          "status": "pass",
+          "message": "2 hole(s) clear"
+        },
+        {
+          "name": "P10 \u00b7 side hatch",
+          "status": "pass",
+          "message": "0 hole(s) clear"
+        },
+        {
+          "name": "P9 \u00b7 mount fit template",
+          "status": "pass",
+          "message": "8 hole(s) clear"
+        },
+        {
+          "name": "P11 \u00b7 m3 insert coupon",
+          "status": "pass",
+          "message": "5 hole(s) clear"
+        },
+        {
+          "name": "P14 \u00b7 countersink coupon",
+          "status": "pass",
+          "message": "4 hole(s) clear"
+        },
+        {
+          "name": "P20 \u00b7 rpsma coupon",
+          "status": "pass",
+          "message": "4 hole(s) clear, 4 listed exception(s)"
+        },
+        {
+          "name": "P12 \u00b7 rail coupon",
+          "status": "pass",
+          "message": "0 hole(s) clear"
+        },
+        {
+          "name": "P13 \u00b7 rail key",
+          "status": "pass",
+          "message": "0 hole(s) clear"
+        },
+        {
+          "name": "P15 \u00b7 storage 35",
+          "status": "pass",
+          "message": "29 hole(s) clear, 4 ledge(s) between coaxial bores (confirm they are designed)"
+        },
+        {
+          "name": "P16 \u00b7 storage 25",
+          "status": "pass",
+          "message": "32 hole(s) clear, 4 ledge(s) between coaxial bores (confirm they are designed)"
+        },
+        {
+          "name": "P17 \u00b7 storage mount plate",
+          "status": "pass",
+          "message": "8 hole(s) clear"
+        },
+        {
+          "name": "P18 \u00b7 chimney cap",
+          "status": "pass",
+          "message": "0 hole(s) clear"
+        },
+        {
+          "name": "P19 \u00b7 ssd clip",
+          "status": "pass",
+          "message": "1 hole(s) clear"
+        }
+      ]
+    },
+    {
       "feature_id": "cad-checks",
       "feature_title": "Design checks",
       "checks": [
@@ -490,12 +586,12 @@
   "header_meta": {
     "project": "j501-agx",
     "revision": "rev 0.9-g48r",
-    "generated": "2026-10-28 07:42 UTC"
+    "generated": "2026-10-29 20:09 UTC"
   },
   "footer_meta": {
-    "checks": "48 pass / 0 fail / 0 skip",
+    "checks": "66 pass / 0 fail / 0 skip",
     "physical_fit": "physical fit NOT verified (CAD only)",
-    "slicer": "sliced (Bambu Studio (command line)): 375.7 g, 11.75 h for 5 part(s), 0.20mm Standard @BBL X1C, Bambu PLA Basic @BBL P1S 0.4 nozzle"
+    "slicer": "sliced (Bambu Studio (command line)): 1014.5 g, 28.65 h for 18 part(s), 0.20mm Standard @BBL X1C, Bambu PLA Basic @BBL P1S 0.4 nozzle"
   },
   "project": "j501-agx",
   "revision": "0.9-g48r",
