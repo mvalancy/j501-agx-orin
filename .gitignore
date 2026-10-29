@@ -34,6 +34,7 @@ preview/*.log
 preview/server-url.txt
 archive/*/exports/*.log
 exports/release-notes.md
+release/
 exports/release-prerelease
 
 # CFD cases (rebuilt by tools/thermal.py; results go to exports/thermal)

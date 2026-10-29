@@ -10,7 +10,9 @@ import json, os, re
 
 R = Path(__file__).resolve().parents[1]
 REV = json.loads((R / 'cad/parameters.json').read_text())['revision'].split('-')[0]
-RELEASE = f'https://github.com/mvalancy/j501-agx-orin/releases/tag/rev{REV}'
+_P = json.loads((R / 'cad/parameters.json').read_text())
+REL = _P.get('release', REV)
+RELEASE = f'https://github.com/mvalancy/j501-agx-orin/releases/tag/rev{REL}'
 
 
 PAGES = {}  # folder -> README text; written by link_pages() once every page is known
@@ -97,7 +99,7 @@ built-in STL viewer, or use the links under it to download the part:
 
 STL and 3MF files are already in print orientation. Every part fits a 256 mm bed. Sizes are outside dimensions, largest first.
 
-**One download:** the [Rev {REV} print package]({RELEASE}) has every STL, the instructions and the renders.
+**One download:** the [release {REL} print page]({RELEASE}): open `index.html` from the zip for every part with its picture, print settings, grams and time, and its STEP, STL and 3MF, plus the assembly guide and the hardware.
 **Hardware to buy:** [main README](../README.md#hardware-to-buy). **Build steps:** [ASSEMBLY.md](../ASSEMBLY.md).
 
 <p align="center">
@@ -329,7 +331,7 @@ Scripts that check, render, document and package the design. [`cad-agent.yaml`](
 | [`export_open_shells.py`](export_open_shells.py) | Writes the board's open surface shells for the shell check |
 | [`renderkit.py`](renderkit.py) | Shared VTK helpers for `render.py` and `render_steps.py` |
 | [`serve_preview.py`](serve_preview.py) | Serves the local review site ([`preview/index.html`](../preview/index.html)) |
-| [`package_release.py`](package_release.py) | Builds the print zip and release notes |
+| [`package_release.py`](package_release.py) | Builds the print release (`cad-agent release`: a page of every part with its settings and files, plus the source) and the release notes |
 | [`ci_check.py`](ci_check.py) | What CI runs: print files match the manifest, every check passed, STLs are sound, README links resolve |
 | [`thermal.py`](thermal.py) | Airflow and heat in OpenFOAM (hours): the bare module, and the cooler at 40 W (`exports/thermal/`) |
 | [`thermal_figures.py`](thermal_figures.py) | Sections, streamlines and videos of each finished CFD case (`preview/thermal/`) |
@@ -514,7 +516,7 @@ The CAD build needs vendor models (one behind a login), so CI cannot rebuild the
 4. Every local link and image in the README files and ASSEMBLY.md resolves.
 
 It also reruns [`tools/write_readmes.py`](../../tools/write_readmes.py) and fails if any README changed.
-It then builds the print zip with [`tools/package_release.py`](../../tools/package_release.py) and keeps it as a download for 30 days.
+It then builds the print release with [`tools/package_release.py`](../../tools/package_release.py) (`cad-agent release`, pinned in the workflow) and keeps it as a download for 30 days.
 On a `rev*` tag it also publishes a [GitHub release](https://github.com/mvalancy/j501-agx-orin/releases). See
 [Making a release](../../README.md#making-a-release).
 ''')

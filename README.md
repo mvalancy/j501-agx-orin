@@ -269,12 +269,20 @@ listed under `steps:` in that file in order with `.venv/bin/python`.
 `main` is protected: changes go to the `dev` branch, then a pull request from `dev` into `main` (CI's `check` must
 pass and every review comment must be resolved).
 
-1. Change the design, set `revision` in `cad/parameters.json` (for example `0.9-...`), and run `cad-agent all`.
-2. Commit everything, including `exports/`, push to `dev`, and open a pull request into `main`. CI checks the committed
-   print files match that build and pass every check. Merge it once it is reviewed.
-3. Tag and push: `git tag rev0.9 && git push origin rev0.9`. CI builds the print zip (STLs, instructions, renders) and publishes the release.
+1. Change the design, set `revision` in `cad/parameters.json` (for example `0.9-...`), and run `cad-agent all`. A fix
+   to the parts of a released revision sets `release` instead (for example `0.9.1`) with a `release_note`, so the
+   simulation results named after the revision stay valid.
+2. Run `cad-agent slice` (Bambu Studio). Every printed part gets its grams and time on the release page.
+3. Commit everything, including `exports/`, push to `dev`, and open a pull request into `main`. CI checks that the
+   committed print files match that build and pass every check, including that every hole is clear. Merge it once it
+   is reviewed.
+4. Tag and push: `git tag rev0.9.1 && git push origin rev0.9.1` (the tag must match `release`, else `revision`). CI
+   builds the print release with `cad-agent release` (`tools/package_release.py`) and publishes it. The release is a
+   page of every part (picture, quantity, orientation, supports, grams and time, recommended settings, STEP, STL and
+   3MF), the assembly guide, the hardware and the source.
 
-Releases stay marked pre-release until `physical_fit_verified` is true in `exports/review-validation.json`. Every push also leaves the print zip as a downloadable CI artifact for 30 days.
+Releases stay marked pre-release until `physical_fit_verified` is true in `exports/review-validation.json`. Every push
+also leaves the print release as a downloadable CI artifact for 30 days.
 
 ## Project folders
 

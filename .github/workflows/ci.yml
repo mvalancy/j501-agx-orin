@@ -2,6 +2,8 @@
 # (cad-agent all); CI checks that the committed exports match that run, then packages them.
 #   push (main, dev) / pull request: tools/ci_check.py, check the folder READMEs match tools/write_readmes.py, then build the print zip as a downloadable artifact
 #   tag revX.Y:          the same, then publish a GitHub release with the print zip
+# The print release (an HTML page of every part with its print settings, the STEP/STL/3MF files and the source) is
+# written by `cad-agent release`, from cad-agent at the commit pinned below.
 # Actions are pinned to commit SHAs and Python packages to hashes, so an upstream change cannot alter a run.
 name: CI
 
@@ -14,6 +16,9 @@ on:
 permissions:
   contents: read
 
+env:
+  CAD_AGENT_SHA: 11841824e0c02568679e650e7ab33f7af6c591f1
+
 jobs:
   check:
     runs-on: ubuntu-24.04
@@ -25,6 +30,12 @@ jobs:
         run: |
           python3 -m venv .venv
           .venv/bin/pip install --quiet --require-hashes --only-binary :all: -r requirements-ci.txt
+      - name: Fetch cad-agent at the pinned commit
+        run: |
+          git init -q "$RUNNER_TEMP/cad-agent"
+          git -C "$RUNNER_TEMP/cad-agent" fetch -q --depth 1 https://github.com/Valpatel/cad-agent "$CAD_AGENT_SHA"
+          git -C "$RUNNER_TEMP/cad-agent" checkout -q FETCH_HEAD
+          echo "PYTHONPATH=$RUNNER_TEMP/cad-agent/src" >> "$GITHUB_ENV"
       - name: Check exports, design checks, STLs and README links
         env:
           TAG: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || '' }}
@@ -33,13 +44,13 @@ jobs:
         run: .venv/bin/python tools/write_readmes.py && git diff --exit-code -- '*README.md'
       - name: Check isolated cooler reference evidence
         run: .venv/bin/python tools/check_cooler_study.py
-      - name: Build the print package
+      - name: Build the print release
         run: .venv/bin/python tools/package_release.py
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: print-package
+          name: print-release
           path: |
-            exports/*-print.zip
+            release/*.zip
             exports/release-notes.md
             exports/release-prerelease
           retention-days: 30
@@ -54,15 +65,25 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Build the print package
-        run: python3 tools/package_release.py
+      - name: Install pinned dependencies
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install --quiet --require-hashes --only-binary :all: -r requirements-ci.txt
+      - name: Fetch cad-agent at the pinned commit
+        run: |
+          git init -q "$RUNNER_TEMP/cad-agent"
+          git -C "$RUNNER_TEMP/cad-agent" fetch -q --depth 1 https://github.com/Valpatel/cad-agent "$CAD_AGENT_SHA"
+          git -C "$RUNNER_TEMP/cad-agent" checkout -q FETCH_HEAD
+          echo "PYTHONPATH=$RUNNER_TEMP/cad-agent/src" >> "$GITHUB_ENV"
+      - name: Build the print release
+        run: .venv/bin/python tools/package_release.py
       - name: Publish the release
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
         run: |
           pre=$(cat exports/release-prerelease)
-          title="Rev ${TAG#rev} print package"
+          title="Rev ${TAG#rev} print release"
           [ "$pre" = true ] && title="$title (fit-check prototype)"
-          gh release create "$TAG" exports/*-print.zip --verify-tag --title "$title" \
+          gh release create "$TAG" release/*.zip --verify-tag --title "$title" \
             --notes-file exports/release-notes.md $([ "$pre" = true ] && echo --prerelease)

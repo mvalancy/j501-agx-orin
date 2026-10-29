@@ -8,7 +8,7 @@ committed exports are the ones the local pipeline built and checked:
 2. The last pipeline run passed every design check (exports/review-validation.json).
 3. Every STL loads as a single watertight mesh that fits the printer bed.
 4. Every local link in ASSEMBLY.md and every README.md resolves.
-5. With --tag, the tag matches the revision in cad/parameters.json.
+5. With --tag, the tag matches the release (else the revision) in cad/parameters.json.
 
     python tools/ci_check.py [--tag rev0.8]
 """
@@ -67,9 +67,10 @@ def main():
     print(f'readme and assembly links: {len(pages)} pages checked')
 
     if a.tag:
-        rev = 'rev' + json.loads((R / 'cad/parameters.json').read_text())['revision'].split('-')[0]
+        P = json.loads((R / 'cad/parameters.json').read_text())
+        rev = 'rev' + P.get('release', P['revision'].split('-')[0])     # a fix release of a revision: rev0.9.1
         if a.tag != rev:
-            fails.append(f'tag {a.tag} does not match cad/parameters.json revision ({rev})')
+            fails.append(f'tag {a.tag} does not match cad/parameters.json release/revision ({rev})')
 
     for f in fails:
         print('FAIL', f)

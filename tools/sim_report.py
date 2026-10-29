@@ -37,8 +37,10 @@ def section_material():
         return None
     names = {'base': 'Base (P1)', 'cover': 'Lid (P2)', 'front_no_gmsl': 'Front plate (P4)', 'rear_io': 'Rear plate (P5)', 'side_hatch': 'Side hatch (P10)'}
     rows = [metric(names.get(k, k), a['parts'][k]['grams'], b['parts'][k]['grams'], 'g') for k in names if k in a['parts'] and k in b['parts']]
-    rows.append(metric('Enclosure total', a['total_grams'], b['total_grams'], 'g'))
-    rows.append(metric('Print time, all five parts', a['total_hours'], b['total_hours'], 'h', digits=2))
+    # the enclosure set only: since Rev 0.9.1 every printed part is sliced, Rev 0.8 sliced these five
+    tot = lambda r, k: round(sum(r['parts'][n][k] for n in names if n in r['parts']), 1)
+    rows.append(metric('Enclosure total', tot(a, 'grams'), tot(b, 'grams'), 'g'))
+    rows.append(metric('Print time, all five parts', round(tot(a, 'minutes') / 60, 2), round(tot(b, 'minutes') / 60, 2), 'h', digits=2))
     o = load(f'exports/slice-options-{CUR}.json')
     extra = []
     if o:

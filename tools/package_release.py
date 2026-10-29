@@ -1,90 +1,51 @@
-"""Build the print-ready release zip: STL files, assembly instructions and a few renders.
+"""Build the print release with `cad-agent release`, plus the GitHub release notes.
 
-    python tools/package_release.py      # writes exports/j501-agx-<rev>-print.zip
+    python tools/package_release.py      # writes release/j501-agx-rev<release>/ and release/j501-agx-rev<release>.zip
 
-The instructions are the README's bill of materials plus ASSEMBLY.md and its step pictures, with links pointing into the zip.
+The release is what someone printing the enclosure needs, not the review package:
+- `index.html`: a page with every printed part, its thumbnail, quantity, orientation, supports, and the slicer's
+  grams and time;
+- the recommended print settings;
+- the assembly guide and the hardware to buy;
+- the STEP, STL and 3MF files, and the source that builds them.
+
+The parts, notes and hardware are in `cad-agent.yaml` under `release:`. Simulation results and render galleries
+stay in the repository.
 """
 from pathlib import Path
-import json, re, zipfile
+import json, subprocess, sys
 
 R = Path(__file__).resolve().parents[1]
-rev = json.loads((R / 'cad/parameters.json').read_text())['revision'].split('-')[0]
-name = f'j501-agx-rev{rev}-print'
-parts = list(json.loads((R / 'exports/geometry-checks.json').read_text()))
-RENDERS = {'assembled': 'Assembled', 'exploded': 'Exploded view', 'open': 'Lid off', 'rear': 'Rear plate',
-           'bottom': 'Underside: tie-down screws and floor opening', 'heatsink-tiedown': 'Cooler tie-down screws',
-           'antennas': 'RP-SMA antenna bulkheads', 'service-buttons': 'Reset and recovery pin holes',
-           'storage-configs': 'Drive tray stacks', 'storage-exploded': 'Drive tray stack, exploded',
-           'drive-bays': 'Drive bays', 'cable-routing': 'SATA cable routing'}
-
-readme = (R / 'README.md').read_text()
-body = readme[readme.index('## Bill of materials'):readme.index('## Assembly')]
-steps = sorted((R / 'docs/assembly').glob('*.png'))
-assembly = (R / 'ASSEMBLY.md').read_text().replace('](README.md#bill-of-materials)', '](#bill-of-materials)')
-assembly = assembly.replace('](docs/assembly/', '](assembly/').replace('](preview/', '](renders/')
-assembly = re.sub(r'^(#+) ', r'#\1 ', assembly, flags=re.M)  # nest every heading under the package title
-body = re.sub(r'\[([\w.]+)\.3mf\]\(exports/\1\.3mf\)', lambda m: f'[{m[1]}.stl](stl/{m[1]}.stl)', body)
-body = body.replace('Every printed part has a [3MF](exports/) (opens in Bambu Studio), STL and STEP file in [`exports/`](exports/). '
-                    'The full BOM with dimensions is [docs/BOM.csv](docs/BOM.csv).',
-                    'Every printed part is in `stl/`, in millimetres. The full BOM with dimensions is `BOM.csv`. '
-                    '3MF and STEP files are in the GitHub repository.')
-for k in re.findall(r'\]\(renders/([\w-]+)\.png\)', assembly):
-    RENDERS.setdefault(k, k.replace('-', ' ').capitalize())
-assert '](exports/' not in body + assembly and '](docs/' not in body + assembly and '](preview/' not in assembly, 'unconverted repo link'
-gallery = '\n\n'.join(f'**{t}**\n\n![{t}](renders/{k}.png)' for k, t in RENDERS.items())
-doc = f'''# J501 AGX Orin Enclosure, Rev {rev}: print package
-
-A 3D-printable housing for the Seeed reServer Industrial J501 carrier board with an NVIDIA Jetson AGX Orin module.
-Source, 3MF and STEP files: https://github.com/mvalancy/j501-agx-orin
-
-**Status:** fit-check prototype. Every part and clearance is checked in CAD only; nothing has been printed or
-test-fitted yet, so print the test parts first.
-
-**You need:** a Seeed reServer Industrial J501 carrier (https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html),
-a Jetson AGX Orin module and a cooler. More at https://www.seeedstudio.com/
-
-![Assembled](renders/assembled.png)
-
-{body.rstrip()}
-
-{assembly.rstrip()}
-
-## Renders
-
-{gallery}
-
-MIT licensed (see `LICENSE`). Not affiliated with or endorsed by Seeed Studio or NVIDIA.
-'''
-
-out = R / 'exports' / f'{name}.zip'
-with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as z:
-    z.writestr(f'{name}/INSTRUCTIONS.md', doc)
-    z.write(R / 'LICENSE', f'{name}/LICENSE')
-    z.write(R / 'docs/BOM.csv', f'{name}/BOM.csv')
-    for p in parts:
-        z.write(R / 'exports' / f'{p}.stl', f'{name}/stl/{p}.stl')
-    for k in RENDERS:
-        z.write(R / 'preview' / f'{k}.png', f'{name}/renders/{k}.png')
-    for s in steps:
-        z.write(s, f'{name}/assembly/{s.name}')
-print(f'Wrote {out.relative_to(R)}: {len(parts)} STL, {len(steps)} step pictures, {len(RENDERS)} renders, {out.stat().st_size / 1e6:.1f} MB')
+P = json.loads((R / 'cad/parameters.json').read_text())
+rel = P.get('release', P['revision'].split('-')[0])
+name = f'j501-agx-rev{rel}'
+out = R / 'release' / name
+subprocess.run([sys.executable, '-m', 'cadagent.cli', 'release', '--project', str(R), '--out', str(out), '--revision', rel],
+               check=True)
+zip_ = out.parent / f'{name}.zip'
+assert (out / 'index.html').is_file() and zip_.is_file(), 'cad-agent release wrote no page or zip'
+m = json.loads((out / 'manifest.json').read_text())
+parts = m.get('parts') or []
+print(f'Wrote {zip_.relative_to(R)}: {len(parts)} parts, {zip_.stat().st_size / 1e6:.1f} MB')
 
 # Release notes for the GitHub release. It stays a pre-release until a printed unit has been fit-checked.
 tested = json.loads((R / 'exports/review-validation.json').read_text()).get('physical_fit_verified') is True
 status = ('**Status: fit-checked.** A printed unit has been assembled on the real board.' if tested else
-          '**Status: fit-check prototype.** Every part and clearance is checked in CAD only. Nothing has been printed or '
-          'test-fitted yet, so print the test parts (P9, P11–P14, P20) first.')
-(R / 'exports/release-notes.md').write_text(f'''Print package for the J501 AGX Orin enclosure, Rev {rev}.
+          '**Status: fit-check prototype.** Every part and clearance is checked in CAD only; a printed unit has not '
+          'been fit-checked yet. Print the test parts in the page\'s "Test prints" group first, in your filament.')
+fix = P.get('release_note', '')
+(R / 'exports/release-notes.md').write_text(f'''Print release for the J501 AGX Orin enclosure, release {rel} (design revision {P['revision']}).
 
-**Download `{name}.zip`.** It contains:
-- `stl/`: all {len(parts)} printable parts, in millimetres
-- `INSTRUCTIONS.md`: which parts to print, hardware to buy, and illustrated assembly steps
-- `BOM.csv`: full bill of materials with dimensions
-- `assembly/`: a picture for every assembly step
-- `renders/`: {len(RENDERS)} views of the assembly, drive trays, tie-down and service access
+**Download `{name}.zip` and open `index.html`.** The page lists every printed part with a picture, how many to print,
+the orientation and supports, and the slicer's grams and time with the recommended Bambu Studio settings. It links each
+part's STEP, STL and 3MF, the assembly guide and the hardware to buy. The zip also has the source that builds the parts
+(`source/`).
 
 {status}
 
-You need a [Seeed reServer Industrial J501 carrier](https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html), a Jetson AGX Orin module and a cooler. 3MF (Bambu Studio) and STEP files are in the repository's `exports/` folder.
+{fix}
+
+You need a [Seeed reServer Industrial J501 carrier](https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html), a Jetson AGX Orin module and a cooler.
+Simulation results, renders and the full review are in the repository: https://github.com/mvalancy/j501-agx-orin
 ''')
 (R / 'exports/release-prerelease').write_text('false' if tested else 'true')
