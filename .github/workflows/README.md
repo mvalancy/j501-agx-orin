@@ -13,6 +13,6 @@ The CAD build needs vendor models (one behind a login), so CI cannot rebuild the
 4. Every local link and image in the README files and ASSEMBLY.md resolves.
 
 It also reruns [`tools/write_readmes.py`](../../tools/write_readmes.py) and fails if any README changed.
-It then builds the print zip with [`tools/package_release.py`](../../tools/package_release.py) and keeps it as a download for 30 days.
+It then builds the print release with [`tools/package_release.py`](../../tools/package_release.py) (`cad-agent release`, pinned in the workflow) and keeps it as a download for 30 days.
 On a `rev*` tag it also publishes a [GitHub release](https://github.com/mvalancy/j501-agx-orin/releases). See
 [Making a release](../../README.md#making-a-release).

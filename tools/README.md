@@ -51,7 +51,7 @@ Scripts that check, render, document and package the design. [`cad-agent.yaml`](
 | [`export_open_shells.py`](export_open_shells.py) | Writes the board's open surface shells for the shell check |
 | [`renderkit.py`](renderkit.py) | Shared VTK helpers for `render.py` and `render_steps.py` |
 | [`serve_preview.py`](serve_preview.py) | Serves the local review site ([`preview/index.html`](../preview/index.html)) |
-| [`package_release.py`](package_release.py) | Builds the print zip and release notes |
+| [`package_release.py`](package_release.py) | Builds the print release (`cad-agent release`: a page of every part with its settings and files, plus the source) and the release notes |
 | [`ci_check.py`](ci_check.py) | What CI runs: print files match the manifest, every check passed, STLs are sound, README links resolve |
 | [`thermal.py`](thermal.py) | Airflow and heat in OpenFOAM (hours): the bare module, and the cooler at 40 W (`exports/thermal/`) |
 | [`thermal_figures.py`](thermal_figures.py) | Sections, streamlines and videos of each finished CFD case (`preview/thermal/`) |

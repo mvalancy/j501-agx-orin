@@ -11,7 +11,7 @@ built-in STL viewer, or use the links under it to download the part:
 
 STL and 3MF files are already in print orientation. Every part fits a 256 mm bed. Sizes are outside dimensions, largest first.
 
-**One download:** the [Rev 0.9 print package](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.9) has every STL, the instructions and the renders.
+**One download:** the [release 0.9.1 print page](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.9.1): open `index.html` from the zip for every part with its picture, print settings, grams and time, and its STEP, STL and 3MF, plus the assembly guide and the hardware.
 **Hardware to buy:** [main README](../README.md#hardware-to-buy). **Build steps:** [ASSEMBLY.md](../ASSEMBLY.md).
 
 <p align="center">

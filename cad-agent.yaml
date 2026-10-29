@@ -51,8 +51,18 @@ cad:
     name: j501-agx-rev09-fit-check
     include: [README.md, ASSEMBLY.md, "docs/assembly/*", requirements.txt, cad/parameters.json, "docs/*", "exports/*.stl", "exports/*.3mf",
               "exports/*.step", "exports/*.json", references/sources.json]
-  # cad-agent slice: real grams and print time for the enclosure set (Bambu Studio CLI, P1S 0.20 Standard, PLA Basic)
-  slicer: {filament: pla, parts: [base, cover, front_no_gmsl, rear_io, side_hatch]}
+  # cad-agent slice: real grams and print time for every printed part (Bambu Studio CLI, P1S 0.20 Standard, PLA Basic);
+  # the release page shows them per part. tools/sim_report.py compares the five-part enclosure set across revisions.
+  slicer: {filament: pla}
+  # cad-agent holes (run by `all`): every hole of every part clear of material. The RP-SMA holes are D-holes on purpose.
+  holes:
+    exceptions:
+      base: &rpsma
+        - {at: [1.25, 46.5, 62], diameter_mm: 6.6, reason: "RP-SMA bulkhead D-hole: the flat stops the bulkhead turning (antenna_bulkheads)"}
+        - {at: [1.25, 145.5, 62], diameter_mm: 6.6, reason: "RP-SMA bulkhead D-hole: the flat stops the bulkhead turning (antenna_bulkheads)"}
+      base_mount: *rpsma
+      rpsma_coupon:
+        - {diameter_mm: 6.6, reason: "the coupon's four RP-SMA D-holes, flats 5.9 to 6.2 mm across, to pick the one that holds"}
   html_pages: [preview/index.html, README.md, ASSEMBLY.md, docs/engineering-review.html]
   view:
     colors: {base: "#2f343c", base_mount: "#2f343c", cover: "#3b3f46", front_gmsl: "#8a9099", front_no_gmsl: "#8a9099",
@@ -83,6 +93,50 @@ cad:
       - {name: board_screws, file: exports/view-context/board_screws.step, color: "#c9a227", category: Screws and hardware}
       - {name: cooler_tiedown_screws, file: exports/view-context/cooler_tiedown_screws.step, color: "#b8bec6", category: Screws and hardware}
       - {name: antenna_bulkheads, file: exports/view-context/antenna_bulkheads.step, color: "#c9a227", category: Screws and hardware}
+  # cad-agent release (tools/package_release.py): the print page with every part, its settings and files, and the source.
+  release:
+    title: reServer J501 / Jetson AGX Orin enclosure
+    groups:
+      - title: Enclosure (every build)
+        note: Print the cover, the rear plate, the side hatch, one base (P1, or P1M for a wall or robot mount without drive trays) and one front plate (P3 with the GMSL board, P4 without).
+        parts: [base, cover, rear_io, side_hatch, front_no_gmsl, front_gmsl, base_mount]
+      - title: Closures and drive storage (optional)
+        note: P18 closes the floor opening when no drive trays are fitted. Stack 1 tray, 1 of each or 2 of each; P17 goes under the stack on a wall or robot mount; P19 holds 7 mm SSDs that have no bottom screw holes (4 per drive).
+        parts: [chimney_cap, storage_35, storage_25, storage_mount_plate, ssd_clip]
+      - title: Test prints (print these first, in your filament)
+        note: Fits, insert retention and heat resistance depend on the filament; these check them before the big parts.
+        parts: [mount_fit_template, m3_insert_coupon, rail_coupon, rail_key, countersink_coupon, rpsma_coupon]
+    quantities: {ssd_clip: 4}
+    notes:
+      base: {orientation: floor down on the bed, supports: none, use: "desktop, or any setup with drive trays"}
+      base_mount: {orientation: floor down on the bed, supports: none, use: instead of P1 on a wall or robot mount without drive trays}
+      cover: {orientation: roof down on the bed, supports: none, use: always}
+      rear_io: {orientation: outside face down, supports: none, use: always}
+      side_hatch: {orientation: outside face down, supports: none, use: always}
+      front_no_gmsl: {orientation: outside face down, supports: none, use: no GMSL board}
+      front_gmsl: {orientation: outside face down, supports: none, use: GMSL board fitted}
+      chimney_cap: {orientation: flange down, supports: none, use: no drive trays}
+      storage_35: {use: one 3.5 in drive each (0 to 2)}
+      storage_25: {use: "two 2.5 in drives each, up to 15 mm thick (0 to 2)"}
+      storage_mount_plate: {use: wall or robot mount with drive trays}
+      ssd_clip: {use: 4 per 7 mm SSD without bottom screw holes}
+      mount_fit_template: {checks: the bare board sits flat on all its supports and the cooler holes line up}
+      m3_insert_coupon: {checks: which pilot hole (3.7 to 4.1 mm) holds an M3 insert}
+      rail_coupon: {checks: plates slide in their channels without rattling (with P13)}
+      rail_key: {checks: plates slide in their channels without rattling (with P12)}
+      countersink_coupon: {checks: the M3 x 35 flat head seats on its cone}
+      rpsma_coupon: {checks: which D-hole flat (5.9 to 6.2 mm) holds an RP-SMA bulkhead without turning}
+    pages: [ASSEMBLY.md]
+    hardware:
+      - {item: M3 x 10 heat-set insert, qty: "8", used for: board supports (4) and lid columns (4)}
+      - {item: "M3 x 10 button head, ISO 7380", qty: "4", used for: board to base}
+      - {item: "M3 x 35 flat head, DIN 7991 / ISO 10642", qty: "4", used for: "cooler tie-down, up through the floor"}
+      - {item: "M3 x 16 socket head, ISO 4762", qty: "4", used for: "lid, from the top (2.5 mm hex key, 40 mm reach)"}
+      - {item: "RP-SMA female bulkhead pigtail, to U.FL or MHF4", qty: "0-4", used for: "antennas (2 Wi-Fi, 2 cellular)"}
+      - {item: "Rubber bumper, up to 12 x 1 mm", qty: "4", used for: desktop feet (optional)}
+      - {item: M6 screws and 16 mm washers, qty: "4", used for: P1M wall or robot mount}
+      - {item: SIM eject pin or paper clip (1.2 mm or less), qty: "1", used for: pressing the reset and recovery buttons}
+    include: ["cad/**", "tools/**", cad-agent.yaml, requirements.txt, README.md, ASSEMBLY.md, "LICENSE*", references/sources.json]
   # project site: `cad-agent site --serve` (http://127.0.0.1:8643/site/). The top bar below is on every page it serves.
   site:
     title: J501 AGX enclosure
