@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 env:
-  CAD_AGENT_SHA: a09bef785441ec2509f12715c96e441ba27fecb7
+  CAD_AGENT_SHA: 11841824e0c02568679e650e7ab33f7af6c591f1
 
 jobs:
   check:

@@ -55,6 +55,8 @@ cad:
   # the release page shows them per part. tools/sim_report.py compares the five-part enclosure set across revisions.
   slicer: {filament: pla}
   # cad-agent holes (run by `all`): every hole of every part clear of material. The RP-SMA holes are D-holes on purpose.
+  # An `at` point matches the hole's axis line, so each base entry also covers the coaxial hole in the opposite wall
+  # (4 D-holes per base). An exception skips the whole hole: look at these in a section view when the walls change.
   holes:
     exceptions:
       base: &rpsma
@@ -98,14 +100,24 @@ cad:
     title: reServer J501 / Jetson AGX Orin enclosure
     groups:
       - title: Enclosure (every build)
-        note: Print the cover, the rear plate, the side hatch, one base (P1, or P1M for a wall or robot mount without drive trays) and one front plate (P3 with the GMSL board, P4 without).
-        parts: [base, cover, rear_io, side_hatch, front_no_gmsl, front_gmsl, base_mount]
-      - title: Closures and drive storage (optional)
+        note: Print these three, one base and one front plate.
+        parts: [cover, rear_io, side_hatch]
+      - title: Base (print one)
+        note: P1 for a desktop, or any setup with drive trays; P1M for a wall or robot mount without drive trays.
+        parts: [base, base_mount]
+        pick_one: true
+      - title: Front plate (print one)
+        note: P3 with the GMSL camera board fitted, P4 without it.
+        parts: [front_gmsl, front_no_gmsl]
+        pick_one: true
+      - title: Closures and drive storage
+        optional: true
         note: P18 closes the floor opening when no drive trays are fitted. Stack 1 tray, 1 of each or 2 of each; P17 goes under the stack on a wall or robot mount; P19 holds 7 mm SSDs that have no bottom screw holes (4 per drive).
         parts: [chimney_cap, storage_35, storage_25, storage_mount_plate, ssd_clip]
       - title: Test prints (print these first, in your filament)
         note: Fits, insert retention and heat resistance depend on the filament; these check them before the big parts.
         parts: [mount_fit_template, m3_insert_coupon, rail_coupon, rail_key, countersink_coupon, rpsma_coupon]
+    build: {title: "desktop, no GMSL, no drives", parts: [cover, rear_io, side_hatch, base, front_no_gmsl, chimney_cap]}
     quantities: {ssd_clip: 4}
     notes:
       base: {orientation: floor down on the bed, supports: none, use: "desktop, or any setup with drive trays"}
