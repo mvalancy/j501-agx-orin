@@ -11,5 +11,5 @@
   "nominal_P1S_bounds_pass": true,
   "print_parts_checked": 18,
   "physical_fit_verified": false,
-  "slicer_run": false
+  "slicer_run": true
 }

@@ -3,7 +3,7 @@
 <p align="center">
   A 3D-printable housing for the <a href="https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html">Seeed reServer Industrial J501 carrier board</a>
   with an NVIDIA Jetson AGX Orin module.<br>
-  <b>Rev 0.9 · fit-check prototype</b> · fits a 256 mm printer bed · MIT licensed
+  <b>Rev 0.9 (release 0.9.1) · fit-check prototype</b> · fits a 256 mm printer bed · MIT licensed
 </p>
 
 <p align="center">
@@ -20,11 +20,17 @@ flowchart LR
     F -.-> G[Drive trays, optional]
 ```
 
-**Download:** Rev 0.9 is a candidate on `main` and is not tagged yet: print it from [`exports/`](exports/README.md). Tagged releases (all STL files, assembly instructions and renders in one zip) are on the [releases page](https://github.com/mvalancy/j501-agx-orin/releases).
+**Download:** the latest print release is [rev0.9.1](https://github.com/mvalancy/j501-agx-orin/releases/tag/rev0.9.1). Download `j501-agx-rev0.9.1.zip` and open `index.html`. It lists every printed part with:
+- a picture and how many to print;
+- the orientation and supports;
+- the slicer's grams and time, with the recommended Bambu Studio settings;
+- its STEP, STL and 3MF files.
+
+The zip also has the assembly guide, the hardware to buy, and the source that builds the parts. One desktop build (no GMSL board, no drives) is about 377 g and 12 h of printing. Older releases are on the [releases page](https://github.com/mvalancy/j501-agx-orin/releases); the newest files are always in [`exports/`](exports/README.md).
 
 **Browse the parts:** the [print index](exports/README.md) shows every part with a picture, its size, a 3D view and download links. Every folder has a README with pictures.
 
-**Status:** the Rev 0.8 base, plates and cover have been printed and test-fitted. The base and plates fit; the Rev 0.8 cover hit the cooler by about 15 mm, because it was sized for a lower 34 mm cooler. Rev 0.9 is built around that cooler: see the [cooler fit review](docs/cooler-fit-review.md) for the model and the clearance checks (the lid clears the fan even if its true position is 3 mm off the photo estimate). Rev 0.9 also raises the cooler tie-down seats in the base by 1.5 mm, so the M3 × 35 screws catch 6 threads in this cooler's standoffs (a Rev 0.8 base gives about 3). Its cover and base are checked in CAD and simulation only, so print the test parts first.
+**Status:** the Rev 0.8 base, plates and cover have been printed and test-fitted. The base and plates fit; the Rev 0.8 cover hit the cooler by about 15 mm, because it was sized for a lower 34 mm cooler. Rev 0.9 is built around that cooler: see the [cooler fit review](docs/cooler-fit-review.md) for the model and the clearance checks (the lid clears the fan even if its true position is 3 mm off the photo estimate). Rev 0.9 also raises the cooler tie-down seats in the base by 1.5 mm, so the M3 × 35 screws catch 6 threads in this cooler's standoffs (a Rev 0.8 base gives about 3). Release 0.9.1 fixes the Rev 0.9 cover: its roof ribs ran into the four lid-screw counterbores. If you printed a Rev 0.9 cover, reprint it; the other parts are unchanged. Every hole of every part is now checked automatically (`cad-agent holes`). The cover and base are checked in CAD and simulation only, so print the test parts first.
 
 **You need:** a [Seeed reServer Industrial J501 carrier](https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html), a Jetson AGX Orin module, and a cooler. The optional [GMSL extension board](https://www.seeedstudio.com/reServer-Industrial-J501-GMSL-extension-board-p-5949.html) is supported. The cooler is Seeed's [reComputer mini J501 heatsink with fan](https://www.seeedstudio.com/reComputer-Mini-J501-heatsink-with-fan-p-6605.html) (110 × 100 × 50 mm: a 2 mm copper spreader, a five-heat-pipe tower and a 92 × 15 mm, 12 V fan). Seeed's lower [34 mm heatsink with fan](https://www.seeedstudio.com/Aluminum-heatsink-with-Fan-for-Jetson-AGX-Orin-p-5970.html) fits the Rev 0.8 cover instead. Port details are on the [Seeed wiki](https://wiki.seeedstudio.com/j501_carrier_board_interfaces_usage/); everything else is at [seeedstudio.com](https://www.seeedstudio.com/).
 
@@ -68,7 +74,7 @@ Every printed part has a [3MF](exports/) (opens in Bambu Studio), STL and STEP f
 | P14 Countersink coupon | [countersink_coupon.3mf](exports/countersink_coupon.3mf) | The M3 × 35 flat head seats on its cone |
 | P20 Antenna hole coupon | [rpsma_coupon.3mf](exports/rpsma_coupon.3mf) | Which D-hole flat (5.9–6.2 mm) holds an RP-SMA bulkhead without turning |
 
-Filament is not specified yet, so fits, heat resistance and insert retention are untested.
+**Filament:** the release page's grams and times are for Bambu PLA Basic, and the strength checks use PLA. The airflow simulation (40 W module, 25 °C room) estimates the warmest air inside at 34 °C. That is air, not part temperature, and the simulation's fan flow is not calibrated yet ([#8](https://github.com/mvalancy/j501-agx-orin/issues/8)). On that estimate PLA should do on a desk or a shelf. A 60 W module, or a hot place (a vehicle, direct sun, a room above about 35 °C), brings the inside close to where PLA softens; use PETG or ASA there. Those are not checked yet, so print the test parts in them first. Fits, insert retention and heat resistance have not been tested on a print in any filament.
 
 **Already printed the Rev 0.8 cover?** It fits the 34 mm cooler. To use it over the 50 mm reComputer mini J501
 cooler, print the one-off 18 mm riser from `tools/lid_riser.py --rise 18 --slice` (49 g, 1 h 41 min, files in
@@ -228,7 +234,8 @@ All units are millimeters. In the carrier frame, X starts at the left PCB edge, 
 
 | Report | Result |
 |---|---|
-| `geometry-checks.json` | 17 printable parts, each one valid solid, watertight STL |
+| `geometry-checks.json` | 18 printable parts, each one valid solid, watertight STL |
+| `hole-checks.json` | every cylindrical hole of every part is clear of material (`cad-agent holes`); the RP-SMA D-holes are listed exceptions and the tray standoff ledges are reported |
 | `assembly-checks.json`, `mount-checks.json` | 0 mm³ plastic overlap across all part pairs, both front variants and P1M |
 | `carrier-clearances.json` | 0 carrier-solid collisions. 0 collisions between plastic and the modeled screws, module, cooler or GMSL. 8 intended insert interferences |
 | `shell-clearances.json` | open-shell intrusion check |
@@ -237,7 +244,7 @@ All units are millimeters. In the carrier frame, X starts at the left PCB edge, 
 | `design-metrics.json` | roof, vents, tie-down, fasteners, mounts |
 | `storage-checks.json` | underside card envelopes and gaps, SATA drop, 7 stack configurations, cable routes and bend radii, chimney path, drive-screw engagement |
 
-None of these checks covers slicer validation, insert pullout, thermal performance, vibration, creep under the cooler clamp load, or mounting load capacity.
+The lid and base strength (FEA) and the airflow and temperatures (CFD) are on the [simulation page](preview/simulation.html), and the slicer's grams and times are in `slice-report.json`. None of these checks covers insert pullout, vibration, creep under the cooler clamp load, or a printed fit.
 
 ## Reproduce
 
@@ -254,7 +261,7 @@ The project runs on the [`cad-agent`](https://github.com/Valpatel/cad-agent) too
 listed under `steps:` in that file in order with `.venv/bin/python`.
 
 ```bash
-.venv/bin/pip install -e <path-to>/cad-agent      # cadagent toolkit
+.venv/bin/pip install -e <path-to>/cad-agent      # cadagent toolkit: the dev branch at CAD_AGENT_SHA in .github/workflows/ci.yml
 .venv/bin/cad-agent all       # every build step in cad-agent.yaml, 3MF export, checks, report, package
 .venv/bin/cad-agent serve     # local preview with STL/3MF/Bambu Studio links
 ```

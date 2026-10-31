@@ -79,17 +79,17 @@ def main():
     metrics = {}
     for name, s in pieces.items():
         path = OUT / f'{name}.step'
-        cq.exporters.export(s, str(path))
+        b.export_step(s, path)
         read = cq.importers.importStep(str(path)).val()
         metrics[name] = {'valid': read.isValid(), 'solid_count': len(read.Solids()), 'volume_mm3': round(read.Volume(), 2),
                          'bounds_mm': bounds(read)}
         assert read.isValid() and read.Volume() > 0, name
     print('components exported and read back', flush=True)
-    cq.exporters.export(c.compound([s for k, s in pieces.items() if k not in c.CONTEXT]), str(OUT / 'g48r-reference.step'))
+    b.export_step(c.compound([s for k, s in pieces.items() if k not in c.CONTEXT]), OUT / 'g48r-reference.step')
     alt = c.C['alternatives']['ws_rdn_601']
     ax, ay = [v + c.M for v in alt.get('center_in_pcb', c.C['center_in_pcb'])]
     sx, sy, sz = alt['size']
-    cq.exporters.export(b.box(ax - sx / 2, ay - sy / 2, c.SPREADER_Z, sx, sy, sz), str(OUT / 'ws-rdn-601-envelope.step'))
+    b.export_step(b.box(ax - sx / 2, ay - sy / 2, c.SPREADER_Z, sx, sy, sz), OUT / 'ws-rdn-601-envelope.step')
 
     release = cq.importers.importStep(str(R / 'exports/cover.step')).val()
     rel = {'modelled_frame': lid_vs_cooler(release), 'frame_95mm': lid_vs_cooler(release, conservative=True)}

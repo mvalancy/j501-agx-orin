@@ -73,8 +73,8 @@ trimesh==5.2.0 \
 networkx==3.7 \
     --hash=sha256:e3fd2c13a7814cee3746340d8d7f8598a67f16a58bf47fb7f8793fab6efca1b0 \
     --hash=sha256:fd77a511bd90f39f3d016351345b52cf5319b813bdca01de3f755d3cca62e96a
-# cad-agent release (tools/package_release.py): cad-agent itself is installed from a pinned commit in ci.yml
+# cad-agent release (tools/package_release.py): cad-agent itself is fetched at the commit pinned in ci.yml (CAD_AGENT_SHA)
 pyyaml==6.0.2 \
     --hash=sha256:80bab7bfc629882493af4aa31a4cfa43a4c57c83813253626916b8c7ada83476
-markdown==3.7 \
-    --hash=sha256:7eb6df5690b81a1d7942992c97fad2938e956e79df20cbc6186e9c3a77b1c803
+markdown==3.11.1 \
+    --hash=sha256:f1fa378ba5d682900c9ecb55ccceacca936016dda7c3b27097e8ae03ff78feb5

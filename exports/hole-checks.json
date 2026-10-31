@@ -143,7 +143,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "base.step",
-      "sha256": "fe07eec5ea9c573524f4957ec4087197ea4d1512d801a70eb26cf0e2918b1c69"
+      "sha256": "ebf88faee463a5f1416eb4d2e7d043c0ac31a6cfffeee2914f01e34a8ac28fd0"
     },
     "base_mount": {
       "pass": true,
@@ -277,7 +277,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "base_mount.step",
-      "sha256": "290ec8eb52a5781a10235288c093c27578f664a6ffc0a454063782d1563a04b2"
+      "sha256": "09188229fb161acc750bda92ace192f507d90f418069d70820cd70eccd199f7b"
     },
     "cover": {
       "pass": true,
@@ -290,7 +290,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "cover.step",
-      "sha256": "d092fef31d965fba42ec2cf5e712f726f6fbc58ebd935d96253c4d641b648820"
+      "sha256": "86db70b26762589ce0879f6f696fc095265ee28bc2bf79dc68ea57fac1b5df08"
     },
     "front_no_gmsl": {
       "pass": true,
@@ -303,7 +303,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "front_no_gmsl.step",
-      "sha256": "af97bda9ea7806fed5f22bef4d65954bf84544bba099c8160bdc719a9df49178"
+      "sha256": "7421a28eb63d6ceed70907008281906b79b39a9f0eaf0cc28da21462c718a45b"
     },
     "front_gmsl": {
       "pass": true,
@@ -316,7 +316,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "front_gmsl.step",
-      "sha256": "dc13582574b16be708ba8fb046cd721120e4baf5a177ac7b2356a5fe1a161511"
+      "sha256": "79ae9b3b7ba3e83d6da547deee2fcc1accb2a40322618fce547ef85f6239412c"
     },
     "rear_io": {
       "pass": true,
@@ -329,7 +329,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "rear_io.step",
-      "sha256": "7dccc2120227590d72e16db10279393731613eb0d7a5874ffdc3f0977c6769eb"
+      "sha256": "d17cd890b891e54ed4948cffbe5674b9f1f065f58cac2854cd8d785cfd1b3b9b"
     },
     "side_hatch": {
       "pass": true,
@@ -342,7 +342,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "side_hatch.step",
-      "sha256": "7fa08262e9893b1aa8944254420d417c8a924ffbc15ef4b1693c2ea7c9002a8e"
+      "sha256": "431bb2b71b6b3cf215ba0744e8f7c08ed506f151dde11d0fd291bce33590fbd2"
     },
     "mount_fit_template": {
       "pass": true,
@@ -355,7 +355,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "mount_fit_template.step",
-      "sha256": "a6b00f55b641bd4031ac57f4ee70a681ce2dd6670746f0cc6c971abcef2dc891"
+      "sha256": "2a0ddbf98c51b250b1d988669084031c15d8189608cf4188f74e320c6ff5554b"
     },
     "m3_insert_coupon": {
       "pass": true,
@@ -368,7 +368,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "m3_insert_coupon.step",
-      "sha256": "aa4e2eb31f1e7be3aa27bbc9579e0b6b11bbaf2e3dcda94aba92e66de38f8e17"
+      "sha256": "319ee8f718c67413c5b4f67f57c83957146c404e978582516731053a715a657d"
     },
     "countersink_coupon": {
       "pass": true,
@@ -381,7 +381,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "countersink_coupon.step",
-      "sha256": "43d260a2193808f1a1b452ca5d91bc80a9d169ae11c16d3c07bf4da8cc648be7"
+      "sha256": "e546eaaa97dce34982654e13ffdbbff0ba91fd16703aa38cfcaa30cea32d1dc1"
     },
     "rpsma_coupon": {
       "pass": true,
@@ -515,7 +515,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "rpsma_coupon.step",
-      "sha256": "130f394e9ac537efe21061e69acdab566705630e9e4d25c69f6b8cfc101213cc"
+      "sha256": "6de812f36dd152daf278d563fa8995f1aa5a4d996b092d4b74b6f73f730ad8e9"
     },
     "rail_coupon": {
       "pass": true,
@@ -528,7 +528,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "rail_coupon.step",
-      "sha256": "72f6d0ce5124942dfea5947d15686db56f9a007e5c810bca97e2597a526fb8a4"
+      "sha256": "4f8bf1e5616d0155ecacb400d3e3e64a1f88932349af0ae3d3031282be058eb3"
     },
     "rail_key": {
       "pass": true,
@@ -541,7 +541,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "rail_key.step",
-      "sha256": "936299b0cbb6fad58497bf7e85ffebdc139d09ff65268a240f64caa079404b42"
+      "sha256": "cf2d0cd380d69646dff62b25b701c681447de9c4201e248f4ee79904ce3baf03"
     },
     "storage_35": {
       "pass": true,
@@ -611,7 +611,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "storage_35.step",
-      "sha256": "e2e2ea5d8fe2ed0c6c2117c8248d648f969f73b788c6deaeebd0832570099700"
+      "sha256": "e09fb770b20ccf498194e0976047868d23d3499d90ba977eef1fc7d9ec6844ba"
     },
     "storage_25": {
       "pass": true,
@@ -681,7 +681,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "storage_25.step",
-      "sha256": "13159526e355f712ae5dd4e113725c9a8ba76100a7de3e1225454bf64833e866"
+      "sha256": "2b9f19cd88277bcc998799e77ac492214b4595cfa9541de41e1af22419dee65b"
     },
     "storage_mount_plate": {
       "pass": true,
@@ -694,7 +694,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "storage_mount_plate.step",
-      "sha256": "174c6d8f2f20000129a7bb39dfdf93a04874ae86d2ade75b795189f75ffb345d"
+      "sha256": "a552daafe8c13104ebf4fcbf08dca4b7074d227eeeadc3b15a885ceb41426821"
     },
     "chimney_cap": {
       "pass": true,
@@ -707,7 +707,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "chimney_cap.step",
-      "sha256": "e52a5f8d4670ac916fa13b2d99b93a16d1fea3e16613beb1051b7b8da45b52b0"
+      "sha256": "6a2644302c47d7ac0d4f70825afda852a4a6e2ea7a397e88431bec0bc12e3ae0"
     },
     "ssd_clip": {
       "pass": true,
@@ -720,7 +720,7 @@
       "min_arc_deg": 200.0,
       "max_diameter_mm": 30.0,
       "step": "ssd_clip.step",
-      "sha256": "1f65cd9e85e1397301863ebe25b7fd3dea7c7abb466c9c2b9b40d5f92228b378"
+      "sha256": "9738acd92a178364503b31c02e9530be5fd04740762ebfbcca583097d4445646"
     }
   },
   "pass": true
