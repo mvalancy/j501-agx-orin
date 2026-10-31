@@ -45,6 +45,10 @@ part's STEP, STL and 3MF, the assembly guide and the hardware to buy. The zip al
 
 {fix}
 
+**Filament:** the grams, times and strength checks are for PLA (Bambu PLA Basic). PLA suits a desk or a shelf: the
+airflow simulation puts the warmest air inside at 34 °C in a 25 °C room. In hot places (a vehicle, direct sun), use PETG
+or ASA, which are not checked yet; print the test parts in them first.
+
 You need a [Seeed reServer Industrial J501 carrier](https://www.seeedstudio.com/reServer-Industrial-J501-Carrier-board-for-Jetson-AGX-Orin-p-5950.html), a Jetson AGX Orin module and a cooler.
 Simulation results, renders and the full review are in the repository: https://github.com/mvalancy/j501-agx-orin
 ''')
