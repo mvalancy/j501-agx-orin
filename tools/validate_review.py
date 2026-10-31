@@ -21,7 +21,7 @@ def sliced():
  # true only while the slice report has grams for every part and each 3MF is the one that was sliced
  if not (E/'slice-report.json').exists():return False
  rows=load('slice-report.json').get('parts',{})
- return all(n in rows and (rows[n].get('grams') or 0)>0 and rows[n].get('sha256')==hashlib.sha256((E/f'{n}.3mf').read_bytes()).hexdigest() for n in parts)
+ return all(n in rows and (rows[n].get('grams') or 0)>0 and (E/f'{n}.3mf').exists() and rows[n].get('sha256')==hashlib.sha256((E/f'{n}.3mf').read_bytes()).hexdigest() for n in parts)
 report={'local_links_missing':missing,
  'all_parts_single_valid_watertight':all(v['cad_valid'] and v['solid_count']==1 and v['watertight'] for v in geo.values()),
  'plastic_intersections_zero':all(x['intersection_mm3']<.01 for x in load('assembly-checks.json')['plastic_intersections']),
