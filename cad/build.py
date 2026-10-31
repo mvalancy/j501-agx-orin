@@ -5,7 +5,7 @@ Output STLs are placed on z=0 in intended print orientation; assembly STEP
 uses the enclosure datum. Vendor geometry and envelopes are NOT printed parts.
 """
 from pathlib import Path
-import json, math
+import json, math, re
 from functools import lru_cache
 import cadquery as cq
 ROOT=Path(__file__).resolve().parents[1]
@@ -698,6 +698,16 @@ def stack(kinds):
 def flat(s):
     b=s.BoundingBox();return s.translate((-b.xmin,-b.ymin,-b.zmin))
 
+STEP_DATE='2000-01-01T00:00:00'
+def export_step(s,path):
+    # OCCT stamps the write time into the header and numbers the products by export order within a run; a fixed date and the
+    # file's name keep a rebuild with no geometry change byte-identical (issue #12).
+    path=Path(path);cq.exporters.export(s,str(path))
+    t=path.read_text();t,n=re.subn(r"(FILE_NAME\('[^']*',')[^']*'",lambda m:m.group(1)+STEP_DATE+"'",t,count=1)
+    if n!=1:raise RuntimeError(f'{path}: no FILE_NAME date in the STEP header')
+    t=re.sub(r"Open CASCADE STEP translator [\d.]+ \d+",path.stem,t)
+    path.write_text(t)
+
 PRINT_ROTATION={'cover':((1,0,0),180),'front_no_gmsl':((1,0,0),90),'front_gmsl':((1,0,0),90),'rear_io':((1,0,0),-90),'side_hatch':((0,1,0),90)}
 
 def print_parts():
@@ -713,7 +723,7 @@ if __name__=='__main__':
     for name,s in parts.items():
         print('Export',name,flush=True)
         if not s.isValid() or len(s.Solids())!=1:raise RuntimeError(f'Invalid/disconnected part: {name}')
-        cq.exporters.export(s,str(OUT/(name+'.step')))
+        export_step(s,OUT/(name+'.step'))
         print_shape=s
         if name in PRINT_ROTATION:axis,ang=PRINT_ROTATION[name];print_shape=s.rotate((0,0,0),axis,ang)
         print_shape=flat(print_shape)
