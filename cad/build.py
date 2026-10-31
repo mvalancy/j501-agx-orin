@@ -700,12 +700,16 @@ def flat(s):
 
 STEP_DATE='2000-01-01T00:00:00'
 def export_step(s,path):
-    # OCCT stamps the write time into the header and numbers the products by export order within a run; a fixed date and the
-    # file's name keep a rebuild with no geometry change byte-identical (issue #12).
+    # OCCT stamps the write time into the header, names the products and numbers the assembly links by export order within a
+    # run; a fixed date, the file's name and ids counted within the file keep a rebuild with no geometry change byte-identical
+    # (issue #12).
     path=Path(path);cq.exporters.export(s,str(path))
     t=path.read_text();t,n=re.subn(r"(FILE_NAME\('[^']*',')[^']*'",lambda m:m.group(1)+STEP_DATE+"'",t,count=1)
     if n!=1:raise RuntimeError(f'{path}: no FILE_NAME date in the STEP header')
-    t=re.sub(r"Open CASCADE STEP translator [\d.]+ \d+",path.stem,t)
+    name=path.stem.replace("'","''")                # a STEP string doubles its quotes
+    t=re.sub(r"Open CASCADE STEP translator [\d.]+ \d+",lambda m:name,t)
+    ids={}
+    t=re.sub(r"(NEXT_ASSEMBLY_USAGE_OCCURRENCE\(')([^']*)'",lambda m:m.group(1)+ids.setdefault(m.group(2),str(len(ids)+1))+"'",t)
     path.write_text(t)
 
 PRINT_ROTATION={'cover':((1,0,0),180),'front_no_gmsl':((1,0,0),90),'front_gmsl':((1,0,0),90),'rear_io':((1,0,0),-90),'side_hatch':((0,1,0),90)}
