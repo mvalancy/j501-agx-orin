@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/img/hero/j501-agx-orin-dark.svg">
+  <img src="docs/img/hero/j501-agx-orin-light.svg" width="100%" alt="J501 AGX Orin enclosure: the Rev 0.9 enclosure drawn from its STEP files; the base is traced, the rear and front plates slide into their channels, the side hatch slides in and the cover drops on">
+</picture>
+
 <h1 align="center">J501 AGX Orin Enclosure</h1>
 
 <p align="center">

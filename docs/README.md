@@ -22,6 +22,7 @@ Reference material for reviewing and building the enclosure. Most of these files
 | [`feature-review.csv`](feature-review.csv) | Feature-by-feature printability review |
 | [`connector-inventory.csv`](connector-inventory.csv) | Connectors and components on the carrier, from the schematic |
 | [`model-search.csv`](model-search.csv) | Where each vendor model was found, and which are still missing |
+| [`img/hero/`](img/hero/) | The animated README banner, drawn from the STEP files by [mvalancy/mvalancy's `tools/hero`](https://github.com/mvalancy/mvalancy/tree/22437c66382b9fb908806cc1010b3036e4385004/tools/hero) |
 
 GitHub shows the `.csv` files as searchable tables. The `.html` pages show as source on GitHub; open them locally to read them.
 
