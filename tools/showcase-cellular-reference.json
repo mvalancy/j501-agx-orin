@@ -1,0 +1,32 @@
+{
+  "manufacturer": "Taoglas",
+  "mpn": "TG.22.0152",
+  "role": "proposed compact cellular visual reference only; not selected build hardware",
+  "checked_utc": "2026-11-12",
+  "datasheet_url": "https://www.taoglas.com/datasheets/TG.22.0152.pdf",
+  "document": "SPE-11-8-112/E/SS",
+  "private_reference_sha256": "02043b24baef5c8ee43238535d3c45f19dcf77f72ee8a47923fc2453e7a5414c",
+  "connector": "RP-SMA(M) fixed right angle; drawing detail SMA(M) RA RP, 1/4-36UNS-2B",
+  "mechanical_drawing_page": 5,
+  "dimensions_mm": {
+    "overall_height": 44.8,
+    "overall_height_tolerance": 2.0,
+    "housing_length": 38.0,
+    "housing_length_tolerance": 2.0,
+    "lateral_extent": 17.0,
+    "lateral_tolerance": 0.5,
+    "housing_diameter": 7.8,
+    "housing_diameter_tolerance": 0.3,
+    "connector_axial_length": 8.4,
+    "connector_length_tolerance": 0.3,
+    "connector_hex_across_flats": 8.0
+  },
+  "manufacturer_band_description": "GSM/DCS/PCS/UMTS/CDMA/GPRS/EDGE/HSPA, 800-2200 MHz; older penta-band cellular reference, not an LTE/5G qualification",
+  "limits": [
+    "installed modem and radio band requirements remain unknown/unselected",
+    "not an assertion of LTE/5G, low-band, ground-plane, pigtail or MIMO suitability",
+    "no connector engagement, physical fit, collision or RF qualification",
+    "not a purchase recommendation; existing purchase BOM remains unchanged"
+  ],
+  "rights": "Manufacturer datasheet retained privately; only cited numerical facts and original simplified geometry are tracked. No vendor PDF, image, CAD, tessellation, logo or markings redistributed."
+}
