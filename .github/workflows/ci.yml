@@ -44,6 +44,8 @@ jobs:
         run: .venv/bin/python tools/write_readmes.py && git diff --exit-code -- '*README.md'
       - name: Check isolated cooler reference evidence
         run: .venv/bin/python tools/check_cooler_study.py
+      - name: Check optional original antenna context
+        run: .venv/bin/python tools/test_showcase_antennas.py -v
       - name: Build the print release
         run: .venv/bin/python tools/package_release.py
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

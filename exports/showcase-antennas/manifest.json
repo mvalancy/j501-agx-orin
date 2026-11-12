@@ -1,0 +1,148 @@
+{
+  "schema": "j501-original-showcase-context-v1",
+  "units": "mm",
+  "coordinate_frame": "existing enclosure assembly; no lid/part transforms changed",
+  "source_sha256": {
+    "cad/parameters.json": "891a32c46accbe08481b5f00448df6029af71164db0ac2bb7b7c6794e9b3a51a",
+    "cad/hardware.py": "281d3a6053d8dfb153a9bab52151abba7495994778bafb632d89c709a4961b0d",
+    "tools/showcase_antennas.py": "613f400ec1e27c233409949ae64cc6b82cc1da24fd378fdd1e03d4ede3c5c0b6",
+    "tools/showcase-antenna-reference.json": "7a074d869cb8d734c907d620f9c7aabe42186f00e3b33d0a59382d27fcf08c4f"
+  },
+  "recipe_revision_sha256": "613f400ec1e27c233409949ae64cc6b82cc1da24fd378fdd1e03d4ede3c5c0b6",
+  "mechanical_reference": {
+    "manufacturer": "TE Connectivity / Linx",
+    "mpn": "ANT-2.4-CW-RAH-RPS",
+    "te_part": "L9000025-01",
+    "checked_utc": "2026-11-12",
+    "product_url": "https://www.te.com/en/product-L9000025-01.html",
+    "drawing": {
+      "number": "C-ANT-2.4-CW-RAH-CCC",
+      "revision": "B",
+      "url": "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocFormat=pdf&DocLang=English&DocNm=C-ANT-2.4-CW-RAH-CCC&DocType=Customer+Drawing&PartCntxt=L9000025-01",
+      "private_reference_sha256": "6c76c93d3db2d94cdafaa403773f4469f890160fc3396510f08322bdd3ad065b",
+      "dimensions_mm": {
+        "housing_datum": 25.6,
+        "lateral_extent": 17.1,
+        "upper_diameter": 7.4,
+        "connector_diameter": 7.8,
+        "connector_axial_length": 8.1,
+        "base_datum": 7.0
+      }
+    },
+    "datasheet": {
+      "url": "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocFormat=pdf&DocLang=English&DocNm=L9000025-01&DocType=Data+Sheet&PartCntxt=L9000025-01",
+      "private_reference_sha256": "aa3572733a970854894ef385b32f392de035ccfc1de300134cfac08cdee5410e",
+      "upper_segment_mm": 18.6,
+      "base_mm": 7.0,
+      "datum_note": "18.6 upper segment + 7 base = 25.6 housing; connector below housing is separate. Older datasheet connector dimension differs; use drawing B for cited mechanical facts."
+    },
+    "rights": "Proprietary reference files stay untracked. Original geometric recipe uses numerical facts only; no vendor CAD, PDF, image, logo, markings or tessellation redistributed."
+  },
+  "optional": true,
+  "display_only": true,
+  "printable": false,
+  "purchase_bom": false,
+  "physical_fit_verified": false,
+  "rf_qualified": false,
+  "seating_assumption": "coupling plane on visual nut outer face, X=-2.5; washer .5 + nut 2 mirrored from cad/hardware.py; no mating thread detail",
+  "representation": "original closed 32-sided swept tube; illustrative elbow/shoulder/flat tip; black color including coupling; no markings, threads, pins, internals or vendor mesh",
+  "limits": [
+    "not manufacturing geometry",
+    "not a connector fit or collision qualification",
+    "not radio, band, ground-plane, pigtail or MIMO selection",
+    "CELL sites unchanged; fitted lid stays in existing position",
+    "25.6 mm housing datum is not the complete generated envelope"
+  ],
+  "parts": [
+    {
+      "name": "wifi_1_antenna",
+      "file": "wifi_1_antenna.stl",
+      "sha256": "4aa970157d32ba071915cc1ab6986a5dff23013f5356c9609446d36aff078679",
+      "bounds_mm": [
+        [
+          -19.600000381469727,
+          42.599998474121094,
+          58.099998474121094
+        ],
+        [
+          -2.5,
+          50.400001525878906,
+          84.0999984741211
+        ]
+      ],
+      "triangles": 1148,
+      "color": [
+        0.06,
+        0.065,
+        0.075
+      ],
+      "category": "context",
+      "visible": true,
+      "optional": true,
+      "display_only": true,
+      "mount": {
+        "label": "WIFI 1",
+        "origin_mm": [
+          -2.5,
+          46.5,
+          62.0
+        ],
+        "outward_axis": [
+          -1,
+          0,
+          0
+        ],
+        "up_axis": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "name": "wifi_2_antenna",
+      "file": "wifi_2_antenna.stl",
+      "sha256": "6d66d8cf6f2231c32bdf513e3e98a43cd3ce3dd55cb097fcf40b8936f07173c6",
+      "bounds_mm": [
+        [
+          -19.600000381469727,
+          141.60000610351562,
+          58.099998474121094
+        ],
+        [
+          -2.5,
+          149.39999389648438,
+          84.0999984741211
+        ]
+      ],
+      "triangles": 1148,
+      "color": [
+        0.06,
+        0.065,
+        0.075
+      ],
+      "category": "context",
+      "visible": true,
+      "optional": true,
+      "display_only": true,
+      "mount": {
+        "label": "WIFI 2",
+        "origin_mm": [
+          -2.5,
+          145.5,
+          62.0
+        ],
+        "outward_axis": [
+          -1,
+          0,
+          0
+        ],
+        "up_axis": [
+          0,
+          0,
+          1
+        ]
+      }
+    }
+  ]
+}
