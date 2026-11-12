@@ -36,6 +36,8 @@ The manifest carries SHA-256 for every input and fragment, exact assembly origin
 
 On 2026-11-12 UTC the bounded standard-library command `python3 tools/test_showcase_antennas.py -v` passed all six tests. The recipe/tests are wired into normal product CI. Existing parameter, CAD source, release configuration, print exports and BOM compare unchanged to source baseline `c06579b03ce32abe782b2f9c42ff3dd46437e670`; no new design/release tag or full CAD-run evidence is claimed.
 
+Normal checks on implementation commit `8c0d80f47317141728d9a9af250e86a2d9b7de37` also passed: `tools/ci_check.py` checked 55 existing source/export hashes, all 18 print STLs and 22 linked pages; `tools/check_cooler_study.py` passed existing evidence freshness/clearance controls; `tools/write_readmes.py` left generated README content current; and `tools/package_release.py` built the unchanged 18-part print inventory. Inspection of the resulting release manifest found neither an accessory print part nor a generated `showcase-antennas` mesh. The existing environment supplied the pinned cad-agent `11841824e0c02568679e650e7ab33f7af6c591f1`; no dependency installation, full build, solver, purchase or release publication occurred. The file checks and package copy/zip each finished within four seconds under 1 CPU / 2 GiB / 64-task / 90-second caps.
+
 ## Delivery
 
 1. Read only the existing `cad/parameters.json` Wi-Fi centres and the documented visual bulkhead stack in `cad/hardware.py`. Keep every manufacturing input and original export unchanged.
