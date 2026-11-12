@@ -17,16 +17,23 @@ class ShowcaseTests(unittest.TestCase):
     def setUp(self):
         self.parameters = json.loads((recipe.ROOT / 'cad/parameters.json').read_text())
 
-    def test_exact_existing_mounts_and_no_cellular_antenna(self):
+    def test_exact_four_existing_mounts_and_movement_control(self):
         self.assertEqual(recipe.mounts(self.parameters), [
+            {'label': 'CELL 1', 'origin_mm': [208.5, 46.5, 62.0], 'outward_axis': [1, 0, 0], 'up_axis': [0, 0, 1]},
+            {'label': 'CELL 2', 'origin_mm': [208.5, 145.5, 62.0], 'outward_axis': [1, 0, 0], 'up_axis': [0, 0, 1]},
             {'label': 'WIFI 1', 'origin_mm': [-2.5, 46.5, 62.0], 'outward_axis': [-1, 0, 0], 'up_axis': [0, 0, 1]},
             {'label': 'WIFI 2', 'origin_mm': [-2.5, 145.5, 62.0], 'outward_axis': [-1, 0, 0], 'up_axis': [0, 0, 1]}])
         # Changing one source centre must move that mesh and leave the other alone.
         shifted = copy.deepcopy(self.parameters)
         shifted['enclosure']['antenna_bulkheads']['positions'][0]['y'] += 1
         before, after = recipe.mounts(self.parameters), recipe.mounts(shifted)
-        self.assertEqual(after[0]['origin_mm'], [-2.5, 47.5, 62])
-        self.assertEqual(before[1], after[1])
+        self.assertEqual(after[2]['origin_mm'], [-2.5, 47.5, 62])
+        self.assertEqual(before[:2], after[:2])
+        self.assertEqual(before[3], after[3])
+        shifted['enclosure']['antenna_bulkheads']['positions'][2]['y'] += 2
+        shifted['enclosure']['width'] += 5
+        self.assertEqual(recipe.mounts(shifted)[0]['origin_mm'], [213.5, 48.5, 62])
+        self.assertEqual(recipe.mounts(shifted)[2]['origin_mm'], [-2.5, 47.5, 62])
 
     def test_bad_mount_inputs(self):
         mutations = {
@@ -35,11 +42,15 @@ class ShowcaseTests(unittest.TestCase):
             'duplicate label': lambda p: p['enclosure']['antenna_bulkheads']['positions'][1].update(label='WIFI 1'),
             'non-Wi-Fi': lambda p: p['enclosure']['antenna_bulkheads']['positions'][0].update(label='GPS 1'),
             'wrong side': lambda p: p['enclosure']['antenna_bulkheads']['positions'][0].update(side='right'),
+            'wrong cellular side': lambda p: p['enclosure']['antenna_bulkheads']['positions'][2].update(side='left'),
+            'non-cellular': lambda p: p['enclosure']['antenna_bulkheads']['positions'][2].update(label='GPS 1'),
+            'duplicate cellular centre': lambda p: p['enclosure']['antenna_bulkheads']['positions'][3].update(y=46.5),
             'duplicate centre': lambda p: p['enclosure']['antenna_bulkheads']['positions'][1].update(y=46.5),
             'nan': lambda p: p['enclosure']['antenna_bulkheads'].update(z=math.nan),
             'inf': lambda p: p['enclosure']['antenna_bulkheads']['positions'][0].update(y=math.inf),
             'boolean': lambda p: p['enclosure']['antenna_bulkheads'].update(z=True),
             'string': lambda p: p['enclosure']['antenna_bulkheads'].update(z='62'),
+            'invalid width': lambda p: p['enclosure'].update(width=0),
         }
         for name, mutate in mutations.items():
             with self.subTest(name=name):
@@ -89,12 +100,14 @@ class ShowcaseTests(unittest.TestCase):
             self.assertGreater(volume, 100)
             bounds = [[min(p[i] for p in vertices) for i in range(3)], [max(p[i] for p in vertices) for i in range(3)]]
             self.assertEqual(bounds, part['bounds_mm'])
-            expected = [[-19.6, part['mount']['origin_mm'][1]-3.9, 58.1],
-                        [-2.5, part['mount']['origin_mm'][1]+3.9, 84.1]]
+            cellular = part['name'].startswith('cell_')
+            y = part['mount']['origin_mm'][1]
+            expected = ([[208.5, y-4., 58.], [225.5, y+4., 102.8]] if cellular else
+                        [[-19.6, y-3.9, 58.1], [-2.5, y+3.9, 84.1]])
             for row, want in zip(bounds, expected):
                 for actual, target in zip(row, want):
                     self.assertAlmostEqual(actual, target, places=4)
-            self.assertAlmostEqual(bounds[1][2] - bounds[0][2], 26., places=4)
+            self.assertAlmostEqual(bounds[1][2] - bounds[0][2], 44.8 if cellular else 26., places=4)
             self.assertEqual(recipe.sha(data), part['sha256'])
             self.assertEqual((part['category'], part['display_only'], part['visible']), ('context', True, True))
 
@@ -107,6 +120,24 @@ class ShowcaseTests(unittest.TestCase):
         self.assertFalse(manifest['rf_qualified'])
         self.assertFalse(manifest['physical_fit_verified'])
         self.assertEqual(manifest['mechanical_reference']['mpn'], 'ANT-2.4-CW-RAH-RPS')
+        self.assertEqual(manifest['cellular_reference']['mpn'], 'TG.22.0152')
+        self.assertIn('not an LTE/5G qualification', manifest['cellular_reference']['manufacturer_band_description'])
+        self.assertEqual(len(manifest['parts']), 4)
+        for part in manifest['parts']:
+            self.assertEqual(part['reference_key'], 'cellular_reference' if part['name'].startswith('cell_') else 'mechanical_reference')
+
+    def test_wifi_mesh_bytes_preserved_and_cellular_is_distinct(self):
+        artifacts = recipe.artifacts()
+        self.assertEqual(recipe.sha(artifacts['wifi_1_antenna.stl']), '4aa970157d32ba071915cc1ab6986a5dff23013f5356c9609446d36aff078679')
+        self.assertEqual(recipe.sha(artifacts['wifi_2_antenna.stl']), '6d66d8cf6f2231c32bdf513e3e98a43cd3ce3dd55cb097fcf40b8936f07173c6')
+        self.assertNotEqual(artifacts['wifi_1_antenna.stl'], artifacts['cell_1_antenna.stl'])
+        vertices, _ = recipe.mesh((0, 0, 0), 'cellular')
+        # The connector cap is the first ring, followed by increasing outward X.
+        self.assertTrue(all(p[0] == 0 for p in vertices[:32]))
+        self.assertTrue(all(p[0] >= 0 for p in vertices))
+        self.assertGreater(max(p[2] for p in vertices), 40)
+        with self.assertRaises(ValueError):
+            recipe.mesh((0, 0, 0), 'unknown-radio')
 
     def test_display_context_excluded_from_manufacturing_inputs(self):
         # Existing print inventory is explicit. No accessory ID may enter it or
@@ -145,8 +176,12 @@ class ShowcaseTests(unittest.TestCase):
                     with self.assertRaisesRegex(ValueError, 'stale showcase'):
                         recipe.check(root)
                     (output / name).write_bytes(data)
-            (output / 'cell_1_antenna.stl').write_bytes(b'bad')
+            (output / 'cell_3_antenna.stl').write_bytes(b'bad')
             with self.assertRaisesRegex(ValueError, 'unexpected showcase'):
+                recipe.check(root)
+            (output / 'cell_3_antenna.stl').unlink()
+            (output / 'cell_2_antenna.stl').unlink()
+            with self.assertRaisesRegex(ValueError, 'missing or unexpected'):
                 recipe.check(root)
 
 
